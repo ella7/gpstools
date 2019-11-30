@@ -5,6 +5,7 @@
         "php": "^7.1.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ella7/console-command": "dev-dev",
         "symfony/console": "4.4.*",
         "symfony/dotenv": "4.4.*",
         "symfony/flex": "^1.3.1",
@@ -57,5 +58,11 @@
             "allow-contrib": false,
             "require": "4.4.*"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "https://github.com/ella7/console-command.git"
+        }
+    ]
 }
