@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ella7/console-command.git",
-                "reference": "9a25e686847d4f7419ce888bf84578623ccbb170"
+                "reference": "ce0c657b734c4c7ad53f2c656d39963ec750c77e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ella7/console-command/zipball/9a25e686847d4f7419ce888bf84578623ccbb170",
-                "reference": "9a25e686847d4f7419ce888bf84578623ccbb170",
+                "url": "https://api.github.com/repos/ella7/console-command/zipball/ce0c657b734c4c7ad53f2c656d39963ec750c77e",
+                "reference": "ce0c657b734c4c7ad53f2c656d39963ec750c77e",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 "source": "https://github.com/ella7/console-command/tree/dev",
                 "issues": "https://github.com/ella7/console-command/issues"
             },
-            "time": "2021-09-11T17:28:02+00:00"
+            "time": "2021-09-11T20:01:33+00:00"
         },
         {
             "name": "psr/cache",

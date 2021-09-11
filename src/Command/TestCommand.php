@@ -1,13 +1,13 @@
 <?php
 namespace App\Command;
 
-use Symfony\Component\Console\Command\Command;
+use Ella7\Console\Command\InteractiveOptionCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
 
-class TestCommand extends Command
+class TestCommand extends InteractiveOptionCommand
 {
   protected static $defaultName = 'gpstools:test';
 
@@ -29,11 +29,23 @@ class TestCommand extends Command
         'sub-command to run',
         false
       )
+      ->addOption(
+        'intopt',
+        null,
+        InputOption::VALUE_OPTIONAL,
+        'just testing here',
+        false
+      )
     ;
+
+    $question = new Question('This is the interactive question: ' . "\n> ");
+    $this->addInteractivityForOption('intopt', self::INTERACTION_ALWAYS, $question);
+
   }
 
   protected function interact(InputInterface $input, OutputInterface $output)
   {
+    parent::interact($input, $output);
     $helper = $this->getHelper('question');
     $cmd = $input->getOption('cmd');
 
@@ -65,10 +77,10 @@ class TestCommand extends Command
   protected function execute(InputInterface $input, OutputInterface $output)
   {
     $output->writeln(
-      'Hello World'
+      $input->getOption('intopt')
     );
 
-    return Command::SUCCESS;
+    return InteractiveOptionCommand::SUCCESS;
   }
 
   protected function validSubCommands()
@@ -82,24 +94,4 @@ class TestCommand extends Command
   {
     return in_array($cmd, $this->validSubCommands());
   }
-
-  protected function interactiveOptions()
-  {
-    return [
-      new InteractiveOption(
-        new InputOption(
-          'cmd',
-          null,
-          InputOption::VALUE_OPTIONAL,
-          'sub-command to run',
-          false
-        ),
-        new Question(
-          'Which test command do you want to run?',
-          $this->validSubCommands()[0]
-        )
-      )
-    ];
-  }
-
 }
