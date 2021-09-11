@@ -1,4 +1,7 @@
 {
+    "ella7/console-command": {
+        "version": "dev-dev"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
