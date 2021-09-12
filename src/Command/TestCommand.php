@@ -7,10 +7,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use App\Service\GPSTrackFactory;
 
 class TestCommand extends InteractiveOptionCommand
 {
   protected static $defaultName = 'gpstools:test';
+  private $factory;
+
+  public function __construct(GPSTrackFactory $factory)
+  {
+    $this->factory = $factory;
+    parent::__construct();
+  }
 
   protected function configure()
   {
@@ -24,17 +32,36 @@ class TestCommand extends InteractiveOptionCommand
         'sub-command to run',
         false
       )
+      ->addOption(
+        'fit',
+        null,
+        InputOption::VALUE_OPTIONAL,
+        'path to the fit file',
+        false
+      )
     ;
 
     $question = new ChoiceQuestion('Which test command do you want to run?', $this->validSubCommands());
     $this->addInteractivityForOption('cmd', self::INTERACTION_UNSET_ONLY, $question);
+
+    $question = new Question('Please provide the path to the FIT file' . "\n > ");
+    $this->addInteractivityForOption('fit', self::INTERACTION_UNSET_ONLY, $question);
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
-    $output->writeln(
-      $input->getOption('cmd')
-    );
+
+    switch ($input->getOption('cmd')) {
+      case 'output_gpx':
+        $output->writeln($this->factory->buildTrackFromFile($input->getOption('fit')));
+        break;
+
+      default:
+        $output->writeln('Executing sub-command ' . $input->getOption('cmd'));
+        break;
+    }
+
+    $output->writeln($this->factory->getMsg());
 
     return InteractiveOptionCommand::SUCCESS;
   }
