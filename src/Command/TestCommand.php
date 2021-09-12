@@ -17,6 +17,7 @@ class TestCommand extends InteractiveOptionCommand
   public function __construct(GPSTrackFactory $factory)
   {
     $this->factory = $factory;
+    $this->factory->disableCaching();
     parent::__construct();
   }
 

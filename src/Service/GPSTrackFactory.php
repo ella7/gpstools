@@ -23,6 +23,11 @@ class GPSTrackFactory
     $this->cache = $cacheApp;
   }
 
+  public function disableCaching()
+  {
+    $this->options['use_cache'] = false;
+  }
+
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
@@ -33,66 +38,40 @@ class GPSTrackFactory
 
   public function buildTrackFromFile($path)
   {
-
-    // TODO: clean up - don't like the multiple returns - structure isn't clean
     $cache_key = GPSTrackFactory::cacheKeyFromFilePath($path);
 
     if($this->options['use_cache']){
       return $this->cache->get($cache_key, function(){
-        return 'The string shouldn\'t change';
+        return $this->_buildTrackFromFile($path);
       });
     }
+    return $this->_buildTrackFromFile($path);
+  }
 
-    // if($this->options['use_cache']){
-    //   return $this->getGPSTrackFromCache($cache_key);
-    // } else {
-    //   $file_type = $this->detectFileType($path);
-    //   if($file_type == 'unicsv'){
-    //     $track = $this->buildTrackFromCSVFile($path);
-    //   }
-    //   if($file_type == 'garmin_fit'){
-    //     $track = $this->buildTrackFromFITFile($path);
-    //   }
-    //   if($file_type == 'gpx'){
-    //     $track = $this->buildTrackFromGPXFile($path, $options);
-    //   }
-    //
-    //   if($track){
-    //     if(!$track->trackPointsHaveDistance() && $this->options['set_distance_from_coords']){
-    //       $track->setTrackPointsDistanceFromCoords();
-    //     }
-    //
-    //     if(!$track->trackPointsHaveSpeed()){
-    //       // something seems to have changed and this function is getting called even on treadmill workouts when that didn't seem to be a problem before.
-    //       // don't have time to debug now. To make this work for treadmill fit file, I just commented out the line below.
-    //       // $track->setTrackPointsSpeedFromCoords();
-    //     }
-    //
-    //     if(!$track->total_distance){
-    //       $track->setTotalDistanceFromLastTrackPoint();
-    //     }
-    //
-    //     if(!$track->total_ascent){
-    //       $track->calculateTotalAscentAndDescent();
-    //     }
-    //
-    //     if(!$track->max_speed){
-    //       $track->calculateMaxSpeed();
-    //     }
-    //
-    //     if(!$track->average_speed){
-    //       $track->calculateAverageSpeed();
-    //     }
-    //
-    //     if($this->auto_cache){
-    //       $this->cache->save($cache_key, serialize($track));
-    //     }
-    //     return $track;
-    //   } else {
-    //     throw new \Exception('File type '.$file_type.' is not supported');
-    //     return null;
-    //   }
-    // }
+  private function _buildTrackFromFile($path)
+  {
+    $file_type = $this->detectFileType($path);
+    echo "file type is: $file_type\n";
+    switch ($file_type) {
+      case 'unicsv':
+        $track = $this->buildTrackFromCSVFile($path);
+        break;
+
+      case 'garmin_fit':
+        $track = $this->buildTrackFromFITFile($path);
+        break;
+
+      case 'gpx':
+        $track = $this->buildTrackFromGPXFile($path);
+        break;
+
+      default:
+        throw new \Exception('File type '.$file_type.' is not supported');
+        break;
+    }
+    return $track;
+    // TODO: the original factory sets distance and speed for all track points
+    // as well as several totals for the track. Feels out of place here.
   }
 
   public static function cacheKeyFromFilePath($path)
@@ -104,15 +83,24 @@ class GPSTrackFactory
     }
   }
 
-  public function getGPSTrackFromCache($cache_key)
+  public static function detectFileType($path)
   {
-    if($this->cache){
-      if($hit = $this->cache->fetch($cache_key)){
-        return unserialize($hit);
-      }
+    $extension_map = GPSTrackFactory::extensionMap();
+    $path_parts = pathinfo($path);
+    $extension = $path_parts['extension'];
+    if(!array_key_exists($extension, $extension_map)){
+      throw new \Exception('GPSTrackFactory:detectFileType does not support the '.$extension.' extension');
     }
-    throw new \Exception('Cannot find track using cache key '.$cache_key);
-    return null;
+    return $extension_map[$extension];
+  }
+
+  public static function extensionMap()
+  {
+    return [
+      'fit' => 'garmin_fit',
+      'csv' => 'unicsv',
+      'gpx' => 'gpx'
+    ];
   }
 
   public function getMsg()
