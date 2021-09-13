@@ -4,23 +4,23 @@ namespace App\Service;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Cache\CacheInterface;
+use App\Service\FITParser;
 
 class GPSTrackFactory
 {
 
-  private   $msg;
   protected $options;
   protected $cache;
+  protected $fit_parser;
 
-  public function __construct(array $options = [], CacheInterface $cacheApp)
+  public function __construct(array $options = [], CacheInterface $cacheApp, FITParser $fit_parser)
   {
-    $this->msg = 'I am a track factory';
-
     $resolver = new OptionsResolver();
     $this->configureOptions($resolver);
     $this->options = $resolver->resolve($options);
 
     $this->cache = $cacheApp;
+    $this->fit_parser = $fit_parser;
   }
 
   public function disableCaching()
@@ -74,6 +74,14 @@ class GPSTrackFactory
     // as well as several totals for the track. Feels out of place here.
   }
 
+  public function buildTrackFromFITFile($path)
+  {
+    $this->fit_parser->setFitPath($path);
+    // $fit_parser = new FITParser($path);
+    // $track = new GPSTrack;
+    // $session_data = $fit_parser->activitySessionData();
+  }
+
   public static function cacheKeyFromFilePath($path)
   {
     if(file_exists($path)){
@@ -102,10 +110,4 @@ class GPSTrackFactory
       'gpx' => 'gpx'
     ];
   }
-
-  public function getMsg()
-  {
-    return $this->msg;
-  }
-
 }
