@@ -54,14 +54,15 @@ class TestCommand extends InteractiveOptionCommand
 
     switch ($input->getOption('cmd')) {
       case 'output_gpx':
-        $output->writeln($this->factory->buildTrackFromFile($input->getOption('fit')));
+        $track = $this->factory->buildTrackFromFile($input->getOption('fit'));
+        dump($track);
         break;
 
       default:
         $output->writeln('Executing sub-command ' . $input->getOption('cmd'));
         break;
     }
-    
+
     return InteractiveOptionCommand::SUCCESS;
   }
 
@@ -85,4 +86,5 @@ class TestCommand extends InteractiveOptionCommand
   {
     return in_array($cmd, $this->validSubCommands());
   }
+  
 }
