@@ -24,10 +24,6 @@ class FITParser {
 
     $this->fitcsv_jar_path = $fitcsv_jar_path;
     $this->tmp_unpack_path = $tmp_unpack_path;
-
-    echo "we're in the constructor\n";
-    echo $this->fitcsv_jar_path."\n";
-    echo $this->tmp_unpack_path."\n";
   }
 
   public function setFitPath(string $path)
@@ -36,9 +32,9 @@ class FITParser {
       throw new \Exception('The file "'.$path.'" was not found');
     }
     $this->fit_path = $path;
-    $this->csv_key       = self::cacheKeyFromFilePath($path);
+    $this->csv_key  = self::cacheKeyFromFilePath($path);
 
-    $this->_writeCSVFilesToTmp();
+    $this->converted_to_csv = $this->cachedCSVFilesExist();
   }
 
   public static function cacheKeyFromFilePath($path)
@@ -50,6 +46,16 @@ class FITParser {
     }
   }
 
+  public function cachedCSVFilesExist()
+  {
+    foreach ($this->getCSVPaths() as $path) {
+      if(!file_exists($path)){
+        return false;
+      }
+    }
+    return true;
+  }
+
   public function activitySessionData()
   {
 
@@ -57,8 +63,8 @@ class FITParser {
       $this->_writeCSVFilesToTmp();
     }
 
-    $session_data_path = $this->tmp_unpack_path.$this->csv_key.'_session_data.csv';
-    $lines = file($session_data_path);
+    $csv_paths = $this->getCSVPaths();
+    $lines = file($csv_paths['session_data']);
 
     $headers = self::getFitCSV($lines[0]);
     return array_combine($headers, self::getFitCSV($lines[1]));
@@ -89,8 +95,8 @@ class FITParser {
       $this->_writeCSVFilesToTmp();
     }
 
-    $records_data_path = $this->tmp_unpack_path.$this->csv_key.'_records_data.csv';
-    $lines = file($records_data_path);
+    $csv_paths = $this->getCSVPaths();
+    $lines = file($csv_paths['records_data']);
     $num_records = count($lines) - 1;
 
     $headers = self::getFitCSV(SELF::remove_utf8_bom($lines[0]));
@@ -112,22 +118,32 @@ class FITParser {
 
   private function _writeCSVFilesToTmp()
   {
-    $session_output_path = $this->tmp_unpack_path.$this->csv_key.'_session.csv';
-    $records_output_path = $this->tmp_unpack_path.$this->csv_key.'_records.csv';
 
+    $csv_paths = $this->getCSVPaths();
     $cmd_common = 'java -jar '.$this->fitcsv_jar_path.' -b '.$this->fit_path.' ';
 
     // TODO: replace exec with commands from symfony/process component
-    exec($cmd_common.$session_output_path.' --data session');
-    exec($cmd_common.$records_output_path.' --data record');
+    exec($cmd_common.$csv_paths['session_data'].' --data session');
+    exec($cmd_common.$csv_paths['records_data'].' --data record');
 
-    if(!file_exists ($session_output_path)){
-      throw new \Exception('The FITParser failed to write the csv session cache file: '.$session_output_path);
+    if(!file_exists ($csv_paths['session_data'])){
+      throw new \Exception('The FITParser failed to write the csv session cache file: '.$csv_paths['session_data']);
     }
-    if(!file_exists ($records_output_path)){
-      throw new \Exception('The FITParser failed to write the csv records cache file: '.$records_output_path);
+    if(!file_exists ($csv_paths['records_data'])){
+      throw new \Exception('The FITParser failed to write the csv records cache file: '.$csv_paths['records_data']);
     }
     $this->converted_to_csv = true;
+  }
+
+  public function getCSVPaths()
+  {
+    $common_path = $this->tmp_unpack_path.$this->csv_key;
+    return [
+      'session'       => $common_path . '_session.csv',
+      'records'       => $common_path . '_records.csv',
+      'session_data'  => $common_path . '_session_data.csv',
+      'records_data'  => $common_path . '_records_data.csv',
+    ];
   }
 
 } // end class FITParser
