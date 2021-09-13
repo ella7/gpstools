@@ -61,9 +61,7 @@ class TestCommand extends InteractiveOptionCommand
         $output->writeln('Executing sub-command ' . $input->getOption('cmd'));
         break;
     }
-
-    $output->writeln($this->factory->getMsg());
-
+    
     return InteractiveOptionCommand::SUCCESS;
   }
 
