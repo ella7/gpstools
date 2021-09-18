@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx creator="Garmin Connect" version="1.1"
+  xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/11.xsd"
+  xmlns:ns3="http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
+  xmlns="http://www.topografix.com/GPX/1/1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+  <metadata>
+    <link href="connect.garmin.com">
+      <text>Garmin Connect</text>
+    </link>
+    <time>{{ track.track_points[0].modifiedTimeString }}</time>
+  </metadata>
+  <trk>
+    <name>{{ track_name }}</name>
+    <type>{{ track_type }}</type>
+    <trkseg>
+{% for track_point in track.track_points %}
+      <trkpt {% if track_point.latitude and track_point.longitude -%}
+        lat="{{ track_point.coord.latitude }}" lon="{{ track_point.coord.longitude }}"
+    {%- endif -%}
+       >
+{% if track_point.altitude %}
+        <ele>{{ track_point.altitude }}</ele>
+{% endif %}
+{% if track_point.modifiedTimeString() is defined %}
+        <time>{{ track_point.modifiedTimeString }}</time>
+{% endif %}
+        <extensions>
+          <ns3:TrackPointExtension>
+{% if track_point.temperature %}
+            <ns3:atemp>{{ track_point.temperature }}</ns3:atemp>
+{% endif %}
+{% if track_point.heart_rate %}
+            <ns3:hr>{{ track_point.heart_rate }}</ns3:hr>
+{% endif %}
+{% if track_point.cadence %}
+            <ns3:cad>{{ track_point.cadence }}</ns3:cad>
+{% endif %}
+          </ns3:TrackPointExtension>
+{% if track_point.power %}
+         <power>{{ track_point.power }}</power>
+{% endif %}
+{% if track_point.distance %}
+         <distance>{{ track_point.distance }}</distance>
+{% endif %}
+        </extensions>
+      </trkpt>
+{% endfor %}
+    </trkseg>
+  </trk>
+</gpx>

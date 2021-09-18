@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<TrainingCenterDatabase
+  xsi:schemaLocation="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd"
+  xmlns:ns5="http://www.garmin.com/xmlschemas/ActivityGoals/v1"
+  xmlns:ns3="http://www.garmin.com/xmlschemas/ActivityExtension/v2"
+  xmlns:ns2="http://www.garmin.com/xmlschemas/UserProfile/v2"
+  xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns4="http://www.garmin.com/xmlschemas/ProfileExtension/v1">
+  <Activity Sport="{{ track.sport }}">
+    <Id>{{ track.startTimeString }}</Id>
+    <Lap StartTime="{{ track.startTimeString }}">
+      <TotalTimeSeconds>{{ track.total_timer_time }}</TotalTimeSeconds>
+      <DistanceMeters>{{ track.total_distance }}</DistanceMeters>
+      <MaximumSpeed>{{ track.max_speed }}</MaximumSpeed>
+      <Calories>{{ track.total_calories }}</Calories>
+      <AverageHeartRateBpm>
+        <Value>{{ track.average_heart_rate }}</Value>
+      </AverageHeartRateBpm>
+      <MaximumHeartRateBpm>
+        <Value>{{ track.max_heart_rate }}</Value>
+      </MaximumHeartRateBpm>
+      <TriggerMethod>Manual</TriggerMethod>
+      <Track>
+{% for track_point in track.track_points %}
+        <Trackpoint>
+          <Time>{{ track_point.timeString }}</Time>
+{% if track_point.latitude and track_point.longitude %}
+          <Position>
+            <LatitudeDegrees>{{ track_point.latitude }}</LatitudeDegrees>
+            <LongitudeDegrees>{{ track_point.longitude }}</LongitudeDegrees>
+          </Position>
+{% endif %}
+{% if track_point.altitude %}
+          <AltitudeMeters>{{ track_point.altitude }}</AltitudeMeters>
+{% endif %}
+{% if track_point.distance %}
+          <DistanceMeters>{{ track_point.distance }}</DistanceMeters>
+{% endif %}
+{% if track_point.heart_rate %}
+          <HeartRateBpm>
+            <Value>{{ track_point.heart_rate }}</Value>
+          </HeartRateBpm>
+{% endif %}
+{% if track_point.cadence %}
+          <Extensions>
+            <TPX xmlns="http://www.garmin.com/xmlschemas/ActivityExtension/v2">
+              <RunCadence>{{ track_point.cadence }}</RunCadence>
+            </TPX>
+          </Extensions>
+{% endif %}
+        </Trackpoint>
+{% endfor %}
+      </Track>
+    </Lap>
+  </Activity>
+</TrainingCenterDatabase>

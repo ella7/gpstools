@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx creator="{{ creator }}" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+ <metadata>
+  <time>{{ track.track_points[0].modifiedTimeString }}</time>
+ </metadata>
+ <trk>
+  <name>{{ track_name }}</name>
+  <trkseg>
+{% for track_point in track.track_points %}
+   <trkpt {% if track_point.latitude and track_point.longitude -%}
+    lat="{{ track_point.coord.latitude }}" lon="{{ track_point.coord.longitude }}"
+{%- endif -%}
+   >
+{% if track_point.altitude %}
+    <ele>{{ track_point.altitude }}</ele>
+{% endif %}
+{% if track_point.modifiedTimeString() is defined %}
+    <time>{{ track_point.modifiedTimeString }}</time>
+{% endif %}
+    <extensions>
+     <gpxtpx:TrackPointExtension>
+{% if track_point.temperature %}
+      <gpxtpx:atemp>{{ track_point.temperature }}</gpxtpx:atemp>
+{% endif %}
+{% if track_point.heart_rate %}
+      <gpxtpx:hr>{{ track_point.heart_rate }}</gpxtpx:hr>
+{% endif %}
+     </gpxtpx:TrackPointExtension>
+{% if track_point.cadence %}
+     <cadence>{{ track_point.cadence }}</cadence>
+{% endif %}
+{% if track_point.power %}
+     <power>{{ track_point.power }}</power>
+{% endif %}
+{% if track_point.distance %}
+     <distance>{{ track_point.distance }}</distance>
+{% endif %}
+    </extensions>
+   </trkpt>
+{% endfor %}
+  </trkseg>
+ </trk>
+</gpx>
