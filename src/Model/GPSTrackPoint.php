@@ -50,8 +50,8 @@ class GPSTrackPoint {
 		if(array_key_exists('record.power[watts]', $record))    			$this->power        = (float)$record['record.power[watts]'];
 		if(array_key_exists('record.temperature[C]', $record))  			$this->temperature  = (float)$record['record.temperature[C]'];
 
-		if(array_key_exists('record.position_lat', $record)){
-	    $this->coord     	= new GPSCoord(
+		if(array_key_exists('record.position_lat[semicircles]', $record)){
+			$this->coord     	= new GPSCoord(
 	      (float)$record['record.position_lat[semicircles]'],
 	      (float)$record['record.position_long[semicircles]'],
 	      'semicircles'

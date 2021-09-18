@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Model;
+use Twig\Environment;
+
 
 class GPSTrack {
 
@@ -26,6 +28,9 @@ class GPSTrack {
 
 	const MILES_PER_METER = 0.000621371;
   const FEET_PER_METER  = 3.28084;
+
+	// TODO: I think we'll want to move all rendering into a TrackRenderer service or something like that.
+	protected $twig;
 
 	public function getTotalDistanceInMiles()
 	{
@@ -564,17 +569,14 @@ class GPSTrack {
 
   function getGPX($extended = true, $v2 = true)
   {
-    \Twig_Autoloader::register();
-
-    // TODO: set view directory via config
-
-    $loader = new \Twig_Loader_Filesystem(__DIR__.'/../Resources/views/Default/');
-    $twig = new \Twig_Environment($loader);
+		if(!$this->twig){
+			throw new \Exception("A twig environment must be set in order to render a GPX version of this track", 1);
+		}
 
     $template = $extended ? 'extendedGPXTemplate.gpx.twig': 'basicGPXTemplate.gpx.twig';
 		$template = $v2 			? 'extendedGPXTemplate2.gpx.twig': 'basicGPXTemplate.gpx.twig';
 
-    return $twig->render($template, array(
+    return $this->twig->render($template, array(
       'creator'     => 'Custom GPX Writer',
       'track_name'  => $this->name,
 			'track_type'  => $this->type,
@@ -585,14 +587,11 @@ class GPSTrack {
 
   function getTCX()
   {
-    \Twig_Autoloader::register();
+		if(!$this->twig){
+			throw new \Exception("A twig environment must be set in order to render a GPX version of this track", 1);
+		}
 
-    // TODO: set view directory via config
-
-    $loader = new \Twig_Loader_Filesystem(__DIR__.'/../Resources/views/Default/');
-    $twig = new \Twig_Environment($loader);
-
-    return $twig->render('TCXTemplate.tcx.twig', array(
+    return $this->twig->render('TCXTemplate.tcx.twig', array(
       'creator'     => 'Custom TCX Writer',
       'track_name'  => 'My TCX Track',
       'track'       => $this
@@ -739,6 +738,14 @@ class GPSTrack {
 
 		$this->input_file_path = $path;
 
+	}
+
+	function setTwig(Environment $twig)
+	{
+		if('Twig\Environment' !== get_class($twig)){
+			throw new \TypeError(sprintf('Argument $twig must be of type Twig\Environment, recieved "%s"', get_class($twig)));
+		}
+		$this->twig = $twig;
 	}
 
 
