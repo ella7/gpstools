@@ -53,7 +53,7 @@ class GPSTrackFactory
   private function _buildTrackFromFile($path)
   {
     $file_type = $this->detectFileType($path);
-    echo "file type is: $file_type\n";
+
     switch ($file_type) {
       case 'unicsv':
         $track = $this->buildTrackFromCSVFile($path);
@@ -104,6 +104,7 @@ class GPSTrackFactory
     $max_cadence = 0;
     $cadence_sum = 0;
     $cadence_count = 0;
+
     foreach($records as $record){
 
       if(!$track->start_time) {
