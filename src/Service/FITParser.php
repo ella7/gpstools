@@ -123,8 +123,8 @@ class FITParser {
     $cmd_common = 'java -jar '.$this->fitcsv_jar_path.' -b '.$this->fit_path.' ';
 
     // TODO: replace exec with commands from symfony/process component
-    exec($cmd_common.$csv_paths['session_data'].' --data session');
-    exec($cmd_common.$csv_paths['records_data'].' --data record');
+    exec($cmd_common.$csv_paths['session'].' --data session');
+    exec($cmd_common.$csv_paths['records'].' --data record');
 
     if(!file_exists ($csv_paths['session_data'])){
       throw new \Exception('The FITParser failed to write the csv session cache file: '.$csv_paths['session_data']);
