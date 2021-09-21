@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Model;
-use Twig\Environment;
 
+use Twig\Environment;
+use App\Model\FIT\FITProfile;
+use function Symfony\Component\String\u;
 
 class GPSTrack {
 
@@ -26,8 +28,10 @@ class GPSTrack {
 	var $name;
 	var $type;
 
+	// TODO: These constants should be defined someplace more universal
 	const MILES_PER_METER = 0.000621371;
   const FEET_PER_METER  = 3.28084;
+	const FIT_EPOCH_DELTA = 631065600;
 
 	// TODO: I think we'll want to move all rendering into a TrackRenderer service or something like that.
 	protected $twig;
@@ -747,6 +751,56 @@ class GPSTrack {
 		}
 		$this->twig = $twig;
 	}
+
+  public function setPropertiesFromSessionData($session_data)
+  {
+    $map = self::propertySessionMap();
+    foreach ($map as $property => $session_data_key) {
+      if(array_key_exists($session_data_key, $session_data)){
+
+				// First look for $this->setPropertyFromSessionData(), then $this->setProperty(), and then use $this->property =
+				$property_camel = u($property)->camel();
+				if(method_exists($this, 'set'. $property_camel . 'FromSessionData')){
+					$this->{'set' . $property_camel . 'FromSessionData'}($session_data[$session_data_key]);
+				} else {
+					if(method_exists($this, 'set'. $property_camel)){
+						$this->{'set' . $property}($session_data[$session_data_key]);
+					} else {
+						$this->{$property} = $session_data[$session_data_key];
+					}
+				}
+      }
+    }
+  }
+
+	public function setStartTimeFromSessionData($start_time)
+  {
+		$this->start_time = $start_time + self::FIT_EPOCH_DELTA;
+  }
+
+	public function setSportFromSessionData($sport)
+  {
+		$this->sport = FITProfile::fitEnumToString('sport', $sport);
+  }
+
+	public static function propertySessionMap()
+  {
+    return [
+      'start_time'          => 'session.start_time',
+      'num_laps'            => 'session.num_laps',
+      'sport'               => 'session.sport',
+      'total_timer_time'    => 'session.total_timer_time[s]',
+      'total_elapsed_time'  => 'session.total_elapsed_time[s]',
+      'total_distance'      => 'session.total_distance[m]',
+      'total_calories'      => 'session.total_calories[kcal]',
+      'total_ascent'        => 'session.total_ascent[m]',
+      'total_descent'       => 'session.total_descent[m]',
+      'average_speed'       => 'session.avg_speed[m/s]',
+      'max_speed'           => 'session.max_speed[m/s]',
+      'average_heart_rate'  => 'session.avg_heart_rate[bpm]',
+      'max_heart_rate'      => 'session.max_heart_rate[bpm]'
+    ];
+  }
 
 
 } // end class GPSTrack
