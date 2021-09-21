@@ -669,79 +669,16 @@ class GPSTrack {
 
   }
 
-// TODO:This should be moved into the TrackFactory and all calls redirected there.
 	function initFromFITFile($path)
 	{
-	  $fp = new FITParser($path);
-    $session_data = $fp->activitySessionData();
+		// functionality moved to GPSTrackFactory - leaving signature and comment
+		// for now in case this is called externally somewhere I didn't find.
+	}
 
-    // TODO: clean this up to assign dynamically - create $_properties structure
-    // TODO: figure out why dates are off on fit files
-    if(array_key_exists('session.start_time', $session_data))             $this->start_time         = $session_data['session.start_time'] + (20*365.25*24*60*60)-(24*60*60);
-    if(array_key_exists('session.num_laps', $session_data))               $this->num_laps           = $session_data['session.num_laps'];
-    if(array_key_exists('session.sport', $session_data))                  $this->sport              = $session_data['session.sport'];
-    if(array_key_exists('session.total_timer_time[s]', $session_data))    $this->total_timer_time   = $session_data['session.total_timer_time[s]'];
-    if(array_key_exists('session.total_elapsed_time[s]', $session_data))  $this->total_elapsed_time = $session_data['session.total_elapsed_time[s]'];
-    if(array_key_exists('session.total_distance[m]', $session_data))      $this->total_distance     = $session_data['session.total_distance[m]'];
-    if(array_key_exists('session.total_calories[kcal]', $session_data))   $this->total_calories     = $session_data['session.total_calories[kcal]'];
-    if(array_key_exists('session.total_ascent[m]', $session_data))        $this->total_ascent       = $session_data['session.total_ascent[m]'];
-    if(array_key_exists('session.total_descent[m]', $session_data))       $this->total_descent      = $session_data['session.total_descent[m]'];
-    if(array_key_exists('session.avg_speed[m/s]', $session_data))         $this->average_speed      = $session_data['session.avg_speed[m/s]'];
-    if(array_key_exists('session.max_speed[m/s]', $session_data))         $this->max_speed          = $session_data['session.max_speed[m/s]'];
-    if(array_key_exists('session.avg_heart_rate[bpm]', $session_data))    $this->average_heart_rate = $session_data['session.avg_heart_rate[bpm]'];
-    if(array_key_exists('session.max_heart_rate[bpm]', $session_data))    $this->max_heart_rate     = $session_data['session.max_heart_rate[bpm]'];
-
-    $records = $fp->activityRecordsData();
-    $max_cadence = 0;
-    $cadence_sum = 0;
-    $cadence_count = 0;
-    foreach($records as $record){
-
-      if(!$this->start_time) {
-        $this->start_time = $record['record.timestamp[s]'];
-      }
-
-      $track_point = new GPSTrackPoint();
-      $track_point->initFromFITArray($record, $this->start_time);
-      $this->track_points[] = $track_point;
-
-      if(array_key_exists('record.cadence[rpm]', $record)){
-        $cadence = (int)$record['record.cadence[rpm]'];
-        $cadence_sum += $cadence;
-        $cadence_count++;
-        if($cadence > $max_cadence){ $max_cadence = $cadence; }
-      }
-    }
-    if($cadence_sum > 0) $this->average_cadence  = round($cadence_sum/$cadence_count);
-    $this->max_cadence      = $max_cadence;
- 	}
-
-	// TODO: This doesn't appear to be used in the project - should be moved into the track factory
 	function setTrackPointsFromTCXFile($path)
 	{
-
-		if (file_exists($path)) {
-			$xml = simplexml_load_file($path);
-		} else {
-			exit('Failed to open '.$path); // TODO: this shouldn't exit, but throw an exception or error
-		}
-
-		$xml->registerXPathNamespace('ns', 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2');
-		$xpath_match_pattern = 'ns:Activities/ns:Activity/ns:Lap/ns:Track/ns:Trackpoint';
-
-		foreach($xml->xpath($xpath_match_pattern) as $track_point_xml){
-
-			if(!$this->start_time) {
-				$this->start_time = strtotime($track_point_xml->Time);
-			}
-
-			$track_point = new GPSTrackPoint();
-			$track_point->initFromXML($track_point_xml, $this->start_time);
-			$this->track_points[] = $track_point;
-		}
-
-		$this->input_file_path = $path;
-
+		// functionality moved to GPSTrackFactory - leaving signature and comment
+		// for now in case this is called externally somewhere I didn't find.
 	}
 
 	function setTwig(Environment $twig)
