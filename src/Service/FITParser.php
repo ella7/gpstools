@@ -2,6 +2,9 @@
 
 namespace App\Service;
 
+use function Symfony\Component\String\u;
+
+
 class FITParser {
 
   protected $fitcsv_jar_path;
@@ -144,6 +147,52 @@ class FITParser {
       'session_data'  => $common_path . '_session_data.csv',
       'records_data'  => $common_path . '_records_data.csv',
     ];
+  }
+
+  /**
+   * This is the start of new functionality to deal in FIT models rather than GPSTrack* models.
+   * @param  string $csv_path         Path to a CSV file which has been converted using the FitCSVTool from a .fit file
+   * @return [\Model\FIT\Messages]    Array of Messages extracted from the file
+   */
+  public function messagesFromCSVFile($csv_path)
+  {
+    $lines = file($csv_path);
+    $num_messages = count($lines) - 1;
+
+    $headers = self::normalizeHeaders($lines[0]);
+
+
+    $num_headers = count($headers);
+
+    for($i = 1; $i <= $num_messages; $i++){
+      $fields = self::getFitCSV($lines[$i]);
+      $num_fields = count($fields);
+
+      if($num_fields < $num_headers){
+        for($j = $num_fields; $j < $num_headers; $j++){
+          $fields[$j] = '';
+        }
+      }
+      $records[] = array_combine($headers, $fields);
+      if($i<10) dump($records[$i-1]);
+    }
+
+    return $records;
+  }
+
+  /**
+   * Take a line of CSV (presumably the first line of a file), and return a normalized array of values
+   * @param  string $line   string of CSV containing headers
+   * @return array          array containing normalized header values
+   */
+  public static function normalizeHeaders($line)
+  {
+    return array_map(
+      function($header) {
+        return u($header)->snake();
+      },
+      self::getFitCSV(self::remove_utf8_bom($line))
+    );
   }
 
 } // end class FITParser
