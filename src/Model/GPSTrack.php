@@ -696,7 +696,7 @@ class GPSTrack {
       if(array_key_exists($session_data_key, $session_data)){
 
 				// First look for $this->setPropertyFromSessionData(), then $this->setProperty(), and then use $this->property =
-				$property_camel = u($property)->camel();
+				$property_camel = u($property)->camel()->title();
 				if(method_exists($this, 'set'. $property_camel . 'FromSessionData')){
 					$this->{'set' . $property_camel . 'FromSessionData'}($session_data[$session_data_key]);
 				} else {
