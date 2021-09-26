@@ -8,14 +8,17 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use App\Service\GPSTrackFactory;
+use App\Service\FITParser;
 
 class TestCommand extends InteractiveOptionCommand
 {
   protected static $defaultName = 'gpstools:test';
   private $factory;
+  private $fit_parser;
 
-  public function __construct(GPSTrackFactory $factory)
+  public function __construct(GPSTrackFactory $factory, FITParser $fit_parser)
   {
+    $this->fit_parser = $fit_parser;
     $this->factory = $factory;
     $this->factory->disableCaching();
     parent::__construct();
@@ -34,10 +37,10 @@ class TestCommand extends InteractiveOptionCommand
         false
       )
       ->addOption(
-        'fit',
+        'path',
         null,
         InputOption::VALUE_OPTIONAL,
-        'path to the fit file',
+        'path to a file',
         false
       )
     ;
@@ -46,7 +49,7 @@ class TestCommand extends InteractiveOptionCommand
     $this->addInteractivityForOption('cmd', self::INTERACTION_UNSET_ONLY, $question);
 
     $question = new Question('Please provide the path to the FIT file' . "\n > ");
-    $this->addInteractivityForOption('fit', self::INTERACTION_UNSET_ONLY, $question);
+    $this->addInteractivityForOption('path', self::INTERACTION_UNSET_ONLY, $question);
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
@@ -54,8 +57,13 @@ class TestCommand extends InteractiveOptionCommand
 
     switch ($input->getOption('cmd')) {
       case 'output_gpx':
-        $track = $this->factory->buildTrackFromFile($input->getOption('fit'));
+        $track = $this->factory->buildTrackFromFile($input->getOption('path'));
         dump($track);
+        break;
+
+      case 'read_fit':
+        $this->fit_parser->messagesFromCSVFile($input->getOption('path'));
+        echo "still ok\n";
         break;
 
       default:
@@ -78,7 +86,8 @@ class TestCommand extends InteractiveOptionCommand
   {
     return [
       'output_gpx',
-      'test'
+      'test',
+      'read_path',
     ];
   }
 
@@ -86,5 +95,5 @@ class TestCommand extends InteractiveOptionCommand
   {
     return in_array($cmd, $this->validSubCommands());
   }
-  
+
 }
