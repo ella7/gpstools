@@ -5,7 +5,6 @@ namespace App\Model\FIT;
 class DataMessage extends Message
 {
 
-  protected $fields;
   protected $definition;
 
   public function __construct(DefinitionMessage $definition)

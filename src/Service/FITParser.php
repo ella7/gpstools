@@ -2,10 +2,14 @@
 
 namespace App\Service;
 
+use App\Model\FIT\Message;
+use App\Model\FIT\FieldDefinition;
 use function Symfony\Component\String\u;
 
-
 class FITParser {
+
+  const COLUMNS_PER_FIELD = 3;      // number of columns in the FIT CSV file per field
+  const COLUMNS_BEFORE_FIELDS = 3;  // number of columns in the FIT CSV before the field columns
 
   protected $fitcsv_jar_path;
   protected $tmp_unpack_path;
@@ -173,11 +177,40 @@ class FITParser {
           $fields[$j] = '';
         }
       }
-      $records[] = array_combine($headers, $fields);
-      if($i<10) dump($records[$i-1]);
-    }
 
-    return $records;
+      $row = array_combine($headers, $fields);
+      if($row['type'] === Message::MESSAGE_TYPE_DEFINITION){
+        $message_array = array_slice($row, 0, self::COLUMNS_BEFORE_FIELDS);
+        $message_array['fields'] = self::getFieldDefinitionsFromCVSArray(
+          array_slice($row, self::COLUMNS_BEFORE_FIELDS)
+        );
+        $message = new Message();
+        $message->setPropertiesFromArray($message_array);
+        $messages[] = $message;
+      }
+    }
+    return $messages;
+  }
+
+  /**
+   * Takes the `field{n}`, `value{n}`, and `untis{n}` elements from the CSV
+   * array and creates `FIT\FieldDefintions`
+   *
+   * This function assumes the array $a will have triplets of name, value, units
+   *
+   * @return [FIT\FieldDefintions] an array of FieldDefintions
+   */
+  public static function getFieldDefinitionsFromCVSArray($a)
+  {
+    $field_definitions = [];
+    $b = array_chunk($a, self::COLUMNS_PER_FIELD);
+    foreach ($b as $c) {
+      if($c[0]){
+        list($name, $value, $units) = $c;
+        $field_definitions[] = new FieldDefinition($name, $value, $units);
+      }
+    }
+    return $field_definitions;
   }
 
   /**
