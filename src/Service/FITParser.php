@@ -3,8 +3,11 @@
 namespace App\Service;
 
 use App\Model\FIT\Message;
+use App\Model\FIT\DefinitionMessage;
+use App\Model\FIT\DataMessage;
 use App\Model\FIT\FieldDefinition;
 use function Symfony\Component\String\u;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 class FITParser {
 
@@ -154,17 +157,25 @@ class FITParser {
   }
 
   /**
-   * This is the start of new functionality to deal in FIT models rather than GPSTrack* models.
+   * Get all FIT\Messages from a given CSV FIT file
+   *
+   * This is the start of new functionality to deal in FIT models rather than
+   * GPSTrack* models.
+   *
    * @param  string $csv_path         Path to a CSV file which has been converted using the FitCSVTool from a .fit file
    * @return [\Model\FIT\Messages]    Array of Messages extracted from the file
    */
   public function messagesFromCSVFile($csv_path)
   {
+
+    $s = new Stopwatch();
+    $s->start('entire messagesFromCSVFile');
+
+    $current_definition = [];
     $lines = file($csv_path);
     $num_messages = count($lines) - 1;
 
     $headers = self::normalizeHeaders($lines[0]);
-
 
     $num_headers = count($headers);
 
@@ -179,16 +190,35 @@ class FITParser {
       }
 
       $row = array_combine($headers, $fields);
+
+
+      $message_array = array_slice($row, 0, self::COLUMNS_BEFORE_FIELDS);
+
       if($row['type'] === Message::MESSAGE_TYPE_DEFINITION){
-        $message_array = array_slice($row, 0, self::COLUMNS_BEFORE_FIELDS);
         $message_array['fields'] = self::getFieldDefinitionsFromCVSArray(
           array_slice($row, self::COLUMNS_BEFORE_FIELDS)
         );
-        $message = new Message();
+        $message = new DefinitionMessage();
         $message->setPropertiesFromArray($message_array);
-        $messages[] = $message;
+        $message->setUnitsForAllFieldDefinitionsFromGlobalProfile();
+        $current_definition[$message->getLocalNumber()] = $message;
       }
+
+      if($row['type'] === Message::MESSAGE_TYPE_DATA){
+        $message_array['fields'] = self::getFieldsFromCVSArray(
+          array_slice($row, self::COLUMNS_BEFORE_FIELDS)
+        );
+        if(!$current_definition[$row['local_number']]){
+          throw new \Exception("Attempting to parse data row when no definition has been parsed for local_number " . $row['local_number']);
+        }
+        $message = new DataMessage($current_definition[$row['local_number']]);
+        $message->setPropertiesFromArray($message_array);
+      }
+      $messages[] = $message;
     }
+    $event = $s->stop('entire messagesFromCSVFile');
+    //dump($event);
+
     return $messages;
   }
 
@@ -207,10 +237,31 @@ class FITParser {
     foreach ($b as $c) {
       if($c[0]){
         list($name, $value, $units) = $c;
-        $field_definitions[] = new FieldDefinition($name, $value, $units);
+        $field_definitions[$name] = new FieldDefinition($name, $value, $units);
       }
     }
     return $field_definitions;
+  }
+
+  /**
+   * Takes the `field{n}`, `value{n}`, and `untis{n}` elements from the CSV
+   * array and creates key value pairs
+   *
+   * This function assumes the array $a will have triplets of name, value, units
+   *
+   * @return [field => value] an array of field values with field name as key and value as value - note that units are not used or captured.
+   */
+  public static function getFieldsFromCVSArray($a)
+  {
+    $fields = [];
+    $b = array_chunk($a, self::COLUMNS_PER_FIELD);
+    foreach ($b as $c) {
+      if($c[0]){
+        list($name, $value, $units) = $c;
+        $fields[$name] = $value;
+      }
+    }
+    return $fields;
   }
 
   /**
