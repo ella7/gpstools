@@ -139,6 +139,9 @@
     "symfony/service-contracts": {
         "version": "v2.4.0"
     },
+    "symfony/stopwatch": {
+        "version": "v5.3.4"
+    },
     "symfony/string": {
         "version": "v5.3.7"
     },
