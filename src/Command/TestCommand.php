@@ -62,8 +62,10 @@ class TestCommand extends InteractiveOptionCommand
         break;
 
       case 'read_fit':
-        dump($this->fit_parser->messagesFromCSVFile($input->getOption('path')));
-        echo "still ok\n";
+        $messages = $this->fit_parser->messagesFromCSVFile($input->getOption('path'));
+        foreach ($messages as $message) {
+          echo $message->getCSVString() . "\n";
+        }
         break;
 
       default:
