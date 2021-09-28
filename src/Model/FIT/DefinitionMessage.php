@@ -6,12 +6,38 @@ namespace App\Model\FIT;
 class DefinitionMessage extends Message
 {
 
-  protected $fields_count;
-  protected $field_definitions; // for now, associative array of field_name, base_type, and units
-
   public function __construct()
   {
     $this->type = Message::MESSAGE_TYPE_DEFINITION;
+  }
+
+  /**
+   * Get the value associated with the field $field_name
+   *
+   * @param  string $field_name   Name of the feild
+   * @return mixed                The value stored for the given field
+   */
+  public function getFieldValue(string $field_name)
+  {
+    return $this->fields[$field_name]->value;
+  }
+
+  /**
+   * Get the units associated with the field $field_name
+   *
+   * @param  string $field_name   Name of the feild
+   * @return mixed                The units stored for the given field
+   */
+  public function getFieldUnits(string $field_name)
+  {
+    return $this->fields[$field_name]->getUnits();
+  }
+
+  public function setUnitsForAllFieldDefinitionsFromGlobalProfile()
+  {
+    foreach ($this->fields as $field_definition) {
+      $field_definition->setUnitsFromGlobalProfile($this->message);
+    }
   }
 
 }
