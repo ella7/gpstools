@@ -9,6 +9,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use App\Service\GPSTrackFactory;
 use App\Service\FITParser;
+use App\Service\FITCSVWriter;
 
 class TestCommand extends InteractiveOptionCommand
 {
@@ -16,10 +17,11 @@ class TestCommand extends InteractiveOptionCommand
   private $factory;
   private $fit_parser;
 
-  public function __construct(GPSTrackFactory $factory, FITParser $fit_parser)
+  public function __construct(GPSTrackFactory $factory, FITParser $fit_parser, FITCSVWriter $fitcsv_writer)
   {
-    $this->fit_parser = $fit_parser;
-    $this->factory = $factory;
+    $this->fit_parser       = $fit_parser;
+    $this->fitcsv_writer    = $fitcsv_writer;
+    $this->factory          = $factory;
     $this->factory->disableCaching();
     parent::__construct();
   }
@@ -63,9 +65,12 @@ class TestCommand extends InteractiveOptionCommand
 
       case 'read_fit':
         $messages = $this->fit_parser->messagesFromCSVFile($input->getOption('path'));
-        foreach ($messages as $message) {
-          echo $message->getCSVString() . "\n";
+        $debug_messages = array_slice($messages, 0, 2);
+
+        foreach($debug_messages as $message){
+          echo $this->fitcsv_writer->getCSVString($message);
         }
+        //dump($debug_messages);
         break;
 
       default:

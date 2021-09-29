@@ -37,6 +37,16 @@ class Message
     }
   }
 
+  public function getType()
+  {
+    return $this->type;
+  }
+
+  public function getFields()
+  {
+    return $this->fields;
+  }
+
   /**
    * Get the value associated with the field $field_name
    *
@@ -67,40 +77,17 @@ class Message
     return array_keys(get_object_vars($this));
   }
 
+  public function getMessageKey()
+  {
+    return [
+      'type' => $this->type,
+      'local_number' => $this->local_number,
+      'message' => $this->message
+    ];
+  }
+
   public function getLocalNumber()
   {
     return $this->local_number;
   }
-
-  // TODO: Move to FITCSVFileWriter
-  public function getCSVString()
-  {
-    $line[] = $this->type;
-    $line[] = $this->local_number;
-    $line[] = $this->message;
-
-    if($this->type === self::MESSAGE_TYPE_DEFINITION){
-      foreach($this->fields as $field){
-        $line = array_merge($line, array_values($field->exportAsArray()));
-      }
-    }
-    if($this->type === self::MESSAGE_TYPE_DATA){
-      foreach($this->fields as $field_name => $value){
-        $line = array_merge($line, [$field_name, $value, $this->getFieldUnits($field_name)]);
-      }
-    }
-    return str_putcsv($line);
-  }
-
-}
-
-if (!function_exists('str_putcsv')) {
-    function str_putcsv($input, $delimiter = ',', $enclosure = '"') {
-        $fp = fopen('php://temp', 'r+b');
-        fputcsv($fp, $input, $delimiter, $enclosure);
-        rewind($fp);
-        $data = rtrim(stream_get_contents($fp), "\n");
-        fclose($fp);
-        return $data;
-    }
 }
