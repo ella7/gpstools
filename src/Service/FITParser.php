@@ -196,6 +196,7 @@ class FITParser {
 
       if($row['type'] === Message::MESSAGE_TYPE_DEFINITION){
         $message_array['fields'] = self::getFieldDefinitionsFromCVSArray(
+          $row['message'],
           array_slice($row, self::COLUMNS_BEFORE_FIELDS)
         );
         $message = new DefinitionMessage();
@@ -230,14 +231,15 @@ class FITParser {
    *
    * @return [FIT\FieldDefintions] an array of FieldDefintions
    */
-  public static function getFieldDefinitionsFromCVSArray($a)
+  public static function getFieldDefinitionsFromCVSArray($message_name, $a)
   {
     $field_definitions = [];
     $b = array_chunk($a, self::COLUMNS_PER_FIELD);
     foreach ($b as $c) {
       if($c[0]){
-        list($name, $value, $units) = $c;
-        $field_definitions[$name] = new FieldDefinition($name, $value, $units);
+        list($field_name, $value, $units) = $c;
+        $field_definitions[$field_name] = new FieldDefinition($field_name, $value, $units);
+        $field_definitions[$field_name]->setSubfieldsFromGlobalProfile($message_name);
       }
     }
     return $field_definitions;

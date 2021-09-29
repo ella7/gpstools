@@ -12120,4 +12120,13 @@ class GlobalProfile {
       : null
     ;
   }
+
+  public static function getSubfields($message_name, $field_name)
+  {
+    return isset(self::MESSAGE_TYPES[$message_name]['fields'][$field_name]['subfields'])
+      ? self::MESSAGE_TYPES[$message_name]['fields'][$field_name]['subfields']
+      : null
+    ;
+  }
+
 }
