@@ -16,6 +16,16 @@ class ReferenceFieldDefinition
     return $this;
   }
 
+  public function getName()
+  {
+    return $this->name;
+  }
+
+  public function getValue()
+  {
+    return $this->value;
+  }
+
   /**
    * Attempt to set object properties from an associative array
    *

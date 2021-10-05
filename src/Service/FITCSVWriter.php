@@ -16,8 +16,10 @@ class FITCSVWriter {
       }
     }
     if($message->getType() === MESSAGE::MESSAGE_TYPE_DATA){
+      $field_index = 0;
       foreach($message->getFields() as $field_name => $value){
-        $line = array_merge($line, [$field_name, $value, $message->getFieldUnits($field_name)]);
+        $line = array_merge($line, [$field_name, $value, $message->getFieldUnits($field_index)]);
+        $field_index++;
       }
     }
     return self::str_putcsv($line);

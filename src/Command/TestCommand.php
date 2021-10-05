@@ -60,7 +60,7 @@ class TestCommand extends InteractiveOptionCommand
     switch ($input->getOption('cmd')) {
       case 'output_gpx':
         $track = $this->factory->buildTrackFromFile($input->getOption('path'));
-        dump($track);
+        //dump($track);
         break;
 
       case 'read_fit':
@@ -68,7 +68,7 @@ class TestCommand extends InteractiveOptionCommand
         $debug_messages = array_slice($messages, 0, 2);
 
         foreach($debug_messages as $message){
-          echo $this->fitcsv_writer->getCSVString($message);
+          $output->writeln($this->fitcsv_writer->getCSVString($message));
         }
         //dump($debug_messages);
         break;

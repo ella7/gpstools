@@ -48,6 +48,21 @@ class Message
   }
 
   /**
+   * Get a field by it's "field index" - index in the fields array
+   *
+   * This makes the bad assumption that associative arrays can be counted on to preserve order.
+   * TODO: come up with a better solution - it's helpful for the fields array to be both associative and index based
+   *
+   * @param  int    $field_index   index in the fields array
+   * @return mixed                 The value stored at field_index in the fields array.
+   */
+  public function getFieldByIndex(int $field_index)
+  {
+    $fields_keys = array_keys($this->fields);
+    return $this->fields[ $fields_keys[ $field_index ] ];
+  }
+
+  /**
    * Get the value associated with the field $field_name
    *
    * Method signature defined here, but must be overwritten in child classes
@@ -56,16 +71,6 @@ class Message
    * @return mixed                The value stored for the given field
    */
   public function getFieldValue(string $field_name) { }
-
-  /**
-   * Get the units associated with the field $field_name
-   *
-   * Method signature defined here, but must be overwritten in child classes
-   *
-   * @param  string $field_name   Name of the feild
-   * @return mixed                The units stored for the given field
-   */
-  public function getFieldUnits(string $field_name) { }
 
   /**
    * Returns the list of properties that can be set by setPropertiesFromArray
