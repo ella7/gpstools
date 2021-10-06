@@ -10,6 +10,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use App\Service\GPSTrackFactory;
 use App\Service\FITParser;
 use App\Service\FITCSVWriter;
+use App\Model\FIT\GlobalProfile;
 
 class TestCommand extends InteractiveOptionCommand
 {
@@ -65,12 +66,16 @@ class TestCommand extends InteractiveOptionCommand
 
       case 'read_fit':
         $messages = $this->fit_parser->messagesFromCSVFile($input->getOption('path'));
-        $debug_messages = array_slice($messages, 0, 2);
+        $messages = array_slice($messages, 0, 100);
 
-        foreach($debug_messages as $message){
+        $output->writeln($this->fitcsv_writer->getHeaderString(52));
+        foreach($messages as $message){
           $output->writeln($this->fitcsv_writer->getCSVString($message));
         }
-        //dump($debug_messages);
+        //dump($messages);
+        break;
+      case 'global_profile':
+        print_r(GlobalProfile::getFieldDefinition('event', 'data'));
         break;
 
       default:
