@@ -24,6 +24,16 @@ class FieldDefinition
     $this->units  = $units;
   }
 
+  public function getName()
+  {
+    return $this->name;
+  }
+
+  public function getValue()
+  {
+    return $this->value;
+  }
+
   public function getUnits(DataMessage $message)
   {
     if($this->hasSubfields()){
@@ -55,15 +65,4 @@ class FieldDefinition
   {
     $this->units = GlobalProfile::getUnitsForMessageAndFieldType($message_name, $this->name);
   }
-
-  // TODO: This seems bad. Need to look at if/how/why this is needed and make sure it belongs. Likely temporary.
-  public function exportAsArray()
-  {
-    return [
-      'name' => $this->name,
-      'value' => $this->value,
-      'units' => $this->units,
-    ];
-  }
-
 }

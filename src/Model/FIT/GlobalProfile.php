@@ -5288,7 +5288,7 @@ class GlobalProfile {
                   'scale' => 1000,
                   'units' => 'm/s',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Sesson end time.
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Sesson end time.
               'message_index' => [  # Selected bit is set for the current session.
                   'name' => 'message_index',
                   'type' =>  self::FIELD_TYPES['message_index'],
@@ -6081,7 +6081,7 @@ class GlobalProfile {
                   'scale' => 1000,
                   'units' => 'm/s',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Lap end time.
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Lap end time.
               'message_index' => [
                   'name' => 'message_index',
                   'type' =>  self::FIELD_TYPES['message_index'],
@@ -6583,7 +6583,7 @@ class GlobalProfile {
                   'def_num' => 98,
                   'units' => 'percent',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
       'event' => [
@@ -6992,7 +6992,7 @@ class GlobalProfile {
                   'type' =>  self::FIELD_TYPES['device_index'],
                   'def_num' => 13,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
       'device_info' => [
@@ -7143,7 +7143,7 @@ class GlobalProfile {
                   'type' =>'BASE_TYPES[0x07]',  # string
                   'def_num' => 27,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
       'workout_step' => [
@@ -8133,7 +8133,7 @@ class GlobalProfile {
                   'def_num' => 34,
                   'units' => 'minutes',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Must align to logging interval, for example, time must be 00 =>00 =>00 for daily log.
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Must align to logging interval, for example, time must be 00 =>00 =>00 for daily log.
           ],
       ],
       'training_file' => [  # Corresponds to file_id of workout or course.
@@ -8192,7 +8192,7 @@ class GlobalProfile {
                   'type' =>  self::FIELD_TYPES['date_time'],
                   'def_num' => 4,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
       'hrv' => [  # Heart rate variability
@@ -8304,7 +8304,7 @@ class GlobalProfile {
                   'type' =>'BASE_TYPES[0x0D]',  # byte
                   'def_num' => 4,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
       'ant_tx' => [
@@ -8403,7 +8403,7 @@ class GlobalProfile {
                   'type' =>'BASE_TYPES[0x0D]',  # byte
                   'def_num' => 4,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
       'ant_channel_id' => [
@@ -8533,7 +8533,7 @@ class GlobalProfile {
                   'def_num' => 21,
                   'units' => 'counts',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
               'message_index' => [
                   'name' => 'message_index',
                   'type' =>  self::FIELD_TYPES['message_index'],
@@ -8743,7 +8743,7 @@ class GlobalProfile {
                   'def_num' => 14,
                   'units' => 'C',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # time of update for current conditions, else forecast time
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # time of update for current conditions, else forecast time
           ],
       ],
       'weather_alert' => [
@@ -8775,7 +8775,7 @@ class GlobalProfile {
                   'type' =>  self::FIELD_TYPES['weather_severe_type'],
                   'def_num' => 4,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
       'cadence_zone' => [
@@ -8939,7 +8939,7 @@ class GlobalProfile {
                       ],
                   ],
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
       'segment_lap' => [
@@ -9488,7 +9488,7 @@ class GlobalProfile {
                   'type' =>  self::FIELD_TYPES['manufacturer'],
                   'def_num' => 83,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Lap end time.
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Lap end time.
               'message_index' => [
                   'name' => 'message_index',
                   'type' =>  self::FIELD_TYPES['message_index'],
@@ -9733,7 +9733,7 @@ class GlobalProfile {
                   'scale' => 100,
                   'units' => 'm/s',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp.
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp.
           ],
       ],
       'camera_event' => [
@@ -9761,7 +9761,7 @@ class GlobalProfile {
                   'type' =>  self::FIELD_TYPES['camera_orientation_type'],
                   'def_num' => 3,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp.
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp.
           ],
       ],
       'timestamp_correlation' => [
@@ -9806,7 +9806,7 @@ class GlobalProfile {
                   'def_num' => 5,
                   'units' => 'ms',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of UTC timestamp at the time the system timestamp was recorded.
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of UTC timestamp at the time the system timestamp was recorded.
           ],
       ],
       'gyroscope_data' => [
@@ -9861,7 +9861,7 @@ class GlobalProfile {
                   'def_num' => 7,
                   'units' => 'deg/s',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
           ],
       ],
       'accelerometer_data' => [
@@ -9934,7 +9934,7 @@ class GlobalProfile {
                   'def_num' => 10,
                   'units' => 'mG',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
           ],
       ],
       'three_d_sensor_calibration' => [
@@ -10003,7 +10003,7 @@ class GlobalProfile {
                   'def_num' => 5,
                   'scale' => 65535,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
           ],
       ],
       'video_frame' => [
@@ -10021,7 +10021,7 @@ class GlobalProfile {
                   'type' =>'BASE_TYPES[0x86]',  # uint32
                   'def_num' => 1,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
           ],
       ],
       'obdii_data' => [
@@ -10071,7 +10071,7 @@ class GlobalProfile {
                   'def_num' => 7,
                   'units' => 'ms',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Timestamp message was output
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Timestamp message was output
           ],
       ],
       'nmea_sentence' => [
@@ -10089,7 +10089,7 @@ class GlobalProfile {
                   'type' =>'BASE_TYPES[0x07]',  # string
                   'def_num' => 1,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Timestamp message was output
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Timestamp message was output
           ],
       ],
       'aviation_attitude' => [
@@ -10166,7 +10166,7 @@ class GlobalProfile {
                   'type' =>  self::FIELD_TYPES['attitude_validity'],
                   'def_num' => 10,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Timestamp message was output
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Timestamp message was output
           ],
       ],
       'video' => [
@@ -10601,7 +10601,7 @@ class GlobalProfile {
                   'def_num' => 7,
                   'units' => 'G',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
           ],
       ],
       'barometer_data' => [
@@ -10626,7 +10626,7 @@ class GlobalProfile {
                   'def_num' => 2,
                   'units' => 'Pa',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
           ],
       ],
       'one_d_sensor_calibration' => [
@@ -10675,7 +10675,7 @@ class GlobalProfile {
                   'type' =>'BASE_TYPES[0x85]',  # sint32
                   'def_num' => 4,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
           ],
       ],
       'set' => [
@@ -11089,7 +11089,7 @@ class GlobalProfile {
                   'scale' => 1000,
                   'units' => 's',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
 
@@ -11136,7 +11136,7 @@ class GlobalProfile {
                   'type' =>'BASE_TYPES[0x02]',  # uint8
                   'def_num' => 6,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
 
@@ -11203,7 +11203,7 @@ class GlobalProfile {
                   'type' =>  self::FIELD_TYPES['message_index'],
                   'def_num' => 9,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
 
@@ -11372,7 +11372,7 @@ class GlobalProfile {
                   'def_num' => 5,
                   'units' => 'kcal/day',
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
 
@@ -11962,7 +11962,7 @@ class GlobalProfile {
                   'type' =>'BASE_TYPES[0x02]',  # uint8
                   'def_num' => 9,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
               'message_index' => [
                   'name' => 'message_index',
                   'type' =>  self::FIELD_TYPES['message_index'],
@@ -12054,7 +12054,7 @@ class GlobalProfile {
                   'type' =>  self::FIELD_TYPES['message_index'],
                   'def_num' => 12,
               ],
-              253 => self::FIELD_TYPE_TIMESTAMP,
+              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
           ],
       ],
 
