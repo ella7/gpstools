@@ -42,6 +42,11 @@ class Message
     return $this->type;
   }
 
+  public function getName()
+  {
+    return $this->message; // TODO: need to rename this->message to this->name
+  }
+
   public function getFields()
   {
     return $this->fields;

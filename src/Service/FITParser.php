@@ -174,6 +174,9 @@ class FITParser {
     $current_definition = [];
     $lines = file($csv_path);
     $num_messages = count($lines) - 1;
+    // DEBUG: reduce numnber of lines read
+     $num_messages = 10;
+
 
     $headers = self::normalizeHeaders($lines[0]);
 
@@ -237,8 +240,11 @@ class FITParser {
     $b = array_chunk($a, self::COLUMNS_PER_FIELD);
     foreach ($b as $c) {
       if($c[0]){
-        list($field_name, $value, $units) = $c;
-        $field_definitions[$field_name] = new FieldDefinition($field_name, $value, $units);
+        list($field_name, $field_value) = $c;
+        $field_definitions[$field_name] = new FieldDefinition([
+          'name'  => $field_name,
+          'value' => $field_value
+        ]);
         $field_definitions[$field_name]->setSubfieldsFromGlobalProfile($message_name);
       }
     }
