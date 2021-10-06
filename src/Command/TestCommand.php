@@ -99,7 +99,8 @@ class TestCommand extends InteractiveOptionCommand
     return [
       'output_gpx',
       'test',
-      'read_path',
+      'read_fit',
+      'global_profile'
     ];
   }
 
