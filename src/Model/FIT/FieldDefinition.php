@@ -64,6 +64,31 @@ class FieldDefinition
     }
   }
 
+  public function setSubfields($a)
+  {
+    $this->subfields = [];
+    foreach($a as $subfield){
+      if(is_array($subfield)){
+        $this->subfields[] = new SubfieldDefinition($subfield);
+      }
+    }
+  }
+
+  public function setComponents($a)
+  {
+    $this->components = [];
+    foreach($a as $component){
+      if(is_array($component)){
+        $this->components[] = new ComponentDefinition($component);
+      }
+    }
+  }
+
+  public function hasComponents()
+  {
+    return (count($this->components) > 0);
+  }
+
   public function setUnitsFromGlobalProfile(string $message_name)
   {
     $this->units = GlobalProfile::getUnitsForMessageAndFieldType($message_name, $this->name);

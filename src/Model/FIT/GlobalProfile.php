@@ -12129,4 +12129,11 @@ class GlobalProfile {
     ;
   }
 
+  public static function getFieldDefinition($message_name, $field_name)
+  {
+    return isset(self::MESSAGE_TYPES[$message_name]['fields'][$field_name])
+      ? new FieldDefinition(self::MESSAGE_TYPES[$message_name]['fields'][$field_name])
+      : null
+    ;
+  }
 }
