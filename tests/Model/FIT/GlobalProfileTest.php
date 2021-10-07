@@ -77,7 +77,7 @@ final class GlobalProfileTest extends TestCase
 
         if(array_key_exists('subfields', $field)){
           foreach($field['subfields'] as $subfield){
-            $this->assertArrayNotHasKey('subfield', $subfield);
+            $this->assertArrayNotHasKey('subfields', $subfield);
           } // end foreach subfield
         } // end if(field has subfields)
       } // end foreach $field
