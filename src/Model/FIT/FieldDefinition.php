@@ -37,16 +37,26 @@ class FieldDefinition
     return $this->value;
   }
 
-  public function getUnits(DataMessage $message)
+  /**
+   * TODO:  getFinalFieldDefinition in other classes could return a Field, Subfield or Comoponent.
+   *        Here we have the option to pass a message_name as well, and if it doesn't match what
+   *        we would otherwise return, we could check the Components.
+   */
+  public function getFinalDefinition(DataMessage $message)
   {
     if($this->hasSubfields()){
       foreach ($this->subfields as $subfield) {
         if($subfield->matchesMessage($message)){
-          return $subfield->units;
+          return $subfield;
         }
       }
     }
-    return $this->units;
+    return $this;
+  }
+
+  public function getUnits(DataMessage $message)
+  {
+    return $this->getFinalDefinition($message)->units;
   }
 
   public function hasSubfields()

@@ -52,6 +52,11 @@ class Message
     return $this->fields;
   }
 
+  public function numberOfFields()
+  {
+    return count($this->fields);
+  }
+
   /**
    * Get a field by it's "field index" - index in the fields array
    *
@@ -63,8 +68,25 @@ class Message
    */
   public function getFieldByIndex(int $field_index)
   {
+    $this->validateFieldIndex($field_index);
     $fields_keys = array_keys($this->fields);
     return $this->fields[ $fields_keys[ $field_index ] ];
+  }
+
+  public function validateFieldIndex(int $field_index)
+  {
+    if(!$this->isValidFieldIndex($field_index)){
+      $message =
+        'This ' . $this->name . ' ' . $this->type . ' message has ' . $this->numberOfFields()
+        . ' fields. Trying to access field ' . ($field_index + 1)
+      ;
+      throw new \Exception($message);
+    }
+  }
+
+  public function isValidFieldIndex(int $field_index)
+  {
+    return ($this->numberOfFields() > $field_index && $field_index >= 0);
   }
 
   /**
