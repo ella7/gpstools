@@ -8,6 +8,26 @@ class FITCSVWriter {
 
   const ENCLOSURE_TRIGGER = '# ! # ! #'; // HACK: need to find a better way to force string enclosure
 
+  public function CSVFileFromMessages($path, $messages)
+  {
+    // $max_number_of_fields = $this->getMaxNumberOfFields($messages);
+    $max_number_of_fields = 52;
+    $output = $this->getHeaderString($max_number_of_fields) . "\n";
+    foreach($messages as $message){
+      $output .= $this->getCSVString($message) . "\n";
+    }
+    file_put_contents($path, $output);
+  }
+
+  public function getMaxNumberOfFields($messages)
+  {
+    $max = 0;
+    foreach($messages as $message){
+      $max = ($message->numberOfFields() > $max) ? $message->numberOfFields() : $max;
+    }
+    return $max;
+  }
+
   public function getCSVString(Message $message)
   {
     $line = $message->getMessageKey();
@@ -22,16 +42,12 @@ class FITCSVWriter {
       }
     }
     if($message->getType() === MESSAGE::MESSAGE_TYPE_DATA){
-      $field_index = 0;
-      foreach($message->getFields() as $field_name => $value){
-        $line = array_merge($line,
-          [
-            $field_name,
-            $value.self::ENCLOSURE_TRIGGER,
-            $message->getFieldUnits($field_index)
-          ]
-        );
-        $field_index++;
+      foreach($message->getFields() as $field){
+        $line = array_merge($line, [
+          $field->getName(),
+          $field->getValue().self::ENCLOSURE_TRIGGER,
+          $field->getUnits(),
+        ]);
       }
     }
     array_push($line, ''); // to match, we're adding an empty column to the end of each row
