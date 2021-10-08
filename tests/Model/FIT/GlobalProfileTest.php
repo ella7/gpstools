@@ -18,7 +18,7 @@ final class GlobalProfileTest extends TestCase
    * are repeated.
    *
    * This test can be simplified significantly once the GlobalProfile::MESSAGE_TYPES structure
-   * contains FIT\FieldDefintions so that methods of that class can be used rather than manually
+   * contains FIT\FieldDefinitions so that methods of that class can be used rather than manually
    * traversing the structure.
    */
   public function testComponentNamesAreUniquePerMessageType(): void
@@ -67,7 +67,7 @@ final class GlobalProfileTest extends TestCase
    * of the fields contain more than one layer of subfields.
    *
    * This test can be simplified significantly once the GlobalProfile::MESSAGE_TYPES structure
-   * contains FIT\FieldDefintions so that methods of that class can be used rather than manually
+   * contains FIT\FieldDefinitions so that methods of that class can be used rather than manually
    * traversing the structure.
    */
   public function testMessageTypesDoNotContainNestedSubfields(): void
