@@ -7,6 +7,7 @@ use App\Model\FIT\DefinitionMessage;
 use App\Model\FIT\DataMessage;
 use App\Model\FIT\FieldDefinition;
 use App\Model\FIT\Field;
+use App\Model\FIT\GlobalProfile;
 use function Symfony\Component\String\u;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -77,13 +78,13 @@ class FITParser {
     $csv_paths = $this->getCSVPaths();
     $lines = file($csv_paths['session_data']);
 
-    $headers = self::getFitCSV($lines[0]);
-    return array_combine($headers, self::getFitCSV($lines[1]));
+    $headers = self::arrayFromFitCSV($lines[0]);
+    return array_combine($headers, self::arrayFromFitCSV($lines[1]));
 
   }
 
-  // handle substring and trimming before getting array from CSV line
-  public static function getFitCSV($line)
+  // handle substring and trimming before getting array from CSV line - remove extra comma at the end of the line
+  public static function arrayFromFitCSV($line)
   {
     return str_getcsv(substr(trim($line),0,-1));
   }
@@ -110,15 +111,15 @@ class FITParser {
     $lines = file($csv_paths['records_data']);
     $num_records = count($lines) - 1;
 
-    $headers = self::getFitCSV(SELF::remove_utf8_bom($lines[0]));
-    $num_headers = count($headers);
+    $headers = self::arrayFromFitCSV(SELF::remove_utf8_bom($lines[0]));
+    $num_header_columns = count($headers);
 
     for($i = 1; $i <= $num_records; $i++){
-      $record_fields = self::getFitCSV($lines[$i]);
+      $record_fields = self::arrayFromFitCSV($lines[$i]);
       $num_record_fields = count($record_fields);
 
-      if($num_record_fields < $num_headers){
-        for($j = $num_record_fields; $j < $num_headers; $j++){
+      if($num_record_fields < $num_header_columns){
+        for($j = $num_record_fields; $j < $num_header_columns; $j++){
           $record_fields[$j] = '';
         }
       }
@@ -170,105 +171,110 @@ class FITParser {
    * @param  string $csv_path         Path to a CSV file which has been converted using the FitCSVTool from a .fit file
    * @return [\Model\FIT\Messages]    Array of Messages extracted from the file
    */
-  public function messagesFromCSVFile($csv_path)
+  public static function messagesFromCSVFile($csv_path)
   {
-
-    $current_definition = [];
+    $messages = [];
+    $current_definitions = [];
     $lines = file($csv_path);
-    $number_of_lines_to_read = count($lines) - 1;
+    array_shift($lines);
 
-    $headers = self::normalizeHeaders($lines[0]);
+    // For debugging only
+    $line_limit = 10;
+    if($line_limit){
+      $lines = array_slice($lines, 0, $line_limit);
+    }
 
-    $num_headers = count($headers);
-
-    for($i = 1; $i <= $number_of_lines_to_read; $i++){
-      $fields = self::getFitCSV($lines[$i]);
-      $num_fields = count($fields);
-
-      if($num_fields < $num_headers){
-        for($j = $num_fields; $j < $num_headers; $j++){
-          $fields[$j] = '';
-        }
+    foreach($lines as $line){
+      $message = self::getMessageFromCSVLine($line);
+      if($message->getType() === Message::MESSAGE_TYPE_DEFINITION){
+        $current_definitions[$message->getLocalNumber()] = $message;
       }
-
-      $row = array_combine($headers, $fields);
-
-      $message_array = array_slice($row, 0, self::COLUMNS_BEFORE_FIELDS);
-
-      if($row['type'] === Message::MESSAGE_TYPE_DEFINITION){
-        $message_array['fields'] = self::getFieldDefinitionsFromCSVArray(
-          $row['message'],
-          array_slice($row, self::COLUMNS_BEFORE_FIELDS)
-        );
-        $message = new DefinitionMessage();
-        $message->setPropertiesFromArray($message_array);
-        $message->setUnitsForAllFieldDefinitionsFromGlobalProfile();
-        $current_definition[$message->getLocalNumber()] = $message;
-      }
-
-      if($row['type'] === Message::MESSAGE_TYPE_DATA){
-        $message_array['fields'] = self::getFieldsFromCSVArray(
-          array_slice($row, self::COLUMNS_BEFORE_FIELDS)
-        );
-        if(!$current_definition[$row['local_number']]){
-          throw new \Exception("Attempting to parse data row when no definition has been parsed for local_number " . $row['local_number']);
+      if($message->getType() === Message::MESSAGE_TYPE_DATA){
+        if(!$current_definitions[$message->getLocalNumber()]){
+          throw new \Exception("Attempting to parse data row when no definition has been parsed for local_number " . $message->getLocalNumber());
         }
-        $message = new DataMessage($current_definition[$row['local_number']]);
-        $message->setPropertiesFromArray($message_array);
+        $message->setDefinition($current_definitions[$message->getLocalNumber()]);
       }
       $messages[] = $message;
     }
     return $messages;
   }
 
-  /**
-   * Takes the `field{n}`, `value{n}`, and `untis{n}` elements from the CSV
-   * array and creates `FIT\FieldDefintions`
-   *
-   * This function assumes the array $a will have triplets of name, value, units
-   *
-   * @return [FIT\FieldDefintions] an array of FieldDefintions
-   */
-  public static function getFieldDefinitionsFromCSVArray($message_name, $a)
+  public static function getMessageFromCSVLine($line)
   {
-    $field_definitions = [];
-    $b = array_chunk($a, self::COLUMNS_PER_FIELD);
-    foreach ($b as $c) {
-      if($c[0]){
-        list($field_name, $field_value) = $c;
-        $field_definitions[$field_name] = new FieldDefinition([
-          'name'  => $field_name,
-          'value' => $field_value
-        ]);
-        $field_definitions[$field_name]->setSubfieldsFromGlobalProfile($message_name);
-      }
+    $line_array = self::arrayFromFitCSV($line);
+
+    $message_array = [
+      'type'          => $line_array[0],
+      'local_number'  => $line_array[1],
+      'message'       => $line_array[2],
+      'fields'        => self::getFieldsFromCSVArray($line_array)
+    ];
+
+    if($message_array['type'] === Message::MESSAGE_TYPE_DEFINITION){
+      return new DefinitionMessage($message_array);
     }
-    return $field_definitions;
+    if($message_array['type'] === Message::MESSAGE_TYPE_DATA){
+      return new DataMessage($message_array);
+    }
   }
 
   /**
    * Takes the `field{n}`, `value{n}`, and `untis{n}` elements from the CSV
-   * array and creates key value pairs
+   * array and creates `FIT\Fields` or `FIT\FieldDefinitions`
    *
    * This function assumes the array $a will have triplets of name, value, units
+   * preceeded by the type, local number, message name triplet
    *
-   * @return [field => value] an array of field values with field name as key and value as value - note that units are not used or captured.
+   * @return [FIT\Field] an array of Fields
    */
-  public static function getFieldsFromCSVArray($a)
+  public static function getFieldsFromCSVArray(array $a)
   {
     $fields = [];
     $b = array_chunk($a, self::COLUMNS_PER_FIELD);
+    list($type, $local_number, $message_name) = array_shift($b);
     foreach ($b as $c) {
       if($c[0]){
         list($name, $value, $units) = $c;
-        $fields[] = new Field([
+        $field_array = [
           'name'  => $name,
           'value' => $value,
           'units' => $units
-        ]);
+        ];
+        if($type === Message::MESSAGE_TYPE_DEFINITION){
+          $fields[$name] = new FieldDefinition($field_array);
+
+          // TODO: add getGlobalDefinition($message_name) to FieldDefinition
+          // $fields[$name] = GlobalProfile::getFieldDefinition($message_name, $name);
+          // $fields[$name]->setValue($value);
+        }
+        if($type === Message::MESSAGE_TYPE_DATA){
+          $fields[$name] = new Field($field_array);
+        }
       }
     }
     return $fields;
+  }
+
+  /**
+   * Takes a row from a FIT CSV file and returns the number of empty $fields
+   *
+   * This functionality is hopefully temporary to deal with the "extra commas"
+   * issue
+   *
+   * @param  string $row  a row of CSV from the FIT CSV file
+   * @return int          number of empty fields in the provided row of CSV
+   */
+  public static function getNumberOfEmptyFields(array $fields_columns) : int
+  {
+    $num_empty_fields = 0;
+    $grouped_columns = array_chunk($fields_columns, self::COLUMNS_PER_FIELD);
+    foreach ($grouped_columns as $column_group) {
+      if(!$column_group[0] && !$column_group[1] && !$column_group[2]){
+        $num_empty_fields++;
+      }
+    }
+    return $num_empty_fields;
   }
 
   /**
@@ -282,7 +288,7 @@ class FITParser {
       function($header) {
         return u($header)->snake();
       },
-      self::getFitCSV(self::remove_utf8_bom($line))
+      self::arrayFromFitCSV(self::remove_utf8_bom($line))
     );
   }
 
