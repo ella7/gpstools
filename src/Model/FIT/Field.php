@@ -32,6 +32,21 @@ class Field
     return $this->units;
   }
 
+  public function setName($name)
+  {
+    $this->name = $name;
+  }
+
+  public function setValue($value)
+  {
+    $this->value = $value;
+  }
+
+  public function setUnits($units)
+  {
+    $this->units = $units;
+  }
+
 
   /**
    * Attempt to set object properties from an associative array
