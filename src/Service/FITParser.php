@@ -6,6 +6,7 @@ use App\Model\FIT\Message;
 use App\Model\FIT\DefinitionMessage;
 use App\Model\FIT\DataMessage;
 use App\Model\FIT\FieldDefinition;
+use App\Model\FIT\Field;
 use function Symfony\Component\String\u;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -156,6 +157,10 @@ class FITParser {
     ];
   }
 
+/*****************************************************************************************
+  New functionality for parsing CSV FIT file is below this divider
+******************************************************************************************/
+
   /**
    * Get all FIT\Messages from a given CSV FIT file
    *
@@ -168,21 +173,15 @@ class FITParser {
   public function messagesFromCSVFile($csv_path)
   {
 
-    $s = new Stopwatch();
-    $s->start('entire messagesFromCSVFile');
-
     $current_definition = [];
     $lines = file($csv_path);
-    $num_messages = count($lines) - 1;
-    // DEBUG: reduce numnber of lines read
-     $num_messages = 10;
-
+    $number_of_lines_to_read = count($lines) - 1;
 
     $headers = self::normalizeHeaders($lines[0]);
 
     $num_headers = count($headers);
 
-    for($i = 1; $i <= $num_messages; $i++){
+    for($i = 1; $i <= $number_of_lines_to_read; $i++){
       $fields = self::getFitCSV($lines[$i]);
       $num_fields = count($fields);
 
@@ -194,11 +193,10 @@ class FITParser {
 
       $row = array_combine($headers, $fields);
 
-
       $message_array = array_slice($row, 0, self::COLUMNS_BEFORE_FIELDS);
 
       if($row['type'] === Message::MESSAGE_TYPE_DEFINITION){
-        $message_array['fields'] = self::getFieldDefinitionsFromCVSArray(
+        $message_array['fields'] = self::getFieldDefinitionsFromCSVArray(
           $row['message'],
           array_slice($row, self::COLUMNS_BEFORE_FIELDS)
         );
@@ -209,7 +207,7 @@ class FITParser {
       }
 
       if($row['type'] === Message::MESSAGE_TYPE_DATA){
-        $message_array['fields'] = self::getFieldsFromCVSArray(
+        $message_array['fields'] = self::getFieldsFromCSVArray(
           array_slice($row, self::COLUMNS_BEFORE_FIELDS)
         );
         if(!$current_definition[$row['local_number']]){
@@ -220,9 +218,6 @@ class FITParser {
       }
       $messages[] = $message;
     }
-    $event = $s->stop('entire messagesFromCSVFile');
-    //dump($event);
-
     return $messages;
   }
 
@@ -234,7 +229,7 @@ class FITParser {
    *
    * @return [FIT\FieldDefintions] an array of FieldDefintions
    */
-  public static function getFieldDefinitionsFromCVSArray($message_name, $a)
+  public static function getFieldDefinitionsFromCSVArray($message_name, $a)
   {
     $field_definitions = [];
     $b = array_chunk($a, self::COLUMNS_PER_FIELD);
@@ -259,14 +254,18 @@ class FITParser {
    *
    * @return [field => value] an array of field values with field name as key and value as value - note that units are not used or captured.
    */
-  public static function getFieldsFromCVSArray($a)
+  public static function getFieldsFromCSVArray($a)
   {
     $fields = [];
     $b = array_chunk($a, self::COLUMNS_PER_FIELD);
     foreach ($b as $c) {
       if($c[0]){
         list($name, $value, $units) = $c;
-        $fields[$name] = $value;
+        $fields[] = new Field([
+          'name'  => $name,
+          'value' => $value,
+          'units' => $units
+        ]);
       }
     }
     return $fields;
