@@ -49,6 +49,15 @@ class FITCSVWriter {
           $field->getUnits(),
         ]);
       }
+      if($message->getDefinition()->numberOfFields() > $message->numberOfFields()){
+        // echo "here's the problem \n\n";
+        $length = $message->getDefinition()->numberOfFields() * 3 + 3; // 3 columns per field plus the 3 beginning fields
+        $line = array_pad($line, $length, '');
+        // echo self::str_putcsv($line);
+        // exit();
+      }
+
+
     }
     array_push($line, ''); // to match, we're adding an empty column to the end of each row
     return self::str_putcsv($line);

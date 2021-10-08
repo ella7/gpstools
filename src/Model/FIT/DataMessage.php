@@ -47,4 +47,9 @@ class DataMessage extends Message
     return $this->definition->getFinalFieldDefinition($field_index, $field_name, $this);
   }
 
+  public function getDefinition()
+  {
+    return $this->definition;
+  }
+
 }
