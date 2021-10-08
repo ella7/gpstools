@@ -15,27 +15,6 @@ class Message
   protected $message;
   protected $fields;
 
-  /**
-   * Attempt to set object properties from an associative array
-   *
-   * @param array $a  An associatve array with keys matching the object vars for `$this`
-   */
-  public function setPropertiesFromArray($a)
-  {
-    $settable_properties = $this->getAutoSettableProperties();
-
-    foreach ($settable_properties as $property_name) {
-      if(array_key_exists($property_name, $a)){
-        // First look for $this->setProperty(), and then use "$this->property = ... "
-        $property_setter = 'set' . u($property_name)->camel()->title();
-        if(method_exists($this, $property_setter)){
-          $this->{$property_setter}($a[$property_name]);
-        } else {
-          $this->{$property_name} = $a[$property_name];
-        }
-      }
-    }
-  }
 
   public function getType()
   {
@@ -55,6 +34,41 @@ class Message
   public function numberOfFields()
   {
     return count($this->fields);
+  }
+
+  /**
+   * Get a field by it's name index in the fields array
+   *
+   * TODO: validate that field names are unique in a message
+   *
+   * @param  string    $field_name    Key (which is name) to the field in fields array
+   * @return Field                    The field object stored at field_name in the fields array
+   */
+  public function getFieldByName(string $field_name)
+  {
+    return $this->fields[$field_name];
+  }
+
+  /**
+   * Get the value associated with the field $field_name
+   *
+   * @param  string $field_name   Name of the feild
+   * @return mixed                The value stored for the given field
+   */
+  public function getFieldValue(string $field_name)
+  {
+    return $this->getFieldByName($field_name)->getValue();
+  }
+
+  /**
+   * Get the units associated with the field $field_name
+   *
+   * @param  string $field_name   Name of the feild
+   * @return mixed                The units stored for the given field
+   */
+  public function getFieldUnits(string $field_name)
+  {
+    return $this->getFieldByName($field_name)->getUnits();
   }
 
   /**
@@ -89,25 +103,6 @@ class Message
     return ($this->numberOfFields() > $field_index && $field_index >= 0);
   }
 
-  /**
-   * Get the value associated with the field $field_name
-   *
-   * Method signature defined here, but must be overwritten in child classes
-   *
-   * @param  string $field_name   Name of the feild
-   * @return mixed                The value stored for the given field
-   */
-  public function getFieldValue(string $field_name) { }
-
-  /**
-   * Returns the list of properties that can be set by setPropertiesFromArray
-   *
-   * Can be overwritten by children in order to provide more specific control
-   */
-  protected function getAutoSettableProperties()
-  {
-    return array_keys(get_object_vars($this));
-  }
 
   public function getMessageKey()
   {
@@ -121,5 +116,37 @@ class Message
   public function getLocalNumber()
   {
     return $this->local_number;
+  }
+
+  /**
+   * Attempt to set object properties from an associative array
+   *
+   * @param array $a  An associatve array with keys matching the object vars for `$this`
+   */
+  public function setPropertiesFromArray($a)
+  {
+    $settable_properties = $this->getAutoSettableProperties();
+
+    foreach ($settable_properties as $property_name) {
+      if(array_key_exists($property_name, $a)){
+        // First look for $this->setProperty(), and then use "$this->property = ... "
+        $property_setter = 'set' . u($property_name)->camel()->title();
+        if(method_exists($this, $property_setter)){
+          $this->{$property_setter}($a[$property_name]);
+        } else {
+          $this->{$property_name} = $a[$property_name];
+        }
+      }
+    }
+  }
+
+  /**
+   * Returns the list of properties that can be set by setPropertiesFromArray
+   *
+   * Can be overwritten by children in order to provide more specific control
+   */
+  protected function getAutoSettableProperties()
+  {
+    return array_keys(get_object_vars($this));
   }
 }
