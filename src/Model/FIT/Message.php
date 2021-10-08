@@ -12,7 +12,7 @@ class Message
 
   protected $type;
   protected $local_number;
-  protected $message;
+  protected $name;
   protected $fields;
   protected $num_empty_fields;
 
@@ -20,7 +20,7 @@ class Message
   {
     $this->setPropertiesFromArray($properties);
   }
-  
+
   public function getType()
   {
     return $this->type;
@@ -28,7 +28,7 @@ class Message
 
   public function getName()
   {
-    return $this->message; // TODO: need to rename this->message to this->name
+    return $this->name;
   }
 
   public function getFields()
@@ -100,11 +100,11 @@ class Message
   public function validateFieldIndex(int $field_index)
   {
     if(!$this->isValidFieldIndex($field_index)){
-      $message =
+      $exception_message =
         'This ' . $this->name . ' ' . $this->type . ' message has ' . $this->numberOfFields()
         . ' fields. Trying to access field ' . ($field_index + 1)
       ;
-      throw new \Exception($message);
+      throw new \Exception($exception_message);
     }
   }
 
@@ -119,7 +119,7 @@ class Message
     return [
       'type' => $this->type,
       'local_number' => $this->local_number,
-      'message' => $this->message
+      'name' => $this->name
     ];
   }
 

@@ -21,7 +21,6 @@ final class ApplicationTest extends KernelTestCase
     $output_path = '/Users/rpacker/Projects/gpstools/tests/Data/Activity-Parsed.csv';
 
     $messages = $fit_parser->messagesFromCSVFile($input_path);
-    $messages = array_slice($messages, 0, 100);
 
     $fitcsv_writer->CSVFileFromMessages($output_path, $messages);
 

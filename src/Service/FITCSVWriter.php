@@ -6,7 +6,9 @@ use App\Model\FIT\Message;
 
 class FITCSVWriter {
 
-  const ENCLOSURE_TRIGGER = '# ! # ! #'; // HACK: need to find a better way to force string enclosure
+  const COLUMNS_PER_FIELD = 3;            // number of columns in the FIT CSV file per field
+  const COLUMNS_BEFORE_FIELDS = 3;        // number of columns in the FIT CSV before the field columns
+  const ENCLOSURE_TRIGGER = '# ! # ! #';  // HACK: need to find a better way to force string enclosure
 
   public function CSVFileFromMessages($path, $messages)
   {
@@ -56,10 +58,9 @@ class FITCSVWriter {
         // echo self::str_putcsv($line);
         // exit();
       }
-
-
     }
-    array_push($line, ''); // to match, we're adding an empty column to the end of each row
+    $length = ($message->numberOfFields() + $message->numberOfEmptyFields()) * self::COLUMNS_PER_FIELD + self::COLUMNS_BEFORE_FIELDS;
+    $line = $line = array_pad($line, $length + 1, ''); // the + 1 is to match input file, we're adding an empty column to the end of each row
     return self::str_putcsv($line);
   }
 

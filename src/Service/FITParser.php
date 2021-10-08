@@ -179,7 +179,7 @@ class FITParser {
     array_shift($lines);
 
     // For debugging only
-    $line_limit = 10;
+    $line_limit = null;
     if($line_limit){
       $lines = array_slice($lines, 0, $line_limit);
     }
@@ -205,10 +205,11 @@ class FITParser {
     $line_array = self::arrayFromFitCSV($line);
 
     $message_array = [
-      'type'          => $line_array[0],
-      'local_number'  => $line_array[1],
-      'message'       => $line_array[2],
-      'fields'        => self::getFieldsFromCSVArray($line_array)
+      'type'              => $line_array[0],
+      'local_number'      => $line_array[1],
+      'name'              => $line_array[2],
+      'fields'            => self::getFieldsFromCSVArray($line_array),
+      'num_empty_fields'  => self::getNumberOfEmptyFields($line_array)
     ];
 
     if($message_array['type'] === Message::MESSAGE_TYPE_DEFINITION){
@@ -265,10 +266,10 @@ class FITParser {
    * @param  string $row  a row of CSV from the FIT CSV file
    * @return int          number of empty fields in the provided row of CSV
    */
-  public static function getNumberOfEmptyFields(array $fields_columns) : int
+  public static function getNumberOfEmptyFields(array $line_array) : int
   {
     $num_empty_fields = 0;
-    $grouped_columns = array_chunk($fields_columns, self::COLUMNS_PER_FIELD);
+    $grouped_columns = array_chunk($line_array, self::COLUMNS_PER_FIELD);
     foreach ($grouped_columns as $column_group) {
       if(!$column_group[0] && !$column_group[1] && !$column_group[2]){
         $num_empty_fields++;
