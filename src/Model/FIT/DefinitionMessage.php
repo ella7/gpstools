@@ -6,8 +6,9 @@ namespace App\Model\FIT;
 class DefinitionMessage extends Message
 {
 
-  public function __construct()
+  public function __construct($properties)
   {
+    parent::__construct($properties);
     $this->type = Message::MESSAGE_TYPE_DEFINITION;
   }
 
@@ -16,7 +17,7 @@ class DefinitionMessage extends Message
    * Returns the final FieldDefinition for a given index, name, and DataMessage
    *
    * FieldDefinitions may contain SubfieldDefinitions and/or ComponentDefinitions whose properties
-   * should supersede those from the FieldDefinition. This method gets the acutal FieldDefintion
+   * should supersede those from the FieldDefinition. This method gets the acutal FieldDefinition
    * that should be used for a given field index and name.
    */
   public function getFinalFieldDefinition(int $field_index, string $field_name, DataMessage $message)
