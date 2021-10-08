@@ -30,7 +30,7 @@ class DataMessage extends Message
    * @param  int    $field_index   The index of the field in the fields array
    * @return mixed                 The units stored for the given field
    */
-  public function getFieldUnits(int $field_index)
+  public function getFieldDefinitionUnits(int $field_index)
   {
     return $this->definition->getFieldUnits($field_index, $this);
   }

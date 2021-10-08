@@ -11,16 +11,6 @@ class DefinitionMessage extends Message
     $this->type = Message::MESSAGE_TYPE_DEFINITION;
   }
 
-  /**
-   * Get the value associated with the field $field_name
-   *
-   * @param  string $field_name   Name of the feild
-   * @return mixed                The value stored for the given field
-   */
-  public function getFieldValue(string $field_name)
-  {
-    return $this->fields[$field_name]->value;
-  }
 
   /**
    * Returns the final FieldDefinition for a given index, name, and DataMessage
@@ -40,7 +30,7 @@ class DefinitionMessage extends Message
     // right index. A definition row might define 10 fields, but then a data row might only use
     // 8 of those fields plus 2 component fields. The data row fields would always look "valid"
     // but they wouldn't be. The bottom line is you can't go from data row to definition row -
-    // at least not easily. Saving for tonight, but will require more thought tomorrow. 
+    // at least not easily. Saving for tonight, but will require more thought tomorrow.
 
     // if the index is outside the range
   }
@@ -51,7 +41,7 @@ class DefinitionMessage extends Message
    * @param  string $field_index  The index of the field in the fields array
    * @return mixed                The units stored for the given field
    */
-  public function getFieldUnits(string $field_index, DataMessage $message)
+  public function getFinalFieldUnits(string $field_index, DataMessage $message)
   {
     return $this->getFieldByIndex($field_index)->getUnits($message);
   }
