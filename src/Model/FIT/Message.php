@@ -14,8 +14,13 @@ class Message
   protected $local_number;
   protected $message;
   protected $fields;
+  protected $num_empty_fields;
 
-
+  public function __construct($properties)
+  {
+    $this->setPropertiesFromArray($properties);
+  }
+  
   public function getType()
   {
     return $this->type;
@@ -34,6 +39,11 @@ class Message
   public function numberOfFields()
   {
     return count($this->fields);
+  }
+
+  public function numberOfEmptyFields()
+  {
+    return $this->num_empty_fields;
   }
 
   /**
