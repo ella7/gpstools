@@ -14,8 +14,6 @@ class GlobalProfile {
 
   const BASE_TYPES = [
     0x00 => ['name' => 'enum',    'identifier' => 0x00, 'invalid_value' => 0xFF],
-    0x00 => ['name' => 'enum',    'identifier' => 0x00, 'invalid_value' => 0xFF],
-    0x00 => ['name' => 'enum',    'identifier' => 0x00, 'invalid_value' => 0xFF],
     0x01 => ['name' => 'sint8',   'identifier' => 0x01, 'invalid_value' => 0x7F],
     0x02 => ['name' => 'uint8',   'identifier' => 0x02, 'invalid_value' => 0xFF],
     0x83 => ['name' => 'sint16',  'identifier' => 0x83, 'invalid_value' => 0x7FFF],
