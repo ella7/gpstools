@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7500619318478d7fcc1e23622baa62e",
+    "content-hash": "670ab76bf8ba50d8722cdd832c1475ea",
     "packages": [
         {
             "name": "ella7/console-command",
@@ -45,6 +45,59 @@
                 "issues": "https://github.com/ella7/console-command/issues"
             },
             "time": "2021-09-11T20:01:33+00:00"
+        },
+        {
+            "name": "ella7/php-binary-reader",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ella7/php-binary-reader.git",
+                "reference": "087cbd75db0b4a9e27c13f6cae50d7d10ce2b870"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ella7/php-binary-reader/zipball/087cbd75db0b4a9e27c13f6cae50d7d10ce2b870",
+                "reference": "087cbd75db0b4a9e27c13f6cae50d7d10ce2b870",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "ext-simplexml": "*",
+                "phpunit/phpunit": "^9.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpBinaryReader\\": [
+                        "src/",
+                        "test/"
+                    ]
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Durrant",
+                    "email": "mdurrant@gmail.com"
+                }
+            ],
+            "description": "Lightweight binary reader for PHP",
+            "support": {
+                "source": "https://github.com/ella7/php-binary-reader/tree/master"
+            },
+            "time": "2021-10-17T01:55:10+00:00"
         },
         {
             "name": "psr/cache",
@@ -5599,7 +5652,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "ella7/console-command": 20
+        "ella7/console-command": 20,
+        "ella7/php-binary-reader": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -5,6 +5,9 @@
     "ella7/console-command": {
         "version": "dev-dev"
     },
+    "ella7/php-binary-reader": {
+        "version": "1.0.x-dev"
+    },
     "myclabs/deep-copy": {
         "version": "1.10.2"
     },
