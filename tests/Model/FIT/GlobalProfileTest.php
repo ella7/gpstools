@@ -12,6 +12,14 @@ final class GlobalProfileTest extends TestCase
     $this->assertEquals('data', $definition->getName());
   }
 
+  public function testGetBaseType(): void
+  {
+    $this->assertEquals(
+      ['name' => 'sint32',  'identifier' => 0x85, 'invalid_value' => 0x7FFFFFFF],
+      GlobalProfile::getBaseType(0x85)
+    );
+  }
+
   /**
    * The functionality of FIT\Message::getFinalFieldDefinition depends on component names being
    * unique per message type. This test examines each message type to see if any component names
