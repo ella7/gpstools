@@ -38,7 +38,7 @@ class GlobalProfile {
   const FIELD_TYPES = [
       'activity' => [
           'name' => 'activity',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'manual',
               1 => 'auto_multi_sport',
@@ -46,7 +46,7 @@ class GlobalProfile {
       ],
       'activity_class' => [
           'name' => 'activity_class',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               100 => 'level_max',
               0x7F => 'level',  # 0 to 100
@@ -55,7 +55,7 @@ class GlobalProfile {
       ],
       'activity_level' => [
           'name' => 'activity_level',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'low',
               1 => 'medium',
@@ -64,7 +64,7 @@ class GlobalProfile {
       ],
       'activity_subtype' => [
           'name' => 'activity_subtype',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'generic',
               1 => 'treadmill',  # Run
@@ -90,7 +90,7 @@ class GlobalProfile {
       ],
       'activity_type' => [
           'name' => 'activity_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'generic',
               1 => 'running',
@@ -105,7 +105,7 @@ class GlobalProfile {
       ],
       'analog_watchface_layout' => [
           'name' => 'analog_watchface_layout',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'minimal',
               1 => 'traditional',
@@ -114,7 +114,7 @@ class GlobalProfile {
       ],
       'ant_network' => [
           'name' => 'ant_network',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'public',
               1 => 'antplus',
@@ -124,7 +124,7 @@ class GlobalProfile {
       ],
       'antplus_device_type' => [
           'name' => 'antplus_device_type',
-          'base_type' => 'BASE_TYPES[0x02]',  # uint8
+          'base_type' => self::BASE_TYPES[0x02],  # uint8
           'values' => [
               1 => 'antfs',
               11 => 'bike_power',
@@ -153,7 +153,7 @@ class GlobalProfile {
       ],
       'attitude_stage' => [
           'name' => 'attitude_stage',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'failed',
               1 => 'aligning',
@@ -163,7 +163,7 @@ class GlobalProfile {
       ],
       'attitude_validity' => [
           'name' => 'attitude_validity',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0x0001 => 'track_angle_heading_valid',
               0x0002 => 'pitch_valid',
@@ -182,7 +182,7 @@ class GlobalProfile {
       ],
       'auto_activity_detect' => [
           'name' => 'auto_activity_detect',
-          'base_type' => 'BASE_TYPES[0x86]',  # uint32
+          'base_type' => self::BASE_TYPES[0x86],  # uint32
           'values' => [
               0x00000000 => 'none',
               0x00000001 => 'running',
@@ -195,7 +195,7 @@ class GlobalProfile {
       ],
       'auto_sync_frequency' => [
           'name' => 'auto_sync_frequency',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'never',
               1 => 'occasionally',
@@ -206,7 +206,7 @@ class GlobalProfile {
       ],
       'autolap_trigger' => [
           'name' => 'autolap_trigger',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'time',
               1 => 'distance',
@@ -219,7 +219,7 @@ class GlobalProfile {
       ],
       'autoscroll' => [
           'name' => 'autoscroll',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'none',
               1 => 'slow',
@@ -229,7 +229,7 @@ class GlobalProfile {
       ],
       'backlight_mode' => [
           'name' => 'backlight_mode',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'off',
               1 => 'manual',
@@ -242,14 +242,14 @@ class GlobalProfile {
       ],
       'backlight_timeout' => [  # Timeout in seconds.
           'name' => 'backlight_timeout',
-          'base_type' => 'BASE_TYPES[0x02]',  # uint8
+          'base_type' => self::BASE_TYPES[0x02],  # uint8
           'values' => [
               0 => 'infinite',  # Backlight stays on forever.
           ],
       ],
       'battery_status' => [
           'name' => 'battery_status',
-          'base_type' => 'BASE_TYPES[0x02]',  # uint8
+          'base_type' => self::BASE_TYPES[0x02],  # uint8
           'values' => [
               1 => 'new',
               2 => 'good',
@@ -262,7 +262,7 @@ class GlobalProfile {
       ],
       'bench_press_exercise_name' => [
           'name' => 'bench_press_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'alternating_dumbbell_chest_press_on_swiss_ball',
               1 => 'barbell_bench_press',
@@ -295,7 +295,7 @@ class GlobalProfile {
       ],
       'bike_light_beam_angle_mode' => [
           'name' => 'bike_light_beam_angle_mode',
-          'base_type' => 'BASE_TYPES[0x02]',  # uint8
+          'base_type' => self::BASE_TYPES[0x02],  # uint8
           'values' => [
               0 => 'manual',
               1 => 'auto',
@@ -303,7 +303,7 @@ class GlobalProfile {
       ],
       'bike_light_network_config_type' => [
           'name' => 'bike_light_network_config_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'auto',
               4 => 'individual',
@@ -313,7 +313,7 @@ class GlobalProfile {
       ],
       'body_location' => [
           'name' => 'body_location',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'left_leg',
               1 => 'left_calf',
@@ -359,11 +359,11 @@ class GlobalProfile {
       ],
       'bool' => [
           'name' => 'bool',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
       ],
       'bp_status' => [
           'name' => 'bp_status',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'no_error',
               1 => 'error_incomplete_data',
@@ -374,7 +374,7 @@ class GlobalProfile {
       ],
       'calf_raise_exercise_name' => [
           'name' => 'calf_raise_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => '3_way_calf_raise',
               1 => '3_way_weighted_calf_raise',
@@ -401,7 +401,7 @@ class GlobalProfile {
       ],
       'camera_event_type' => [
           'name' => 'camera_event_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'video_start',  # Start of video recording
               1 => 'video_split',  # Mark of video file split (end of one file, beginning of the other]
@@ -420,7 +420,7 @@ class GlobalProfile {
       ],
       'camera_orientation_type' => [
           'name' => 'camera_orientation_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'camera_orientation_0',
               1 => 'camera_orientation_90',
@@ -430,7 +430,7 @@ class GlobalProfile {
       ],
       'cardio_exercise_name' => [
           'name' => 'cardio_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'bob_and_weave_circle',
               1 => 'weighted_bob_and_weave_circle',
@@ -458,7 +458,7 @@ class GlobalProfile {
       ],
       'carry_exercise_name' => [
           'name' => 'carry_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'bar_holds',
               1 => 'farmers_walk',
@@ -469,7 +469,7 @@ class GlobalProfile {
       ],
       'checksum' => [
           'name' => 'checksum',
-          'base_type' => 'BASE_TYPES[0x02]',  # uint8
+          'base_type' => self::BASE_TYPES[0x02],  # uint8
           'values' => [
               0 => 'clear',  # Allows clear of checksum for flash memory where can only write 1 to 0 without erasing sector.
               1 => 'ok',  # Set to mark checksum as valid if computes to invalid values 0 or 0xFF.  Checksum can also be set to ok to save encoding computation time.
@@ -477,7 +477,7 @@ class GlobalProfile {
       ],
       'chop_exercise_name' => [
           'name' => 'chop_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'cable_pull_through',
               1 => 'cable_rotational_lift',
@@ -506,7 +506,7 @@ class GlobalProfile {
       ],
       'comm_timeout_type' => [
           'name' => 'comm_timeout_type',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'wildcard_pairing_timeout',  # Timeout pairing to any device
               1 => 'pairing_timeout',  # Timeout pairing to previously paired device
@@ -516,7 +516,7 @@ class GlobalProfile {
       ],
       'connectivity_capabilities' => [
           'name' => 'connectivity_capabilities',
-          'base_type' => 'BASE_TYPES[0x8C]',  # uint32z
+          'base_type' => self::BASE_TYPES[0x8C],  # uint32z
           'values' => [
               0x00000001 => 'bluetooth',
               0x00000002 => 'bluetooth_le',
@@ -554,7 +554,7 @@ class GlobalProfile {
       ],
       'core_exercise_name' => [
           'name' => 'core_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'abs_jabs',
               1 => 'weighted_abs_jabs',
@@ -606,7 +606,7 @@ class GlobalProfile {
       ],
       'course_capabilities' => [
           'name' => 'course_capabilities',
-          'base_type' => 'BASE_TYPES[0x8C]',  # uint32z
+          'base_type' => self::BASE_TYPES[0x8C],  # uint32z
           'values' => [
               0x00000001 => 'processed',
               0x00000002 => 'valid',
@@ -623,7 +623,7 @@ class GlobalProfile {
       ],
       'course_point' => [
           'name' => 'course_point',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'generic',
               1 => 'summit',
@@ -655,7 +655,7 @@ class GlobalProfile {
       ],
       'crunch_exercise_name' => [
           'name' => 'crunch_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'bicycle_crunch',
               1 => 'cable_crunch',
@@ -745,7 +745,7 @@ class GlobalProfile {
       ],
       'curl_exercise_name' => [
           'name' => 'curl_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'alternating_dumbbell_biceps_curl',
               1 => 'alternating_dumbbell_biceps_curl_on_swiss_ball',
@@ -795,7 +795,7 @@ class GlobalProfile {
       ],
       'date_mode' => [
           'name' => 'date_mode',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'day_month',
               1 => 'month_day',
@@ -803,11 +803,11 @@ class GlobalProfile {
       ],
       'date_time' => [  # seconds since UTC 00 =>00 Dec 31 1989
           'name' => 'date_time',
-          'base_type' => 'BASE_TYPES[0x86]',  # uint32
+          'base_type' => self::BASE_TYPES[0x86],  # uint32
       ],
       'day_of_week' => [
           'name' => 'day_of_week',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'sunday',
               1 => 'monday',
@@ -820,7 +820,7 @@ class GlobalProfile {
       ],
       'deadlift_exercise_name' => [
           'name' => 'deadlift_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'barbell_deadlift',
               1 => 'barbell_straight_leg_deadlift',
@@ -845,14 +845,14 @@ class GlobalProfile {
       ],
       'device_index' => [
           'name' => 'device_index',
-          'base_type' => 'BASE_TYPES[0x02]',  # uint8
+          'base_type' => self::BASE_TYPES[0x02],  # uint8
           'values' => [
               0 => 'creator',  # Creator of the file is always device index 0.
           ],
       ],
       'digital_watchface_layout' => [
           'name' => 'digital_watchface_layout',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'traditional',
               1 => 'modern',
@@ -861,7 +861,7 @@ class GlobalProfile {
       ],
       'display_heart' => [
           'name' => 'display_heart',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'bpm',
               1 => 'max',
@@ -870,7 +870,7 @@ class GlobalProfile {
       ],
       'display_measure' => [
           'name' => 'display_measure',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'metric',
               1 => 'statute',
@@ -879,7 +879,7 @@ class GlobalProfile {
       ],
       'display_orientation' => [
           'name' => 'display_orientation',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'auto',  # automatic if the device supports it
               1 => 'portrait',
@@ -890,7 +890,7 @@ class GlobalProfile {
       ],
       'display_position' => [
           'name' => 'display_position',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'degree',  # dd.dddddd
               1 => 'degree_minute',  # dddmm.mmm
@@ -938,7 +938,7 @@ class GlobalProfile {
       ],
       'display_power' => [
           'name' => 'display_power',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'watts',
               1 => 'percent_ftp',
@@ -946,7 +946,7 @@ class GlobalProfile {
       ],
       'dive_alarm_type' => [
           'name' => 'dive_alarm_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'depth',
               1 => 'time',
@@ -954,7 +954,7 @@ class GlobalProfile {
       ],
       'dive_backlight_mode' => [
           'name' => 'dive_backlight_mode',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'at_depth',
               1 => 'always_on',
@@ -962,7 +962,7 @@ class GlobalProfile {
       ],
       'dive_gas_status' => [
           'name' => 'dive_gas_status',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'disabled',
               1 => 'enabled',
@@ -971,7 +971,7 @@ class GlobalProfile {
       ],
       'event' => [
           'name' => 'event',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'timer',  # Group 0.  Start / stop_all
               3 => 'workout',  # start / stop
@@ -1013,7 +1013,7 @@ class GlobalProfile {
       ],
       'event_type' => [
           'name' => 'event_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'start',
               1 => 'stop',
@@ -1029,7 +1029,7 @@ class GlobalProfile {
       ],
       'exd_data_units' => [
           'name' => 'exd_data_units',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'no_units',
               1 => 'laps',
@@ -1085,7 +1085,7 @@ class GlobalProfile {
       ],
       'exd_descriptors' => [
           'name' => 'exd_descriptors',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'bike_light_battery_status',
               1 => 'beam_angle_status',
@@ -1188,7 +1188,7 @@ class GlobalProfile {
       ],
       'exd_display_type' => [
           'name' => 'exd_display_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'numerical',
               1 => 'simple',
@@ -1205,7 +1205,7 @@ class GlobalProfile {
       ],
       'exd_layout' => [
           'name' => 'exd_layout',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'full_screen',
               1 => 'half_vertical',
@@ -1219,7 +1219,7 @@ class GlobalProfile {
       ],
       'exd_qualifiers' => [
           'name' => 'exd_qualifiers',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'no_qualifier',
               1 => 'instantaneous',
@@ -1269,7 +1269,7 @@ class GlobalProfile {
       ],
       'exercise_category' => [
           'name' => 'exercise_category',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'bench_press',
               1 => 'calf_raise',
@@ -1309,7 +1309,7 @@ class GlobalProfile {
       ],
       'file' => [
           'name' => 'file',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               1 => 'device',  # Read only, single file. Must be in root directory.
               2 => 'settings',  # Read/write, single file. Directory=Settings
@@ -1335,7 +1335,7 @@ class GlobalProfile {
       ],
       'file_flags' => [
           'name' => 'file_flags',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x02 => 'read',
               0x04 => 'write',
@@ -1344,7 +1344,7 @@ class GlobalProfile {
       ],
       'fit_base_type' => [
           'name' => 'fit_base_type',
-          'base_type' => 'BASE_TYPES[0x02]',  # uint8
+          'base_type' => self::BASE_TYPES[0x02],  # uint8
           'values' => [
               0 => 'enum',
               1 => 'sint8',
@@ -1367,7 +1367,7 @@ class GlobalProfile {
       ],
       'fit_base_unit' => [
           'name' => 'fit_base_unit',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'other',
               1 => 'kilogram',
@@ -1376,7 +1376,7 @@ class GlobalProfile {
       ],
       'fitness_equipment_state' => [  # fitness equipment event data
           'name' => 'fitness_equipment_state',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'ready',
               1 => 'in_use',
@@ -1386,7 +1386,7 @@ class GlobalProfile {
       ],
       'flye_exercise_name' => [
           'name' => 'flye_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'cable_crossover',
               1 => 'decline_dumbbell_flye',
@@ -1400,7 +1400,7 @@ class GlobalProfile {
       ],
       'garmin_product' => [
           'name' => 'garmin_product',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               1 => 'hrm1',
               2 => 'axh01',  # AXH01 HRM chipset
@@ -1563,7 +1563,7 @@ class GlobalProfile {
       ],
       'gender' => [
           'name' => 'gender',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'female',
               1 => 'male',
@@ -1571,7 +1571,7 @@ class GlobalProfile {
       ],
       'goal' => [
           'name' => 'goal',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'time',
               1 => 'distance',
@@ -1584,7 +1584,7 @@ class GlobalProfile {
       ],
       'goal_recurrence' => [
           'name' => 'goal_recurrence',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'off',
               1 => 'daily',
@@ -1596,7 +1596,7 @@ class GlobalProfile {
       ],
       'goal_source' => [
           'name' => 'goal_source',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'auto',  # Device generated
               1 => 'community',  # Social network sourced goal
@@ -1605,7 +1605,7 @@ class GlobalProfile {
       ],
       'hip_raise_exercise_name' => [
           'name' => 'hip_raise_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'barbell_hip_thrust_on_floor',
               1 => 'barbell_hip_thrust_with_bench',
@@ -1654,7 +1654,7 @@ class GlobalProfile {
       ],
       'hip_stability_exercise_name' => [
           'name' => 'hip_stability_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'band_side_lying_leg_raise',
               1 => 'dead_bug',
@@ -1694,7 +1694,7 @@ class GlobalProfile {
       ],
       'hip_swing_exercise_name' => [
           'name' => 'hip_swing_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'single_arm_kettlebell_swing',
               1 => 'single_arm_dumbbell_swing',
@@ -1703,7 +1703,7 @@ class GlobalProfile {
       ],
       'hr_type' => [
           'name' => 'hr_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'normal',
               1 => 'irregular',
@@ -1711,7 +1711,7 @@ class GlobalProfile {
       ],
       'hr_zone_calc' => [
           'name' => 'hr_zone_calc',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'custom',
               1 => 'percent_max_hr',
@@ -1720,7 +1720,7 @@ class GlobalProfile {
       ],
       'hyperextension_exercise_name' => [
           'name' => 'hyperextension_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'back_extension_with_opposite_arm_and_leg_reach',
               1 => 'weighted_back_extension_with_opposite_arm_and_leg_reach',
@@ -1763,7 +1763,7 @@ class GlobalProfile {
       ],
       'intensity' => [
           'name' => 'intensity',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'active',
               1 => 'rest',
@@ -1773,7 +1773,7 @@ class GlobalProfile {
       ],
       'language' => [
           'name' => 'language',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'english',
               1 => 'french',
@@ -1818,7 +1818,7 @@ class GlobalProfile {
       ],
       'language_bits_0' => [  # Bit field corresponding to language enum type (1 << language].
           'name' => 'language_bits_0',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x01 => 'english',
               0x02 => 'french',
@@ -1832,7 +1832,7 @@ class GlobalProfile {
       ],
       'language_bits_1' => [
           'name' => 'language_bits_1',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x01 => 'dutch',
               0x02 => 'finnish',
@@ -1846,7 +1846,7 @@ class GlobalProfile {
       ],
       'language_bits_2' => [
           'name' => 'language_bits_2',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x01 => 'slovenian',
               0x02 => 'swedish',
@@ -1860,7 +1860,7 @@ class GlobalProfile {
       ],
       'language_bits_3' => [
           'name' => 'language_bits_3',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x01 => 'bulgarian',
               0x02 => 'romanian',
@@ -1874,7 +1874,7 @@ class GlobalProfile {
       ],
       'language_bits_4' => [
           'name' => 'language_bits_4',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x01 => 'brazilian_portuguese',
               0x02 => 'indonesian',
@@ -1886,7 +1886,7 @@ class GlobalProfile {
       ],
       'lap_trigger' => [
           'name' => 'lap_trigger',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'manual',
               1 => 'time',
@@ -1901,7 +1901,7 @@ class GlobalProfile {
       ],
       'lateral_raise_exercise_name' => [
           'name' => 'lateral_raise_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => '45_degree_cable_external_rotation',
               1 => 'alternating_lateral_raise_with_static_hold',
@@ -1939,7 +1939,7 @@ class GlobalProfile {
       ],
       'left_right_balance' => [
           'name' => 'left_right_balance',
-          'base_type' => 'BASE_TYPES[0x02]',  # uint8
+          'base_type' => self::BASE_TYPES[0x02],  # uint8
           'values' => [
               0x7F => 'mask',  # % contribution
               0x80 => 'right',  # data corresponds to right if set, otherwise unknown
@@ -1947,7 +1947,7 @@ class GlobalProfile {
       ],
       'left_right_balance_100' => [
           'name' => 'left_right_balance_100',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0x3FFF => 'mask',  # % contribution scaled by 100
               0x8000 => 'right',  # data corresponds to right if set, otherwise unknown
@@ -1955,7 +1955,7 @@ class GlobalProfile {
       ],
       'leg_curl_exercise_name' => [
           'name' => 'leg_curl_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'leg_curl',
               1 => 'weighted_leg_curl',
@@ -1973,7 +1973,7 @@ class GlobalProfile {
       ],
       'leg_raise_exercise_name' => [
           'name' => 'leg_raise_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'hanging_knee_raise',
               1 => 'hanging_leg_raise',
@@ -2001,7 +2001,7 @@ class GlobalProfile {
       ],
       'length_type' => [
           'name' => 'length_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'idle',  # Rest period. Length with no strokes
               1 => 'active',  # Length with strokes.
@@ -2009,22 +2009,22 @@ class GlobalProfile {
       ],
       'local_date_time' => [  # seconds since 00 =>00 Dec 31 1989 in local time zone
           'name' => 'local_date_time',
-          'base_type' => 'BASE_TYPES[0x86]',  # uint32
+          'base_type' => self::BASE_TYPES[0x86],  # uint32
           'values' => [
               0x10000000 => 'min',  # if date_time is < 0x10000000 then it is system time (seconds from device power on]
           ],
       ],
       'local_device_type' => [
           'name' => 'local_device_type',
-          'base_type' => 'BASE_TYPES[0x02]',  # uint8
+          'base_type' => self::BASE_TYPES[0x02],  # uint8
       ],
       'localtime_into_day' => [  # number of seconds into the day since local 00 =>00 =>00
           'name' => 'localtime_into_day',
-          'base_type' => 'BASE_TYPES[0x86]',  # uint32
+          'base_type' => self::BASE_TYPES[0x86],  # uint32
       ],
       'lunge_exercise_name' => [
           'name' => 'lunge_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'overhead_lunge',
               1 => 'lunge_matrix',
@@ -2111,7 +2111,7 @@ class GlobalProfile {
       ],
       'manufacturer' => [
           'name' => 'manufacturer',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               1 => 'garmin',
               2 => 'garmin_fr405_antfs',  # Do not use.  Used by FR405 for ANTFS man id.
@@ -2277,16 +2277,16 @@ class GlobalProfile {
       ],
       'mesg_count' => [
           'name' => 'mesg_count',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'num_per_file',
               1 => 'max_per_file',
               2 => 'max_per_file_type',
           ],
       ],
-      'mesg_num' => [
-          'name' => 'mesg_num',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+      'global_message_number' => [
+          'name' => 'global_message_number',
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'file_id',
               1 => 'capabilities',
@@ -2378,7 +2378,7 @@ class GlobalProfile {
       ],
       'message_index' => [
           'name' => 'message_index',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0x0FFF => 'mask',  # index
               0x7000 => 'reserved',  # reserved (default 0]
@@ -2387,7 +2387,7 @@ class GlobalProfile {
       ],
       'olympic_lift_exercise_name' => [
           'name' => 'olympic_lift_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'barbell_hang_power_clean',
               1 => 'barbell_hang_squat_clean',
@@ -2414,7 +2414,7 @@ class GlobalProfile {
       ],
       'plank_exercise_name' => [
           'name' => 'plank_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => '45_degree_plank',
               1 => 'weighted_45_degree_plank',
@@ -2548,7 +2548,7 @@ class GlobalProfile {
       ],
       'plyo_exercise_name' => [
           'name' => 'plyo_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'alternating_jump_lunge',
               1 => 'weighted_alternating_jump_lunge',
@@ -2587,7 +2587,7 @@ class GlobalProfile {
       ],
       'power_phase_type' => [
           'name' => 'power_phase_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'power_phase_start_angle',
               1 => 'power_phase_end_angle',
@@ -2597,7 +2597,7 @@ class GlobalProfile {
       ],
       'pull_up_exercise_name' => [
           'name' => 'pull_up_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'banded_pull_ups',
               1 => '30_degree_lat_pulldown',
@@ -2642,7 +2642,7 @@ class GlobalProfile {
       ],
       'push_up_exercise_name' => [
           'name' => 'push_up_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'chest_press_with_band',
               1 => 'alternating_staggered_push_up',
@@ -2726,7 +2726,7 @@ class GlobalProfile {
       ],
       'pwr_zone_calc' => [
           'name' => 'pwr_zone_calc',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'custom',
               1 => 'percent_ftp',
@@ -2734,7 +2734,7 @@ class GlobalProfile {
       ],
       'rider_position_type' => [
           'name' => 'rider_position_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'seated',
               1 => 'standing',
@@ -2744,7 +2744,7 @@ class GlobalProfile {
       ],
       'row_exercise_name' => [
           'name' => 'row_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'barbell_straight_leg_deadlift_to_row',
               1 => 'cable_row_standing',
@@ -2784,7 +2784,7 @@ class GlobalProfile {
       ],
       'run_exercise_name' => [
           'name' => 'run_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'run',
               1 => 'walk',
@@ -2794,7 +2794,7 @@ class GlobalProfile {
       ],
       'schedule' => [
           'name' => 'schedule',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'workout',
               1 => 'course',
@@ -2802,7 +2802,7 @@ class GlobalProfile {
       ],
       'segment_delete_status' => [
           'name' => 'segment_delete_status',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'do_not_delete',
               1 => 'delete_one',
@@ -2811,7 +2811,7 @@ class GlobalProfile {
       ],
       'segment_lap_status' => [
           'name' => 'segment_lap_status',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'end',
               1 => 'fail',
@@ -2819,7 +2819,7 @@ class GlobalProfile {
       ],
       'segment_leaderboard_type' => [
           'name' => 'segment_leaderboard_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'overall',
               1 => 'personal_best',
@@ -2836,7 +2836,7 @@ class GlobalProfile {
       ],
       'segment_selection_type' => [
           'name' => 'segment_selection_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'starred',
               1 => 'suggested',
@@ -2844,7 +2844,7 @@ class GlobalProfile {
       ],
       'sensor_type' => [
           'name' => 'sensor_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'accelerometer',
               1 => 'gyroscope',
@@ -2854,7 +2854,7 @@ class GlobalProfile {
       ],
       'session_trigger' => [
           'name' => 'session_trigger',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'activity_end',
               1 => 'manual',  # User changed sport.
@@ -2864,7 +2864,7 @@ class GlobalProfile {
       ],
       'set_type' => [
           'name' => 'set_type',
-          'base_type' => 'BASE_TYPES[0x02]',  # uint8
+          'base_type' => self::BASE_TYPES[0x02],  # uint8
           'values' => [
               0 => 'rest',
               1 => 'active',
@@ -2872,7 +2872,7 @@ class GlobalProfile {
       ],
       'shoulder_press_exercise_name' => [
           'name' => 'shoulder_press_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'alternating_dumbbell_shoulder_press',
               1 => 'arnold_press',
@@ -2902,7 +2902,7 @@ class GlobalProfile {
       ],
       'shoulder_stability_exercise_name' => [
           'name' => 'shoulder_stability_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => '90_degree_cable_external_rotation',
               1 => 'band_external_rotation',
@@ -2941,7 +2941,7 @@ class GlobalProfile {
       ],
       'shrug_exercise_name' => [
           'name' => 'shrug_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'barbell_jump_shrug',
               1 => 'barbell_shrug',
@@ -2964,7 +2964,7 @@ class GlobalProfile {
       ],
       'side' => [
           'name' => 'side',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'right',
               1 => 'left',
@@ -2972,7 +2972,7 @@ class GlobalProfile {
       ],
       'sit_up_exercise_name' => [
           'name' => 'sit_up_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'alternating_sit_up',
               1 => 'weighted_alternating_sit_up',
@@ -3016,7 +3016,7 @@ class GlobalProfile {
       ],
       'source_type' => [
           'name' => 'source_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'ant',  # External device connected with ANT
               1 => 'antplus',  # External device connected with ANT+
@@ -3028,7 +3028,7 @@ class GlobalProfile {
       ],
       'sport' => [
           'name' => 'sport',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'generic',
               1 => 'running',
@@ -3084,7 +3084,7 @@ class GlobalProfile {
       ],
       'sport_bits_0' => [  # Bit field corresponding to sport enum type (1 << sport].
           'name' => 'sport_bits_0',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x01 => 'generic',
               0x02 => 'running',
@@ -3098,7 +3098,7 @@ class GlobalProfile {
       ],
       'sport_bits_1' => [  # Bit field corresponding to sport enum type (1 << (sport-8]].
           'name' => 'sport_bits_1',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x01 => 'tennis',
               0x02 => 'american_football',
@@ -3112,7 +3112,7 @@ class GlobalProfile {
       ],
       'sport_bits_2' => [  # Bit field corresponding to sport enum type (1 << (sport-16]].
           'name' => 'sport_bits_2',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x01 => 'mountaineering',
               0x02 => 'hiking',
@@ -3126,7 +3126,7 @@ class GlobalProfile {
       ],
       'sport_bits_3' => [  # Bit field corresponding to sport enum type (1 << (sport-24]].
           'name' => 'sport_bits_3',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x01 => 'driving',
               0x02 => 'golf',
@@ -3140,7 +3140,7 @@ class GlobalProfile {
       ],
       'sport_bits_4' => [  # Bit field corresponding to sport enum type (1 << (sport-32]].
           'name' => 'sport_bits_4',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x01 => 'sailing',
               0x02 => 'ice_skating',
@@ -3154,7 +3154,7 @@ class GlobalProfile {
       ],
       'sport_bits_5' => [  # Bit field corresponding to sport enum type (1 << (sport-40]].
           'name' => 'sport_bits_5',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x01 => 'water_skiing',
               0x02 => 'kayaking',
@@ -3168,14 +3168,14 @@ class GlobalProfile {
       ],
       'sport_bits_6' => [  # Bit field corresponding to sport enum type (1 << (sport-48]].
           'name' => 'sport_bits_6',
-          'base_type' => 'BASE_TYPES[0x0A]',  # uint8z
+          'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
               0x01 => 'floor_climbing',
           ],
       ],
       'sport_event' => [
           'name' => 'sport_event',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'uncategorized',
               1 => 'geocaching',
@@ -3190,7 +3190,7 @@ class GlobalProfile {
       ],
       'squat_exercise_name' => [
           'name' => 'squat_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'leg_press',
               1 => 'back_squat_with_body_bar',
@@ -3283,7 +3283,7 @@ class GlobalProfile {
       ],
       'stroke_type' => [
           'name' => 'stroke_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'no_event',
               1 => 'other',  # stroke was detected but cannot be identified
@@ -3295,7 +3295,7 @@ class GlobalProfile {
       ],
       'sub_sport' => [
           'name' => 'sub_sport',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'generic',
               1 => 'treadmill',  # Run/Fitness Equipment
@@ -3362,7 +3362,7 @@ class GlobalProfile {
       ],
       'supported_exd_screen_layouts' => [
           'name' => 'supported_exd_screen_layouts',
-          'base_type' => 'BASE_TYPES[0x8C]',  # uint32z
+          'base_type' => self::BASE_TYPES[0x8C],  # uint32z
           'values' => [
               0x00000001 => 'full_screen',
               0x00000002 => 'half_vertical',
@@ -3376,7 +3376,7 @@ class GlobalProfile {
       ],
       'swim_stroke' => [
           'name' => 'swim_stroke',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'freestyle',
               1 => 'backstroke',
@@ -3389,7 +3389,7 @@ class GlobalProfile {
       ],
       'switch' => [
           'name' => 'switch',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'off',
               1 => 'on',
@@ -3398,11 +3398,11 @@ class GlobalProfile {
       ],
       'time_into_day' => [  # number of seconds into the day since 00 =>00 =>00 UTC
           'name' => 'time_into_day',
-          'base_type' => 'BASE_TYPES[0x86]',  # uint32
+          'base_type' => self::BASE_TYPES[0x86],  # uint32
       ],
       'time_mode' => [
           'name' => 'time_mode',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'hour12',
               1 => 'hour24',  # Does not use a leading zero and has a colon
@@ -3414,7 +3414,7 @@ class GlobalProfile {
       ],
       'time_zone' => [
           'name' => 'time_zone',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'almaty',
               1 => 'bangkok',
@@ -3526,7 +3526,7 @@ class GlobalProfile {
       ],
       'timer_trigger' => [  # timer event data
           'name' => 'timer_trigger',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'manual',
               1 => 'auto',
@@ -3535,14 +3535,14 @@ class GlobalProfile {
       ],
       'tissue_model_type' => [
           'name' => 'tissue_model_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'zhl_16c',  # Buhlmann's decompression algorithm, version C
           ],
       ],
       'tone' => [
           'name' => 'tone',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'off',
               1 => 'tone',
@@ -3552,7 +3552,7 @@ class GlobalProfile {
       ],
       'total_body_exercise_name' => [
           'name' => 'total_body_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'burpee',
               1 => 'weighted_burpee',
@@ -3571,7 +3571,7 @@ class GlobalProfile {
       ],
       'triceps_extension_exercise_name' => [
           'name' => 'triceps_extension_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'bench_dip',
               1 => 'weighted_bench_dip',
@@ -3618,7 +3618,7 @@ class GlobalProfile {
       ],
       'turn_type' => [
           'name' => 'turn_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'arriving_idx',
               1 => 'arriving_left_idx',
@@ -3662,7 +3662,7 @@ class GlobalProfile {
       ],
       'user_local_id' => [
           'name' => 'user_local_id',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0x0000 => 'local_min',
               0x000F => 'local_max',
@@ -3674,7 +3674,7 @@ class GlobalProfile {
       ],
       'warm_up_exercise_name' => [
           'name' => 'warm_up_exercise_name',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'quadruped_rocking',
               1 => 'neck_tilts',
@@ -3711,7 +3711,7 @@ class GlobalProfile {
       ],
       'watchface_mode' => [
           'name' => 'watchface_mode',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'digital',
               1 => 'analog',
@@ -3721,7 +3721,7 @@ class GlobalProfile {
       ],
       'water_type' => [
           'name' => 'water_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'fresh',
               1 => 'salt',
@@ -3731,7 +3731,7 @@ class GlobalProfile {
       ],
       'weather_report' => [
           'name' => 'weather_report',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'current',
               1 => 'forecast',  # Deprecated use hourly_forecast instead
@@ -3741,7 +3741,7 @@ class GlobalProfile {
       ],
       'weather_severe_type' => [
           'name' => 'weather_severe_type',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'unspecified',
               1 => 'tornado',
@@ -3832,7 +3832,7 @@ class GlobalProfile {
       ],
       'weather_severity' => [
           'name' => 'weather_severity',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'unknown',
               1 => 'warning',
@@ -3843,7 +3843,7 @@ class GlobalProfile {
       ],
       'weather_status' => [
           'name' => 'weather_status',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'clear',
               1 => 'partly_cloudy',
@@ -3870,14 +3870,14 @@ class GlobalProfile {
       ],
       'weight' => [
           'name' => 'weight',
-          'base_type' => 'BASE_TYPES[0x84]',  # uint16
+          'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0xFFFE => 'calculating',
           ],
       ],
       'wkt_step_duration' => [
           'name' => 'wkt_step_duration',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'time',
               1 => 'distance',
@@ -3913,7 +3913,7 @@ class GlobalProfile {
       ],
       'wkt_step_target' => [
           'name' => 'wkt_step_target',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'speed',
               1 => 'heart_rate',
@@ -3933,7 +3933,7 @@ class GlobalProfile {
       ],
       'workout_capabilities' => [
           'name' => 'workout_capabilities',
-          'base_type' => 'BASE_TYPES[0x8C]',  # uint32z
+          'base_type' => self::BASE_TYPES[0x8C],  # uint32z
           'values' => [
               0x00000001 => 'interval',
               0x00000002 => 'custom',
@@ -3953,7 +3953,7 @@ class GlobalProfile {
       ],
       'workout_equipment' => [
           'name' => 'workout_equipment',
-          'base_type' => 'BASE_TYPES[0x00]',  # enum
+          'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'none',
               1 => 'swim_fins',
@@ -3965,14 +3965,14 @@ class GlobalProfile {
       ],
       'workout_hr' => [  # 0 - 100 indicates% of max hr; >100 indicates bpm (255 max] plus 100
           'name' => 'workout_hr',
-          'base_type' => 'BASE_TYPES[0x86]',  # uint32
+          'base_type' => self::BASE_TYPES[0x86],  # uint32
           'values' => [
               100 => 'bpm_offset',
           ],
       ],
       'workout_power' => [  # 0 - 1000 indicates % of functional threshold power; >1000 indicates watts plus 1000.
           'name' => 'workout_power',
-          'base_type' => 'BASE_TYPES[0x86]',  # uint32
+          'base_type' => self::BASE_TYPES[0x86],  # uint32
           'values' => [
               1000 => 'watts_offset',
           ],
@@ -3992,7 +3992,7 @@ class GlobalProfile {
       # **************************** Common Messages *****************************
       'file_id' => [  # Must be first message in file.
           'name' => 'file_id',
-          'mesg_num' => 0,
+          'global_message_number' => 0,
           'fields' => [
               'type' => [
                   'name' => 'type',
@@ -4063,7 +4063,7 @@ class GlobalProfile {
       # ************************************  ************************************
       'capabilities' => [
           'name' => 'capabilities',
-          'mesg_num' => 1,
+          'global_message_number' => 1,
           'fields' => [
               'languages' => [  # Use language_bits_x types where x is index of array.
                   'name' => 'languages',
@@ -4089,7 +4089,7 @@ class GlobalProfile {
       ],
       'hrm_profile' => [
           'name' => 'hrm_profile',
-          'mesg_num' => 4,
+          'global_message_number' => 4,
           'fields' => [
               'enabled' => [
                   'name' => 'enabled',
@@ -4120,7 +4120,7 @@ class GlobalProfile {
       ],
       'sdm_profile' => [
           'name' => 'sdm_profile',
-          'mesg_num' => 5,
+          'global_message_number' => 5,
           'fields' => [
               'enabled' => [
                   'name' => 'enabled',
@@ -4170,7 +4170,7 @@ class GlobalProfile {
       ],
       'bike_profile' => [
           'name' => 'bike_profile',
-          'mesg_num' => 6,
+          'global_message_number' => 6,
           'fields' => [
               'name' => [
                   'name' => 'name',
@@ -4349,7 +4349,7 @@ class GlobalProfile {
       ],
       'hr_zone' => [
           'name' => 'hr_zone',
-          'mesg_num' => 8,
+          'global_message_number' => 8,
           'fields' => [
               'high_bpm' => [
                   'name' => 'high_bpm',
@@ -4371,7 +4371,7 @@ class GlobalProfile {
       ],
       'power_zone' => [
           'name' => 'power_zone',
-          'mesg_num' => 9,
+          'global_message_number' => 9,
           'fields' => [
               'high_value' => [
                   'name' => 'high_value',
@@ -4393,7 +4393,7 @@ class GlobalProfile {
       ],
       'met_zone' => [
           'name' => 'met_zone',
-          'mesg_num' => 10,
+          'global_message_number' => 10,
           'fields' => [
               'high_bpm' => [
                   'name' => 'high_bpm',
@@ -4423,7 +4423,7 @@ class GlobalProfile {
       ],
       'sport' => [
           'name' => 'sport',
-          'mesg_num' => 12,
+          'global_message_number' => 12,
           'fields' => [
               'sport' => [
                   'name' => 'sport',
@@ -4444,7 +4444,7 @@ class GlobalProfile {
       ],
       'session' => [
           'name' => 'session',
-          'mesg_num' => 18,
+          'global_message_number' => 18,
           'fields' => [
               'event' => [  # session
                   'name' => 'event',
@@ -5321,7 +5321,7 @@ class GlobalProfile {
       ],
       'lap' => [
           'name' => 'lap',
-          'mesg_num' => 19,
+          'global_message_number' => 19,
           'fields' => [
               'event' => [
                   'name' => 'event',
@@ -6114,7 +6114,7 @@ class GlobalProfile {
       ],
       'record' => [
           'name' => 'record',
-          'mesg_num' => 20,
+          'global_message_number' => 20,
           'fields' => [
               'position_lat' => [
                   'name' => 'position_lat',
@@ -6611,7 +6611,7 @@ class GlobalProfile {
       ],
       'event' => [
           'name' => 'event',
-          'mesg_num' => 21,
+          'global_message_number' => 21,
           'fields' => [
               'event' => [
                   'name' => 'event',
@@ -7020,7 +7020,7 @@ class GlobalProfile {
       ],
       'device_info' => [
           'name' => 'device_info',
-          'mesg_num' => 23,
+          'global_message_number' => 23,
           'fields' => [
               'device_index' => [
                   'name' => 'device_index',
@@ -7171,7 +7171,7 @@ class GlobalProfile {
       ],
       'workout_step' => [
           'name' => 'workout_step',
-          'mesg_num' => 27,
+          'global_message_number' => 27,
           'fields' => [
               'wkt_step_name' => [
                   'name' => 'wkt_step_name',
@@ -7696,7 +7696,7 @@ class GlobalProfile {
       ],
       'course_point' => [
           'name' => 'course_point',
-          'mesg_num' => 32,
+          'global_message_number' => 32,
           'fields' => [
               'timestamp' => [
                   'name' => 'timestamp',
@@ -7746,7 +7746,7 @@ class GlobalProfile {
       ],
       'file_capabilities' => [
           'name' => 'file_capabilities',
-          'mesg_num' => 37,
+          'global_message_number' => 37,
           'fields' => [
               'type' => [
                   'name' => 'type',
@@ -7783,16 +7783,16 @@ class GlobalProfile {
       ],
       'mesg_capabilities' => [
           'name' => 'mesg_capabilities',
-          'mesg_num' => 38,
+          'global_message_number' => 38,
           'fields' => [
               'file' => [
                   'name' => 'file',
                   'type' =>  self::FIELD_TYPES['file'],
                   'def_num' => 0,
               ],
-              'mesg_num' => [
-                  'name' => 'mesg_num',
-                  'type' =>  self::FIELD_TYPES['mesg_num'],
+              'global_message_number' => [
+                  'name' => 'global_message_number',
+                  'type' =>  self::FIELD_TYPES['global_message_number'],
                   'def_num' => 1,
               ],
               'count_type' => [
@@ -7855,16 +7855,16 @@ class GlobalProfile {
       ],
       'field_capabilities' => [
           'name' => 'field_capabilities',
-          'mesg_num' => 39,
+          'global_message_number' => 39,
           'fields' => [
               'file' => [
                   'name' => 'file',
                   'type' =>  self::FIELD_TYPES['file'],
                   'def_num' => 0,
               ],
-              'mesg_num' => [
-                  'name' => 'mesg_num',
-                  'type' =>  self::FIELD_TYPES['mesg_num'],
+              'global_message_number' => [
+                  'name' => 'global_message_number',
+                  'type' =>  self::FIELD_TYPES['global_message_number'],
                   'def_num' => 1,
               ],
               'field_num' => [
@@ -7886,7 +7886,7 @@ class GlobalProfile {
       ],
       'file_creator' => [
           'name' => 'file_creator',
-          'mesg_num' => 49,
+          'global_message_number' => 49,
           'fields' => [
               'software_version' => [
                   'name' => 'software_version',
@@ -7902,7 +7902,7 @@ class GlobalProfile {
       ],
       'speed_zone' => [
           'name' => 'speed_zone',
-          'mesg_num' => 53,
+          'global_message_number' => 53,
           'fields' => [
               'high_value' => [
                   'name' => 'high_value',
@@ -7925,7 +7925,7 @@ class GlobalProfile {
       ],
       'monitoring' => [
           'name' => 'monitoring',
-          'mesg_num' => 55,
+          'global_message_number' => 55,
           'fields' => [
               'device_index' => [  # Associates this data to device_info message.  Not required for file with single device (sensor].
                   'name' => 'device_index',
@@ -8161,7 +8161,7 @@ class GlobalProfile {
       ],
       'training_file' => [  # Corresponds to file_id of workout or course.
           'name' => 'training_file',
-          'mesg_num' => 72,
+          'global_message_number' => 72,
           'fields' => [
               'type' => [
                   'name' => 'type',
@@ -8220,7 +8220,7 @@ class GlobalProfile {
       ],
       'hrv' => [  # Heart rate variability
           'name' => 'hrv',
-          'mesg_num' => 78,
+          'global_message_number' => 78,
           'fields' => [
               'time' => [  # Time between beats
                   'name' => 'time',
@@ -8233,7 +8233,7 @@ class GlobalProfile {
       ],
       'ant_rx' => [
           'name' => 'ant_rx',
-          'mesg_num' => 80,
+          'global_message_number' => 80,
           'fields' => [
               'fractional_timestamp' => [
                   'name' => 'fractional_timestamp',
@@ -8332,7 +8332,7 @@ class GlobalProfile {
       ],
       'ant_tx' => [
           'name' => 'ant_tx',
-          'mesg_num' => 81,
+          'global_message_number' => 81,
           'fields' => [
               'fractional_timestamp' => [
                   'name' => 'fractional_timestamp',
@@ -8431,7 +8431,7 @@ class GlobalProfile {
       ],
       'ant_channel_id' => [
           'name' => 'ant_channel_id',
-          'mesg_num' => 82,
+          'global_message_number' => 82,
           'fields' => [
               'channel_number' => [
                   'name' => 'channel_number',
@@ -8462,7 +8462,7 @@ class GlobalProfile {
       ],
       'length' => [
           'name' => 'length',
-          'mesg_num' => 101,
+          'global_message_number' => 101,
           'fields' => [
               'event' => [
                   'name' => 'event',
@@ -8566,7 +8566,7 @@ class GlobalProfile {
       ],
       'slave_device' => [
           'name' => 'slave_device',
-          'mesg_num' => 106,
+          'global_message_number' => 106,
           'fields' => [
               'manufacturer' => [
                   'name' => 'manufacturer',
@@ -8609,7 +8609,7 @@ class GlobalProfile {
       ],
       'connectivity' => [
           'name' => 'connectivity',
-          'mesg_num' => 127,
+          'global_message_number' => 127,
           'fields' => [
               'bluetooth_enabled' => [  # Use Bluetooth for connectivity features
                   'name' => 'bluetooth_enabled',
@@ -8680,7 +8680,7 @@ class GlobalProfile {
       ],
       'weather_conditions' => [
           'name' => 'weather_conditions',
-          'mesg_num' => 128,
+          'global_message_number' => 128,
           'fields' => [
               'weather_report' => [  # Current or forecast
                   'name' => 'weather_report',
@@ -8771,7 +8771,7 @@ class GlobalProfile {
       ],
       'weather_alert' => [
           'name' => 'weather_alert',
-          'mesg_num' => 129,
+          'global_message_number' => 129,
           'fields' => [
               'report_id' => [  # Unique identifier from GCS report ID string, length is 12
                   'name' => 'report_id',
@@ -8803,7 +8803,7 @@ class GlobalProfile {
       ],
       'cadence_zone' => [
           'name' => 'cadence_zone',
-          'mesg_num' => 131,
+          'global_message_number' => 131,
           'fields' => [
               'high_value' => [
                   'name' => 'high_value',
@@ -8825,7 +8825,7 @@ class GlobalProfile {
       ],
       'hr' => [
           'name' => 'hr',
-          'mesg_num' => 132,
+          'global_message_number' => 132,
           'fields' => [
               'fractional_timestamp' => [
                   'name' => 'fractional_timestamp',
@@ -8967,7 +8967,7 @@ class GlobalProfile {
       ],
       'segment_lap' => [
           'name' => 'segment_lap',
-          'mesg_num' => 142,
+          'global_message_number' => 142,
           'fields' => [
               'event' => [
                   'name' => 'event',
@@ -9521,7 +9521,7 @@ class GlobalProfile {
       ],
       'segment_leaderboard_entry' => [  # Unique Identification data for an individual segment leader within a segment file
           'name' => 'segment_leaderboard_entry',
-          'mesg_num' => 149,
+          'global_message_number' => 149,
           'fields' => [
               'name' => [  # Friendly name assigned to leader
                   'name' => 'name',
@@ -9564,7 +9564,7 @@ class GlobalProfile {
       ],
       'segment_point' => [  # Navigation and race evaluation point for a segment decribing a point along the segment path and time it took each segment leader to reach that point
           'name' => 'segment_point',
-          'mesg_num' => 150,
+          'global_message_number' => 150,
           'fields' => [
               'position_lat' => [
                   'name' => 'position_lat',
@@ -9609,7 +9609,7 @@ class GlobalProfile {
       ],
       'workout_session' => [
           'name' => 'workout_session',
-          'mesg_num' => 158,
+          'global_message_number' => 158,
           'fields' => [
               'sport' => [
                   'name' => 'sport',
@@ -9652,7 +9652,7 @@ class GlobalProfile {
       ],
       'watchface_settings' => [
           'name' => 'watchface_settings',
-          'mesg_num' => 159,
+          'global_message_number' => 159,
           'fields' => [
               'mode' => [
                   'name' => 'mode',
@@ -9701,7 +9701,7 @@ class GlobalProfile {
       ],
       'gps_metadata' => [
           'name' => 'gps_metadata',
-          'mesg_num' => 160,
+          'global_message_number' => 160,
           'fields' => [
               'timestamp_ms' => [  # Millisecond part of the timestamp.
                   'name' => 'timestamp_ms',
@@ -9761,7 +9761,7 @@ class GlobalProfile {
       ],
       'camera_event' => [
           'name' => 'camera_event',
-          'mesg_num' => 161,
+          'global_message_number' => 161,
           'fields' => [
               'timestamp_ms' => [  # Millisecond part of the timestamp.
                   'name' => 'timestamp_ms',
@@ -9789,7 +9789,7 @@ class GlobalProfile {
       ],
       'timestamp_correlation' => [
           'name' => 'timestamp_correlation',
-          'mesg_num' => 162,
+          'global_message_number' => 162,
           'fields' => [
               'fractional_timestamp' => [  # Fractional part of the UTC timestamp at the time the system timestamp was recorded.
                   'name' => 'fractional_timestamp',
@@ -9834,7 +9834,7 @@ class GlobalProfile {
       ],
       'gyroscope_data' => [
           'name' => 'gyroscope_data',
-          'mesg_num' => 164,
+          'global_message_number' => 164,
           'fields' => [
               'timestamp_ms' => [  # Millisecond part of the timestamp.
                   'name' => 'timestamp_ms',
@@ -9889,7 +9889,7 @@ class GlobalProfile {
       ],
       'accelerometer_data' => [
           'name' => 'accelerometer_data',
-          'mesg_num' => 165,
+          'global_message_number' => 165,
           'fields' => [
               'timestamp_ms' => [  # Millisecond part of the timestamp.
                   'name' => 'timestamp_ms',
@@ -9962,7 +9962,7 @@ class GlobalProfile {
       ],
       'three_d_sensor_calibration' => [
           'name' => 'three_d_sensor_calibration',
-          'mesg_num' => 167,
+          'global_message_number' => 167,
           'fields' => [
               'sensor_type' => [  # Indicates which sensor the calibration is for
                   'name' => 'sensor_type',
@@ -10031,7 +10031,7 @@ class GlobalProfile {
       ],
       'video_frame' => [
           'name' => 'video_frame',
-          'mesg_num' => 169,
+          'global_message_number' => 169,
           'fields' => [
               'timestamp_ms' => [  # Millisecond part of the timestamp.
                   'name' => 'timestamp_ms',
@@ -10049,7 +10049,7 @@ class GlobalProfile {
       ],
       'obdii_data' => [
           'name' => 'obdii_data',
-          'mesg_num' => 174,
+          'global_message_number' => 174,
           'fields' => [
               'timestamp_ms' => [  # Fractional part of timestamp, added to timestamp
                   'name' => 'timestamp_ms',
@@ -10099,7 +10099,7 @@ class GlobalProfile {
       ],
       'nmea_sentence' => [
           'name' => 'nmea_sentence',
-          'mesg_num' => 177,
+          'global_message_number' => 177,
           'fields' => [
               'timestamp_ms' => [  # Fractional part of timestamp, added to timestamp
                   'name' => 'timestamp_ms',
@@ -10117,7 +10117,7 @@ class GlobalProfile {
       ],
       'aviation_attitude' => [
           'name' => 'aviation_attitude',
-          'mesg_num' => 178,
+          'global_message_number' => 178,
           'fields' => [
               'timestamp_ms' => [  # Fractional part of timestamp, added to timestamp
                   'name' => 'timestamp_ms',
@@ -10194,7 +10194,7 @@ class GlobalProfile {
       ],
       'video' => [
           'name' => 'video',
-          'mesg_num' => 184,
+          'global_message_number' => 184,
           'fields' => [
               'url' => [
                   'name' => 'url',
@@ -10216,7 +10216,7 @@ class GlobalProfile {
       ],
       'video_title' => [
           'name' => 'video_title',
-          'mesg_num' => 185,
+          'global_message_number' => 185,
           'fields' => [
               'message_count' => [  # Total number of title parts
                   'name' => 'message_count',
@@ -10237,7 +10237,7 @@ class GlobalProfile {
       ],
       'video_description' => [
           'name' => 'video_description',
-          'mesg_num' => 186,
+          'global_message_number' => 186,
           'fields' => [
               'message_count' => [  # Total number of description parts
                   'name' => 'message_count',
@@ -10258,7 +10258,7 @@ class GlobalProfile {
       ],
       'video_clip' => [
           'name' => 'video_clip',
-          'mesg_num' => 187,
+          'global_message_number' => 187,
           'fields' => [
               'clip_number' => [
                   'name' => 'clip_number',
@@ -10301,7 +10301,7 @@ class GlobalProfile {
       ],
       'ohr_settings' => [
           'name' => 'ohr_settings',
-          'mesg_num' => 188,
+          'global_message_number' => 188,
           'fields' => [
               'enabled' => [
                   'name' => 'enabled',
@@ -10312,7 +10312,7 @@ class GlobalProfile {
       ],
       'exd_screen_configuration' => [
           'name' => 'exd_screen_configuration',
-          'mesg_num' => 200,
+          'global_message_number' => 200,
           'fields' => [
               'screen_index' => [
                   'name' => 'screen_index',
@@ -10338,7 +10338,7 @@ class GlobalProfile {
       ],
       'exd_data_field_configuration' => [
           'name' => 'exd_data_field_configuration',
-          'mesg_num' => 201,
+          'global_message_number' => 201,
           'fields' => [
               'screen_index' => [
                   'name' => 'screen_index',
@@ -10390,7 +10390,7 @@ class GlobalProfile {
       ],
       'exd_data_concept_configuration' => [
           'name' => 'exd_data_concept_configuration',
-          'mesg_num' => 202,
+          'global_message_number' => 202,
           'fields' => [
               'screen_index' => [
                   'name' => 'screen_index',
@@ -10467,7 +10467,7 @@ class GlobalProfile {
       ],
       'field_description' => [  # Must be logged before developer field is used
           'name' => 'field_description',
-          'mesg_num' => 206,
+          'global_message_number' => 206,
           'fields' => [
               'developer_data_index' => [
                   'name' => 'developer_data_index',
@@ -10531,7 +10531,7 @@ class GlobalProfile {
               ],
               'native_mesg_num' => [
                   'name' => 'native_mesg_num',
-                  'type' =>  self::FIELD_TYPES['mesg_num'],
+                  'type' =>  self::FIELD_TYPES['global_message_number'],
                   'def_num' => 14,
               ],
               'native_field_num' => [
@@ -10543,7 +10543,7 @@ class GlobalProfile {
       ],
       'developer_data_id' => [  # Must be logged before field description
           'name' => 'developer_data_id',
-          'mesg_num' => 207,
+          'global_message_number' => 207,
           'fields' => [
               'developer_id' => [
                   'name' => 'developer_id',
@@ -10574,7 +10574,7 @@ class GlobalProfile {
       ],
       'magnetometer_data' => [
           'name' => 'magnetometer_data',
-          'mesg_num' => 208,
+          'global_message_number' => 208,
           'fields' => [
               'timestamp_ms' => [  # Millisecond part of the timestamp.
                   'name' => 'timestamp_ms',
@@ -10629,7 +10629,7 @@ class GlobalProfile {
       ],
       'barometer_data' => [
           'name' => 'barometer_data',
-          'mesg_num' => 209,
+          'global_message_number' => 209,
           'fields' => [
               'timestamp_ms' => [  # Millisecond part of the timestamp.
                   'name' => 'timestamp_ms',
@@ -10654,7 +10654,7 @@ class GlobalProfile {
       ],
       'one_d_sensor_calibration' => [
           'name' => 'one_d_sensor_calibration',
-          'mesg_num' => 210,
+          'global_message_number' => 210,
           'fields' => [
               'sensor_type' => [  # Indicates which sensor the calibration is for
                   'name' => 'sensor_type',
@@ -10703,7 +10703,7 @@ class GlobalProfile {
       ],
       'set' => [
           'name' => 'set',
-          'mesg_num' => 225,
+          'global_message_number' => 225,
           'fields' => [
               'duration' => [
                   'name' => 'duration',
@@ -10768,7 +10768,7 @@ class GlobalProfile {
       ],
       'stress_level' => [  # Value from 1 to 100 calculated by FirstBeat
           'name' => 'stress_level',
-          'mesg_num' => 227,
+          'global_message_number' => 227,
           'fields' => [
               'stress_level_value' => [
                   'name' => 'stress_level_value',
@@ -10785,7 +10785,7 @@ class GlobalProfile {
       ],
       'dive_settings' => [
           'name' => 'dive_settings',
-          'mesg_num' => 258,
+          'global_message_number' => 258,
           'fields' => [
               'name' => [
                   'name' => 'name',
@@ -10940,7 +10940,7 @@ class GlobalProfile {
       ],
       'dive_gas' => [
           'name' => 'dive_gas',
-          'mesg_num' => 259,
+          'global_message_number' => 259,
           'fields' => [
               'helium_content' => [
                   'name' => 'helium_content',
@@ -10968,7 +10968,7 @@ class GlobalProfile {
       ],
       'dive_alarm' => [
           'name' => 'dive_alarm',
-          'mesg_num' => 262,
+          'global_message_number' => 262,
           'fields' => [
               'depth' => [
                   'name' => 'depth',
@@ -11012,7 +11012,7 @@ class GlobalProfile {
       ],
       'exercise_title' => [
           'name' => 'exercise_title',
-          'mesg_num' => 264,
+          'global_message_number' => 264,
           'fields' => [
               'exercise_category' => [
                   'name' => 'exercise_category',
@@ -11038,11 +11038,11 @@ class GlobalProfile {
       ],
       'dive_summary' => [
           'name' => 'dive_summary',
-          'mesg_num' => 268,
+          'global_message_number' => 268,
           'fields' => [
               'reference_mesg' => [
                   'name' => 'reference_mesg',
-                  'type' =>  self::FIELD_TYPES['mesg_num'],
+                  'type' =>  self::FIELD_TYPES['global_message_number'],
                   'def_num' => 0,
               ],
               'reference_index' => [
@@ -11120,7 +11120,7 @@ class GlobalProfile {
       # ************************* Activity File Messages *************************
       'activity' => [
           'name' => 'activity',
-          'mesg_num' => 34,
+          'global_message_number' => 34,
           'fields' => [
               'total_timer_time' => [  # Exclude pauses
                   'name' => 'total_timer_time',
@@ -11167,7 +11167,7 @@ class GlobalProfile {
       # ********************** Blood Pressure File Messages **********************
       'blood_pressure' => [
           'name' => 'blood_pressure',
-          'mesg_num' => 51,
+          'global_message_number' => 51,
           'fields' => [
               'systolic_pressure' => [
                   'name' => 'systolic_pressure',
@@ -11234,7 +11234,7 @@ class GlobalProfile {
       # ************************** Course File Messages **************************
       'course' => [
           'name' => 'course',
-          'mesg_num' => 31,
+          'global_message_number' => 31,
           'fields' => [
               'sport' => [
                   'name' => 'sport',
@@ -11263,7 +11263,7 @@ class GlobalProfile {
       # ************************** Device File Messages **************************
       'software' => [
           'name' => 'software',
-          'mesg_num' => 35,
+          'global_message_number' => 35,
           'fields' => [
               'version' => [
                   'name' => 'version',
@@ -11288,7 +11288,7 @@ class GlobalProfile {
       # ************************** Goals File Messages ***************************
       'goal' => [
           'name' => 'goal',
-          'mesg_num' => 15,
+          'global_message_number' => 15,
           'fields' => [
               'sport' => [
                   'name' => 'sport',
@@ -11362,7 +11362,7 @@ class GlobalProfile {
       # ************************ Monitoring File Messages ************************
       'monitoring_info' => [
           'name' => 'monitoring_info',
-          'mesg_num' => 103,
+          'global_message_number' => 103,
           'fields' => [
               'local_timestamp' => [  # Use to convert activity timestamps to local time if device does not support time zone and daylight savings time correction.
                   'name' => 'local_timestamp',
@@ -11403,7 +11403,7 @@ class GlobalProfile {
       # ***************************** Other Messages *****************************
       'memo_glob' => [
           'name' => 'memo_glob',
-          'mesg_num' => 145,
+          'global_message_number' => 145,
           'fields' => [
               'memo' => [  # Block of utf8 bytes
                   'name' => 'memo',
@@ -11432,7 +11432,7 @@ class GlobalProfile {
       # ************************* Schedule File Messages *************************
       'schedule' => [
           'name' => 'schedule',
-          'mesg_num' => 28,
+          'global_message_number' => 28,
           'fields' => [
               'manufacturer' => [  # Corresponds to file_id of scheduled workout / course.
                   'name' => 'manufacturer',
@@ -11503,7 +11503,7 @@ class GlobalProfile {
       # ************************* Segment File Messages **************************
       'segment_id' => [  # Unique Identification data for a segment file
           'name' => 'segment_id',
-          'mesg_num' => 148,
+          'global_message_number' => 148,
           'fields' => [
               'name' => [  # Friendly name assigned to segment
                   'name' => 'name',
@@ -11557,7 +11557,7 @@ class GlobalProfile {
       # *********************** Segment List File Messages ***********************
       'segment_file' => [  # Summary of the unique segment and leaderboard information associated with a segment file. This message is used to compile a segment list file describing all segment files on a device. The segment list file is used when refreshing the contents of a segment file with the latest available leaderboard information.
           'name' => 'segment_file',
-          'mesg_num' => 151,
+          'global_message_number' => 151,
           'fields' => [
               'file_uuid' => [  # UUID of the segment file
                   'name' => 'file_uuid',
@@ -11611,7 +11611,7 @@ class GlobalProfile {
       # ************************* Settings File Messages *************************
       'device_settings' => [
           'name' => 'device_settings',
-          'mesg_num' => 2,
+          'global_message_number' => 2,
           'fields' => [
               'active_time_zone' => [  # Index into time zone arrays.
                   'name' => 'active_time_zone',
@@ -11737,7 +11737,7 @@ class GlobalProfile {
       ],
       'user_profile' => [
           'name' => 'user_profile',
-          'mesg_num' => 3,
+          'global_message_number' => 3,
           'fields' => [
               'friendly_name' => [
                   'name' => 'friendly_name',
@@ -11904,7 +11904,7 @@ class GlobalProfile {
       # ********************** Sport Settings File Messages **********************
       'zones_target' => [
           'name' => 'zones_target',
-          'mesg_num' => 7,
+          'global_message_number' => 7,
           'fields' => [
               'max_heart_rate' => [
                   'name' => 'max_heart_rate',
@@ -11938,7 +11938,7 @@ class GlobalProfile {
       # ************************** Totals File Messages **************************
       'totals' => [
           'name' => 'totals',
-          'mesg_num' => 33,
+          'global_message_number' => 33,
           'fields' => [
               'timer_time' => [  # Excludes pauses
                   'name' => 'timer_time',
@@ -11998,7 +11998,7 @@ class GlobalProfile {
       # *********************** Weight Scale File Messages ***********************
       'weight_scale' => [
           'name' => 'weight_scale',
-          'mesg_num' => 30,
+          'global_message_number' => 30,
           'fields' => [
               'weight' => [
                   'name' => 'weight',
@@ -12085,7 +12085,7 @@ class GlobalProfile {
       # ************************* Workout File Messages **************************
       'workout' => [
           'name' => 'workout',
-          'mesg_num' => 26,
+          'global_message_number' => 26,
           'fields' => [
               'sport' => [
                   'name' => 'sport',
@@ -12128,18 +12128,98 @@ class GlobalProfile {
       ],
   ];
 
+  const MESSAGE_TYPES_MAP = [
+    'file_id' => 0,
+    'capabilities' => 1,
+    'hrm_profile' => 4,
+    'sdm_profile' => 5,
+    'bike_profile' => 6,
+    'hr_zone' => 8,
+    'power_zone' => 9,
+    'met_zone' => 10,
+    'sport' => 12,
+    'session' => 18,
+    'lap' => 19,
+    'record' => 20,
+    'event' => 21,
+    'device_info' => 23,
+    'workout_step' => 27,
+    'course_point' => 32,
+    'file_capabilities' => 37,
+    'mesg_capabilities' => 38,
+    'field_capabilities' => 39,
+    'file_creator' => 49,
+    'speed_zone' => 53,
+    'monitoring' => 55,
+    'training_file' => 72,
+    'hrv' => 78,
+    'ant_rx' => 80,
+    'ant_tx' => 81,
+    'ant_channel_id' => 82,
+    'length' => 101,
+    'slave_device' => 106,
+    'connectivity' => 127,
+    'weather_conditions' => 128,
+    'weather_alert' => 129,
+    'cadence_zone' => 131,
+    'hr' => 132,
+    'segment_lap' => 142,
+    'segment_leaderboard_entry' => 149,
+    'segment_point' => 150,
+    'workout_session' => 158,
+    'watchface_settings' => 159,
+    'gps_metadata' => 160,
+    'camera_event' => 161,
+    'timestamp_correlation' => 162,
+    'gyroscope_data' => 164,
+    'accelerometer_data' => 165,
+    'three_d_sensor_calibration' => 167,
+    'video_frame' => 169,
+    'obdii_data' => 174,
+    'nmea_sentence' => 177,
+    'aviation_attitude' => 178,
+    'video' => 184,
+    'video_title' => 185,
+    'video_description' => 186,
+    'video_clip' => 187,
+    'ohr_settings' => 188,
+    'exd_screen_configuration' => 200,
+    'exd_data_field_configuration' => 201,
+    'exd_data_concept_configuration' => 202,
+    'field_description' => 206,
+    'developer_data_id' => 207,
+    'magnetometer_data' => 208,
+    'barometer_data' => 209,
+    'one_d_sensor_calibration' => 210,
+    'set' => 225,
+    'stress_level' => 227,
+    'dive_settings' => 258,
+    'dive_gas' => 259,
+    'dive_alarm' => 262,
+    'exercise_title' => 264,
+    'dive_summary' => 268,
+    'activity' => 34,
+    'blood_pressure' => 51,
+    'course' => 31,
+    'software' => 35,
+    'goal' => 15,
+    'monitoring_info' => 103,
+    'memo_glob' => 145,
+    'schedule' => 28,
+    'segment_id' => 148,
+    'segment_file' => 151,
+    'device_settings' => 2,
+    'user_profile' => 3,
+    'zones_target' => 7,
+    'totals' => 33,
+    'weight_scale' => 30,
+    'workout' => 26,
+  ];
+
   public static function getBaseType($identifier)
   {
     return isset(self::BASE_TYPES[$identifier])
       ? self::BASE_TYPES[$identifier]
-      : 'unknown'
-    ;
-  }
-
-  public static function getEnumForMessageType($message_name, $index)
-  {
-    return isset(self::FIELD_TYPES[$message_name]['values'][$index])
-      ? self::FIELD_TYPES[$message_name]['values'][$index]
       : 'unknown'
     ;
   }
