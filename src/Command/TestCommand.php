@@ -9,6 +9,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use App\Service\GPSTrackFactory;
 use App\Service\FITParser;
+use App\Service\FITParser2;
 use App\Service\FITCSVWriter;
 use App\Model\FIT\GlobalProfile;
 
@@ -66,17 +67,27 @@ class TestCommand extends InteractiveOptionCommand
 
       case 'read_fit':
         $messages = $this->fit_parser->messagesFromCSVFile($input->getOption('path'));
-        $messages = array_slice($messages, 0, 100);
+        // $messages = array_slice($messages, 0, 100);
 
         $output->writeln($this->fitcsv_writer->getHeaderString(52));
-        foreach($messages as $message){
-          $output->writeln($this->fitcsv_writer->getCSVString($message));
-        }
-        //dump($messages);
+         foreach($messages as $message){
+           $output->writeln($this->fitcsv_writer->getCSVString($message));
+         }
         break;
+
       case 'global_profile':
         print_r(GlobalProfile::getFieldDefinition('event', 'data'));
         break;
+
+      case 'new_fit_parser':
+        $fp = new FITParser2($input->getOption('path'));
+        $fp->parseFile();
+        break;
+
+      case 'misc':
+        foreach (GlobalProfile::MESSAGE_TYPES as $message_type) {
+          echo '\'' . $message_type['name'] . '\' => ' . $message_type['global_message_number'] . ",\n";
+        }
 
       default:
         $output->writeln('Executing sub-command ' . $input->getOption('cmd'));
@@ -100,7 +111,8 @@ class TestCommand extends InteractiveOptionCommand
       'output_gpx',
       'test',
       'read_fit',
-      'global_profile'
+      'global_profile',
+      'new_fit_parser'
     ];
   }
 
