@@ -47,11 +47,4 @@ class DefinitionMessage extends Message
     return $this->getFieldByIndex($field_index)->getUnits($message);
   }
 
-  public function setUnitsForAllFieldDefinitionsFromGlobalProfile()
-  {
-    foreach ($this->fields as $field_definition) {
-      $field_definition->setUnitsFromGlobalProfile($this->message);
-    }
-  }
-
 }

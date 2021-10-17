@@ -3,7 +3,7 @@
 namespace App\Model;
 
 use Twig\Environment;
-use App\Model\FIT\FITProfile;
+use App\Model\FIT\GlobalProfile;
 use function Symfony\Component\String\u;
 
 class GPSTrack {
@@ -717,7 +717,7 @@ class GPSTrack {
 
 	public function setSportFromSessionData($sport)
   {
-		$this->sport = FITProfile::fitEnumToString('sport', $sport);
+		$this->sport = GlobalProfile::getFieldTypeValue('sport', $sport);
   }
 
 	public static function propertySessionMap()

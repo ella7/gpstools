@@ -44,16 +44,6 @@ class FieldDefinition extends Field
     return (count($this->subfields) > 0);
   }
 
-  public function setSubfieldsFromGlobalProfile($message_name)
-  {
-    $this->subfields = [];
-    if($subfields_array = GlobalProfile::getSubfields($message_name, $this->name)){
-      foreach ($subfields_array as $subfield_array) {
-        $this->subfields[] = new SubfieldDefinition($subfield_array);
-      }
-    }
-  }
-
   public function setSubfields($a)
   {
     $this->subfields = [];
@@ -77,11 +67,6 @@ class FieldDefinition extends Field
   public function hasComponents()
   {
     return (count($this->components) > 0);
-  }
-
-  public function setUnitsFromGlobalProfile(string $message_name)
-  {
-    $this->units = GlobalProfile::getUnitsForMessageAndFieldType($message_name, $this->name);
   }
 
 }

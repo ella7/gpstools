@@ -12224,19 +12224,11 @@ class GlobalProfile {
     ;
   }
 
-  public static function getUnitsForMessageAndFieldType($message_name, $field_name)
+  public static function getFieldTypeValue($field_name, $key)
   {
-    return isset(self::MESSAGE_TYPES[$message_name]['fields'][$field_name]['units'])
-      ? self::MESSAGE_TYPES[$message_name]['fields'][$field_name]['units']
-      : null
-    ;
-  }
-
-  public static function getSubfields($message_name, $field_name)
-  {
-    return isset(self::MESSAGE_TYPES[$message_name]['fields'][$field_name]['subfields'])
-      ? self::MESSAGE_TYPES[$message_name]['fields'][$field_name]['subfields']
-      : null
+    return isset(self::FIELD_TYPES[$field_name]['values'][$key])
+      ? self::FIELD_TYPES[$field_name]['values'][$key]
+      : 'unknown'
     ;
   }
 
