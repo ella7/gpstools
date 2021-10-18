@@ -402,7 +402,7 @@ class GlobalProfile {
           'base_type' => self::BASE_TYPES[0x00],  # enum
           'values' => [
               0 => 'video_start',  # Start of video recording
-              1 => 'video_split',  # Mark of video file split (end of one file, beginning of the other]
+              1 => 'video_split',  # Mark of video file split (end of one file, beginning of the other)
               2 => 'video_end',  # End of video recording
               3 => 'photo_taken',  # Still photo taken
               4 => 'video_second_stream_start',
@@ -799,7 +799,7 @@ class GlobalProfile {
               1 => 'month_day',
           ],
       ],
-      'date_time' => [  # seconds since UTC 00 =>00 Dec 31 1989
+      'date_time' => [  # seconds since UTC 00:00 Dec 31 1989
           'name' => 'date_time',
           'base_type' => self::BASE_TYPES[0x86],  # uint32
       ],
@@ -893,12 +893,12 @@ class GlobalProfile {
               0 => 'degree',  # dd.dddddd
               1 => 'degree_minute',  # dddmm.mmm
               2 => 'degree_minute_second',  # dddmmss
-              3 => 'austrian_grid',  # Austrian Grid (BMN]
+              3 => 'austrian_grid',  # Austrian Grid (BMN)
               4 => 'british_grid',  # British National Grid
               5 => 'dutch_grid',  # Dutch grid system
               6 => 'hungarian_grid',  # Hungarian grid system
               7 => 'finnish_grid',  # Finnish grid system Zone3 KKJ27
-              8 => 'german_grid',  # Gausss Krueger (German]
+              8 => 'german_grid',  # Gausss Krueger (German)
               9 => 'icelandic_grid',  # Icelandic Grid
               10 => 'indonesian_equatorial',  # Indonesian Equatorial LCO
               11 => 'indonesian_irian',  # Indonesian Irian LCO
@@ -920,8 +920,8 @@ class GlobalProfile {
               27 => 'new_zealand_grid',  # New Zealand grid system
               28 => 'new_zealand_transverse',  # New Zealand Transverse Mercator
               29 => 'qatar_grid',  # Qatar National Grid
-              30 => 'modified_swedish_grid',  # Modified RT-90 (Sweden]
-              31 => 'swedish_grid',  # RT-90 (Sweden]
+              30 => 'modified_swedish_grid',  # Modified RT-90 (Sweden)
+              31 => 'swedish_grid',  # RT-90 (Sweden)
               32 => 'south_african_grid',  # South African Grid
               33 => 'swiss_grid',  # Swiss CH-1903 grid
               34 => 'taiwan_grid',  # Taiwan Grid
@@ -931,7 +931,7 @@ class GlobalProfile {
               38 => 'borneo_rso',  # Borneo RSO
               39 => 'estonian_grid',  # Estonian grid system
               40 => 'latvian_grid',  # Latvian Transverse Mercator
-              41 => 'swedish_ref_99_grid',  # Reference Grid 99 TM (Swedish]
+              41 => 'swedish_ref_99_grid',  # Reference Grid 99 TM (Swedish)
           ],
       ],
       'display_power' => [
@@ -992,9 +992,9 @@ class GlobalProfile {
               20 => 'power_low_alert',  # Group 0.  Start / stop when in alert condition.
               21 => 'recovery_hr',  # marker
               22 => 'battery_low',  # marker
-              23 => 'time_duration_alert',  # Group 1.  Start if enabled mid activity (not required at start of activity]. Stop when duration is reached.  stop_disable if disabled.
-              24 => 'distance_duration_alert',  # Group 1.  Start if enabled mid activity (not required at start of activity]. Stop when duration is reached.  stop_disable if disabled.
-              25 => 'calorie_duration_alert',  # Group 1.  Start if enabled mid activity (not required at start of activity]. Stop when duration is reached.  stop_disable if disabled.
+              23 => 'time_duration_alert',  # Group 1.  Start if enabled mid activity (not required at start of activity). Stop when duration is reached.  stop_disable if disabled.
+              24 => 'distance_duration_alert',  # Group 1.  Start if enabled mid activity (not required at start of activity). Stop when duration is reached.  stop_disable if disabled.
+              25 => 'calorie_duration_alert',  # Group 1.  Start if enabled mid activity (not required at start of activity). Stop when duration is reached.  stop_disable if disabled.
               26 => 'activity',  # Group 1..  Stop at end of activity.
               27 => 'fitness_equipment',  # marker
               28 => 'length',  # Stop at end of each length.
@@ -1814,7 +1814,7 @@ class GlobalProfile {
               254 => 'custom',
           ],
       ],
-      'language_bits_0' => [  # Bit field corresponding to language enum type (1 << language].
+      'language_bits_0' => [  # Bit field corresponding to language enum type (1 << language).
           'name' => 'language_bits_0',
           'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
@@ -2005,18 +2005,18 @@ class GlobalProfile {
               1 => 'active',  # Length with strokes.
           ],
       ],
-      'local_date_time' => [  # seconds since 00 =>00 Dec 31 1989 in local time zone
+      'local_date_time' => [  # seconds since 00:00 Dec 31 1989 in local time zone
           'name' => 'local_date_time',
           'base_type' => self::BASE_TYPES[0x86],  # uint32
           'values' => [
-              0x10000000 => 'min',  # if date_time is < 0x10000000 then it is system time (seconds from device power on]
+              0x10000000 => 'min',  # if date_time is < 0x10000000 then it is system time (seconds from device power on)
           ],
       ],
       'local_device_type' => [
           'name' => 'local_device_type',
           'base_type' => self::BASE_TYPES[0x02],  # uint8
       ],
-      'localtime_into_day' => [  # number of seconds into the day since local 00 =>00 =>00
+      'localtime_into_day' => [  # number of seconds into the day since local 00:00:00
           'name' => 'localtime_into_day',
           'base_type' => self::BASE_TYPES[0x86],  # uint32
       ],
@@ -2245,7 +2245,7 @@ class GlobalProfile {
               266 => 'precor',  # Amer Sports
               267 => 'bryton',
               268 => 'sram',
-              269 => 'navman',  # MiTAC Global Corporation (Mio Technology]
+              269 => 'navman',  # MiTAC Global Corporation (Mio Technology)
               270 => 'cobi',  # COBI GmbH
               271 => 'spivi',
               272 => 'mio_magellan',
@@ -2379,7 +2379,7 @@ class GlobalProfile {
           'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0x0FFF => 'mask',  # index
-              0x7000 => 'reserved',  # reserved (default 0]
+              0x7000 => 'reserved',  # reserved (default 0)
               0x8000 => 'selected',  # message is selected if set
           ],
       ],
@@ -3080,7 +3080,7 @@ class GlobalProfile {
               254 => 'all',  # All is for goals only to include all sports.
           ],
       ],
-      'sport_bits_0' => [  # Bit field corresponding to sport enum type (1 << sport].
+      'sport_bits_0' => [  # Bit field corresponding to sport enum type (1 << sport).
           'name' => 'sport_bits_0',
           'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
@@ -3094,7 +3094,7 @@ class GlobalProfile {
               0x80 => 'soccer',
           ],
       ],
-      'sport_bits_1' => [  # Bit field corresponding to sport enum type (1 << (sport-8]].
+      'sport_bits_1' => [  # Bit field corresponding to sport enum type (1 << (sport-8)).
           'name' => 'sport_bits_1',
           'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
@@ -3108,7 +3108,7 @@ class GlobalProfile {
               0x80 => 'rowing',
           ],
       ],
-      'sport_bits_2' => [  # Bit field corresponding to sport enum type (1 << (sport-16]].
+      'sport_bits_2' => [  # Bit field corresponding to sport enum type (1 << (sport-16)).
           'name' => 'sport_bits_2',
           'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
@@ -3122,7 +3122,7 @@ class GlobalProfile {
               0x80 => 'boating',
           ],
       ],
-      'sport_bits_3' => [  # Bit field corresponding to sport enum type (1 << (sport-24]].
+      'sport_bits_3' => [  # Bit field corresponding to sport enum type (1 << (sport-24)).
           'name' => 'sport_bits_3',
           'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
@@ -3136,7 +3136,7 @@ class GlobalProfile {
               0x80 => 'rock_climbing',
           ],
       ],
-      'sport_bits_4' => [  # Bit field corresponding to sport enum type (1 << (sport-32]].
+      'sport_bits_4' => [  # Bit field corresponding to sport enum type (1 << (sport-32)).
           'name' => 'sport_bits_4',
           'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
@@ -3150,7 +3150,7 @@ class GlobalProfile {
               0x80 => 'wakeboarding',
           ],
       ],
-      'sport_bits_5' => [  # Bit field corresponding to sport enum type (1 << (sport-40]].
+      'sport_bits_5' => [  # Bit field corresponding to sport enum type (1 << (sport-40)).
           'name' => 'sport_bits_5',
           'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
@@ -3164,7 +3164,7 @@ class GlobalProfile {
               0x80 => 'boxing',
           ],
       ],
-      'sport_bits_6' => [  # Bit field corresponding to sport enum type (1 << (sport-48]].
+      'sport_bits_6' => [  # Bit field corresponding to sport enum type (1 << (sport-48)).
           'name' => 'sport_bits_6',
           'base_type' => self::BASE_TYPES[0x0A],  # uint8z
           'values' => [
@@ -3382,7 +3382,7 @@ class GlobalProfile {
               3 => 'butterfly',
               4 => 'drill',
               5 => 'mixed',
-              6 => 'im',  # IM is a mixed interval containing the same number of lengths for each of => Butterfly, Backstroke, Breaststroke, Freestyle, swam in that order.
+              6 => 'im',  # IM is a mixed interval containing the same number of lengths for each of: Butterfly, Backstroke, Breaststroke, Freestyle, swam in that order.
           ],
       ],
       'switch' => [
@@ -3394,7 +3394,7 @@ class GlobalProfile {
               2 => 'auto',
           ],
       ],
-      'time_into_day' => [  # number of seconds into the day since 00 =>00 =>00 UTC
+      'time_into_day' => [  # number of seconds into the day since 00:00:00 UTC
           'name' => 'time_into_day',
           'base_type' => self::BASE_TYPES[0x86],  # uint32
       ],
@@ -3961,7 +3961,7 @@ class GlobalProfile {
               5 => 'swim_snorkel',
           ],
       ],
-      'workout_hr' => [  # 0 - 100 indicates% of max hr; >100 indicates bpm (255 max] plus 100
+      'workout_hr' => [  # 0 - 100 indicates% of max hr; >100 indicates bpm (255 max) plus 100
           'name' => 'workout_hr',
           'base_type' => self::BASE_TYPES[0x86],  # uint32
           'values' => [
