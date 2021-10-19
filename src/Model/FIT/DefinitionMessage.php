@@ -6,10 +6,33 @@ namespace App\Model\FIT;
 class DefinitionMessage extends Message
 {
 
+  protected $architecture;
+
   public function __construct($properties)
   {
     parent::__construct($properties);
     $this->type = Message::MESSAGE_TYPE_DEFINITION;
+  }
+
+  // if the function is passed an array of arrays, create a new FieldDefinition
+  // TODO: if the array contains an already formed FieldDefinition, use it
+  public function setFields($a)
+  {
+    echo "SET FIELDS IS GETTING CALLED\n";
+    $this->fields = [];
+    foreach($a as $field){
+      if(is_array($field)){
+        $field = new FieldDefinition($field);
+      }
+      $this->addField($field);
+    }
+  }
+
+  public function addField(FieldDefinition $field)
+  {
+    echo "attempting to add a field\n";
+    dump($field);
+    $this->fields[$field->getNumber()] = $field;
   }
 
 

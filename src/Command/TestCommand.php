@@ -12,6 +12,8 @@ use App\Service\FITParser;
 use App\Service\FITParser2;
 use App\Service\FITCSVWriter;
 use App\Model\FIT\GlobalProfile;
+use App\Utility\GlobalProfileGenerator;
+use App\Model\FIT\GlobalProfileAccess;
 
 class TestCommand extends InteractiveOptionCommand
 {
@@ -53,7 +55,7 @@ class TestCommand extends InteractiveOptionCommand
     $this->addInteractivityForOption('cmd', self::INTERACTION_UNSET_ONLY, $question);
 
     $question = new Question('Please provide the path to the FIT file' . "\n > ");
-    $this->addInteractivityForOption('path', self::INTERACTION_UNSET_ONLY, $question);
+    $this->addInteractivityForOption('path', self::INTERACTION_NONE, $question);
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
@@ -85,9 +87,13 @@ class TestCommand extends InteractiveOptionCommand
         break;
 
       case 'misc':
-        foreach (GlobalProfile::MESSAGE_TYPES as $message_type) {
-          echo '\'' . $message_type['name'] . '\' => ' . $message_type['global_message_number'] . ",\n";
-        }
+        dump(GlobalProfileAccess::getFieldDefinition(0, 0));
+        echo "\n ok \n";
+        break;
+
+      case 'generate_global_profile':
+        GlobalProfileGenerator::printCode();
+        break;
 
       default:
         $output->writeln('Executing sub-command ' . $input->getOption('cmd'));
@@ -112,7 +118,9 @@ class TestCommand extends InteractiveOptionCommand
       'test',
       'read_fit',
       'global_profile',
-      'new_fit_parser'
+      'new_fit_parser',
+      'misc',
+      'generate_global_profile'
     ];
   }
 

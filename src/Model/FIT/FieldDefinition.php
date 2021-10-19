@@ -16,6 +16,10 @@ class FieldDefinition extends Field
   protected $scale;       // currently handled by the FitCSVTool, but might be good to know
   protected $offset;      // like scale, currently handled by the FitCSVTool
 
+  public function getNumber()
+  {
+    return $this->def_num;
+  }
 
   /**
    * TODO:  getFinalFieldDefinition in other classes could return a Field, Subfield or Comoponent.
