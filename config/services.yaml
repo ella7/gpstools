@@ -25,7 +25,7 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\Service\FITParser:
+    App\Service\FITCSVParser:
       arguments:
         $fitcsv_jar_path: '%app.fitcsv_jar_path%'
         $tmp_unpack_path: '%app.tmp_unpack_path%'

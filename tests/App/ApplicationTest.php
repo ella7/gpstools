@@ -2,7 +2,7 @@
 namespace App\Tests\App;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use App\Service\FITParser;
+use App\Service\FITCSVParser;
 use App\Service\FITCSVWriter;
 
 final class ApplicationTest extends KernelTestCase
@@ -15,7 +15,7 @@ final class ApplicationTest extends KernelTestCase
   {
     self::bootKernel();
     $container      = static::getContainer();
-    $fit_parser     = $container->get(FITParser::class);
+    $fit_parser     = $container->get(FITCSVParser::class);
     $fitcsv_writer  = $container->get(FITCSVWriter::class);
 
     // TODO: Make this more dynamic

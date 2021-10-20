@@ -11,7 +11,7 @@ use App\Model\FIT\GlobalProfile;
 use function Symfony\Component\String\u;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-class FITParser {
+class FITCSVParser {
 
   const COLUMNS_PER_FIELD = 3;      // number of columns in the FIT CSV file per field
   const COLUMNS_BEFORE_FIELDS = 3;  // number of columns in the FIT CSV before the field columns
@@ -139,10 +139,10 @@ class FITParser {
     exec($cmd_common.$csv_paths['records'].' --data record');
 
     if(!file_exists ($csv_paths['session_data'])){
-      throw new \Exception('The FITParser failed to write the csv session cache file: '.$csv_paths['session_data']);
+      throw new \Exception('The FITCSVParser failed to write the csv session cache file: '.$csv_paths['session_data']);
     }
     if(!file_exists ($csv_paths['records_data'])){
-      throw new \Exception('The FITParser failed to write the csv records cache file: '.$csv_paths['records_data']);
+      throw new \Exception('The FITCSVParser failed to write the csv records cache file: '.$csv_paths['records_data']);
     }
     $this->converted_to_csv = true;
   }
@@ -242,6 +242,7 @@ class FITParser {
           'value' => $value,
           'units' => $units
         ];
+
         if($type === Message::MESSAGE_TYPE_DEFINITION){
           $fields[$name] = new FieldDefinition($field_array);
 
@@ -293,4 +294,4 @@ class FITParser {
     );
   }
 
-} // end class FITParser
+} // end class FITCSVParser

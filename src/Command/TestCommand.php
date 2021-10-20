@@ -8,8 +8,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use App\Service\GPSTrackFactory;
+use App\Service\FITCSVParser;
 use App\Service\FITParser;
-use App\Service\FITParser2;
 use App\Service\FITCSVWriter;
 use App\Model\FIT\GlobalProfile;
 use App\Utility\GlobalProfileGenerator;
@@ -21,7 +21,7 @@ class TestCommand extends InteractiveOptionCommand
   private $factory;
   private $fit_parser;
 
-  public function __construct(GPSTrackFactory $factory, FITParser $fit_parser, FITCSVWriter $fitcsv_writer)
+  public function __construct(GPSTrackFactory $factory, FITCSVParser $fit_parser, FITCSVWriter $fitcsv_writer)
   {
     $this->fit_parser       = $fit_parser;
     $this->fitcsv_writer    = $fitcsv_writer;
@@ -82,7 +82,7 @@ class TestCommand extends InteractiveOptionCommand
         break;
 
       case 'new_fit_parser':
-        $fp = new FITParser2($input->getOption('path'));
+        $fp = new FITParser($input->getOption('path'));
         $fp->parseFile();
         break;
 

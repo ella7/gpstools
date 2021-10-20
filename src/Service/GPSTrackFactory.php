@@ -4,7 +4,7 @@ namespace App\Service;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Cache\CacheInterface;
-use App\Service\FITParser;
+use App\Service\FITCSVParser;
 use App\Model\GPSTrack;
 use App\Model\GPSTrackPoint;
 
@@ -15,7 +15,7 @@ class GPSTrackFactory
   protected $cache;
   protected $fit_parser;
 
-  public function __construct(array $options = [], CacheInterface $cacheApp, FITParser $fit_parser)
+  public function __construct(array $options = [], CacheInterface $cacheApp, FITCSVParser $fit_parser)
   {
     $resolver = new OptionsResolver();
     $this->configureOptions($resolver);

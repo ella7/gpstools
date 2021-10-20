@@ -13,7 +13,7 @@ use PhpBinaryReader\Endian;
 use function Symfony\Component\String\u;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-class FITParser2 {
+class FITParser {
 
   const MESSAGE_TYPE_DEFINITION = 1;
   const MESSAGE_TYPE_DATA = 0;
