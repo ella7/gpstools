@@ -15,14 +15,15 @@ class DefinitionMessage extends Message
   }
 
   // if the function is passed an array of arrays, create a new FieldDefinition
-  // TODO: if the array contains an already formed FieldDefinition, use it
   public function setFields($a)
   {
-    echo "SET FIELDS IS GETTING CALLED\n";
     $this->fields = [];
     foreach($a as $field){
       if(is_array($field)){
         $field = new FieldDefinition($field);
+      }
+      if(!($field instanceof FieldDefinition)){
+        throw new \Exception("Attempting to add a field to a DefinitionMessage that is not an instance of FieldDefinition");
       }
       $this->addField($field);
     }
@@ -30,9 +31,7 @@ class DefinitionMessage extends Message
 
   public function addField(FieldDefinition $field)
   {
-    echo "attempting to add a field\n";
-    dump($field);
-    $this->fields[$field->getNumber()] = $field;
+    $this->fields[] = $field;
   }
 
 
