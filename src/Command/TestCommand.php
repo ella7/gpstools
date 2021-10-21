@@ -11,6 +11,7 @@ use App\Service\GPSTrackFactory;
 use App\Service\FITCSVParser;
 use App\Service\FITParser;
 use App\Service\FITCSVWriter;
+use App\Service\FITCSVTool;
 use App\Model\FIT\GlobalProfile;
 use App\Utility\GlobalProfileGenerator;
 use App\Model\FIT\GlobalProfileAccess;
@@ -21,7 +22,7 @@ class TestCommand extends InteractiveOptionCommand
   private $factory;
   private $fit_parser;
 
-  public function __construct(GPSTrackFactory $factory, FITCSVParser $fit_parser, FITCSVWriter $fitcsv_writer)
+  public function __construct(GPSTrackFactory $factory, FITCSVParser $fit_parser, FITCSVWriter $fitcsv_writer, FitCSVTool $fitcsv_tool)
   {
     $this->fit_parser       = $fit_parser;
     $this->fitcsv_writer    = $fitcsv_writer;

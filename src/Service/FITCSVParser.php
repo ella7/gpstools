@@ -11,7 +11,8 @@ use App\Model\FIT\GlobalProfile;
 use function Symfony\Component\String\u;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-class FITCSVParser {
+class FITCSVParser
+{
 
   const COLUMNS_PER_FIELD = 3;      // number of columns in the FIT CSV file per field
   const COLUMNS_BEFORE_FIELDS = 3;  // number of columns in the FIT CSV before the field columns

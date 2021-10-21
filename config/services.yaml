@@ -29,3 +29,8 @@ services:
       arguments:
         $fitcsv_jar_path: '%app.fitcsv_jar_path%'
         $tmp_unpack_path: '%app.tmp_unpack_path%'
+
+    App\Service\FITCSVTool:
+      arguments:
+        $fitcsv_jar_path: '%app.fitcsv_jar_path%'
+        $tmp_unpack_path: '%app.tmp_unpack_path%'
