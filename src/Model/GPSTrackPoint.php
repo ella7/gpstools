@@ -47,6 +47,7 @@ class GPSTrackPoint {
 		if(array_key_exists('record.cadence[rpm]', $record))					$this->cadence 		  = (int)$record['record.cadence[rpm]'];
 		if(array_key_exists('record.distance[m]', $record))		  			$this->distance 	  = (float)$record['record.distance[m]'];
 		if(array_key_exists('record.speed[m/s]', $record))      			$this->speed        = (float)$record['record.speed[m/s]'];
+		if(array_key_exists('record.enhanced_speed[m/s]', $record))   $this->speed        = (float)$record['record.enhanced_speed[m/s]'];
 		if(array_key_exists('record.power[watts]', $record))    			$this->power        = (float)$record['record.power[watts]'];
 		if(array_key_exists('record.temperature[C]', $record))  			$this->temperature  = (float)$record['record.temperature[C]'];
 

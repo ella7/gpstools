@@ -15,13 +15,13 @@ class GPSTrackFactory
   protected $cache;
   protected $fit_parser;
 
-  public function __construct(array $options = [], CacheInterface $cacheApp, FITCSVParser $fit_parser)
+  public function __construct(array $options = [], CacheInterface $cache, FITCSVParser $fit_parser)
   {
     $resolver = new OptionsResolver();
     $this->configureOptions($resolver);
     $this->options = $resolver->resolve($options);
 
-    $this->cache = $cacheApp;
+    $this->cache = $cache;
     $this->fit_parser = $fit_parser;
   }
 
@@ -109,7 +109,7 @@ class GPSTrackFactory
     }
     if($cadence_sum > 0) $track->average_cadence  = round($cadence_sum/$cadence_count);
     $track->max_cadence      = $max_cadence;
-    
+
     return $track;
   }
 
