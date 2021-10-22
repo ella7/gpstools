@@ -7,7 +7,6 @@ use App\Model\FIT\DefinitionMessage;
 use App\Model\FIT\DataMessage;
 use App\Model\FIT\FieldDefinition;
 use App\Model\FIT\Field;
-use App\Model\FIT\GlobalProfile;
 use function Symfony\Component\String\u;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -246,10 +245,6 @@ class FITCSVParser
 
         if($type === Message::MESSAGE_TYPE_DEFINITION){
           $fields[$name] = new FieldDefinition($field_array);
-
-          // TODO: add getGlobalDefinition($message_name) to FieldDefinition
-          // $fields[$name] = GlobalProfile::getFieldDefinition($message_name, $name);
-          // $fields[$name]->setValue($value);
         }
         if($type === Message::MESSAGE_TYPE_DATA){
           $fields[$name] = new Field($field_array);
