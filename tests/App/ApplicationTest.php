@@ -18,12 +18,11 @@ final class ApplicationTest extends KernelTestCase
     $fit_parser     = $container->get(FITCSVParser::class);
     $fitcsv_writer  = $container->get(FITCSVWriter::class);
 
-    // TODO: Make this more dynamic
-    $input_path = '/Users/rpacker/Projects/gpstools/tests/Data/Activity.csv';
-    $output_path = '/Users/rpacker/Projects/gpstools/tests/Data/Activity-Parsed.csv';
+    $project_dir = $container->get('kernel')->getProjectDir();
+    $input_path  = $project_dir . '/tests/Data/Activity.csv';
+    $output_path = $project_dir . '/tests/Data/Activity-Parsed.csv';
 
     $messages = $fit_parser->messagesFromCSVFile($input_path);
-
     $fitcsv_writer->CSVFileFromMessages($output_path, $messages);
 
     $this->assertFileEquals($input_path, $output_path);
