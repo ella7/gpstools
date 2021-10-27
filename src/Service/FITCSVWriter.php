@@ -64,7 +64,8 @@ class FITCSVWriter {
     return self::str_putcsv($line);
   }
 
-  protected static function str_putcsv($input, $delimiter = ',', $enclosure = '"')
+  // TODO: move into a utility class
+  public static function str_putcsv($input, $delimiter = ',', $enclosure = '"')
   {
     $fp = fopen('php://temp', 'r+b');
     fputcsv($fp, $input, $delimiter, $enclosure);

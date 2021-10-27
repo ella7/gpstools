@@ -41,8 +41,8 @@ class GPSTrackPoint {
 	function initFromFITArray($record, $track_start_time)
 	{
 		if(array_key_exists('record.timestamp[s]', $record))    			$this->timestamp 	  = $record['record.timestamp[s]'] + (20*365.25*24*60*60)-(24*60*60);
-		if(array_key_exists('record.altitude[m]', $record))		  			$this->altitude 	  = (int)$record['record.altitude[m]'];
-		if(array_key_exists('record.enhanced_altitude[m]', $record))	$this->altitude 	  = (int)$record['record.enhanced_altitude[m]'];
+		if(array_key_exists('record.altitude[m]', $record))		  			$this->altitude 	  = (float)$record['record.altitude[m]'];
+		if(array_key_exists('record.enhanced_altitude[m]', $record))	$this->altitude 	  = (float)$record['record.enhanced_altitude[m]'];
 		if(array_key_exists('record.heart_rate[bpm]', $record))				$this->heart_rate   = (int)$record['record.heart_rate[bpm]'];
 		if(array_key_exists('record.cadence[rpm]', $record))					$this->cadence 		  = (int)$record['record.cadence[rpm]'];
 		if(array_key_exists('record.distance[m]', $record))		  			$this->distance 	  = (float)$record['record.distance[m]'];
