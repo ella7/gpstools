@@ -19,8 +19,8 @@ final class ApplicationTest extends KernelTestCase
     $fitcsv_writer  = $container->get(FITCSVWriter::class);
 
     $project_dir = $container->get('kernel')->getProjectDir();
-    $input_path  = $project_dir . '/tests/Data/Activity.csv';
-    $output_path = $project_dir . '/tests/Data/Activity-Parsed.csv';
+    $input_path  = $project_dir . '/tests/resources/Activity.csv';
+    $output_path = $project_dir . '/tests/resources/Activity-Parsed.csv';
 
     $messages = $fit_parser->messagesFromCSVFile($input_path);
     $fitcsv_writer->CSVFileFromMessages($output_path, $messages);

@@ -21,7 +21,7 @@ final class GPSTrackFactoryTest extends KernelTestCase
   public function testBuildTrackFromFITFile()
   {
     // TODO: where should paths to test files and expected results be stored? Hardcoded for now.
-    $fit_path = $this->project_dir . '/tests/Data/Sample_Boston_Run.fit';
+    $fit_path = $this->project_dir . '/tests/resources/Sample_Boston_Run.fit';
     $track = $this->factory->buildTrackFromFITFile($fit_path);
 
     $this->assertEquals(15.02, $track->getTotalDistanceInMiles());

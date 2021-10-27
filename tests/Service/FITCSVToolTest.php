@@ -34,8 +34,8 @@ final class FITCSVToolTest extends KernelTestCase
 
   public function testConvertFIT2CSV()
   {
-    $fit_path = $this->project_dir . '/tests/Data/Activity.fit';
-    $expected_csv_path = $this->project_dir . '/tests/Data/Activity_bug.csv';
+    $fit_path = $this->project_dir . '/tests/resources/Activity.fit';
+    $expected_csv_path = $this->project_dir . '/tests/resources/Activity_bug.csv';
 
     $this->tool->convertFIT2CSV($fit_path);
     $converted_csv_paths = $this->tool->getPathsForConvertedFiles();
