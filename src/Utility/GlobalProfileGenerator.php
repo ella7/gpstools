@@ -64,6 +64,7 @@ class GlobalProfileGenerator
       ['replace' => 'accumulate=',                'with' => '\'accumulate\' => '],
       ['replace' => 'bits=',                      'with' => '\'bits\' => '],
       ['replace' => '253: FIELD_TYPE_TIMESTAMP',  'with' => '253 => self::FIELD_TYPE_TIMESTAMP'],
+      ['replace' => '\'mesg_num\'',               'with' => '\'global_number\'']
 
     ];
   }

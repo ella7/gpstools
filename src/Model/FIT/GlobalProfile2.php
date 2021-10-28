@@ -2282,8 +2282,8 @@ class GlobalProfile2 {
               2 => 'max_per_file_type',
           ],
       ],
-      'mesg_num' => [
-          'name' => 'mesg_num',
+      'global_number' => [
+          'name' => 'global_number',
           'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'file_id',
@@ -7784,8 +7784,8 @@ class GlobalProfile2 {
                 'def_num' => 0,
             ],
             1 => [
-                'name' => 'mesg_num',
-                'type' => self::FIELD_TYPES['mesg_num'],
+                'name' => 'global_number',
+                'type' => self::FIELD_TYPES['global_number'],
                 'def_num' => 1,
             ],
             2 => [
@@ -7856,8 +7856,8 @@ class GlobalProfile2 {
                 'def_num' => 0,
             ],
             1 => [
-                'name' => 'mesg_num',
-                'type' => self::FIELD_TYPES['mesg_num'],
+                'name' => 'global_number',
+                'type' => self::FIELD_TYPES['global_number'],
                 'def_num' => 1,
             ],
             2 => [
@@ -10524,7 +10524,7 @@ class GlobalProfile2 {
             ],
             14 => [
                 'name' => 'native_mesg_num',
-                'type' => self::FIELD_TYPES['mesg_num'],
+                'type' => self::FIELD_TYPES['global_number'],
                 'def_num' => 14,
             ],
             15 => [
@@ -11035,7 +11035,7 @@ class GlobalProfile2 {
         'fields' => [
             0 => [
                 'name' => 'reference_mesg',
-                'type' => self::FIELD_TYPES['mesg_num'],
+                'type' => self::FIELD_TYPES['global_number'],
                 'def_num' => 0,
             ],
             1 => [
