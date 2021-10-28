@@ -34,6 +34,14 @@ class DefinitionMessage extends Message
     $this->fields[] = $field;
   }
 
+  public function setType($type)
+  {
+    if($type !== self::MESSAGE_TYPE_DEFINITION){
+      throw new \Exception("FIT\DefinitionMessage type cannot be set to $type. Must be `Definition`", 1);
+    }
+    $this->type = $type;
+  }
+
 
   /**
    * Returns the final FieldDefinition for a given index, name, and DataMessage
