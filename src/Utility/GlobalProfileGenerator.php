@@ -5,22 +5,22 @@ namespace App\Utility;
 class GlobalProfileGenerator
 {
 
-  public static function printCode()
+  // TODO: allow output path to be specified - at some point, this should overwrite the actual
+  // profile file.
+  public static function generateProfile($output_path = null)
   {
     $path = dirname(__FILE__).'/profile.py';
-    $output_path = dirname(__FILE__).'/profile.php.txt';
-    $file_contents = file_get_contents($path);
+    $output_path = $output_path ? $output_path : dirname(__FILE__).'/profile.php.txt';
 
+    $file_contents = file_get_contents($path);
     $file_contents = str_replace(self::blockTextToRemove(),'',$file_contents);
 
     foreach (self::replacments() as $replacement) {
       $file_contents = str_replace($replacement['replace'],$replacement['with'],$file_contents);
     }
-
-    $file_contents = self::headerTextToInsert() . $file_contents . "}";
+    $file_contents = self::headerTextToInsert() . $file_contents . "}\n";
 
     file_put_contents($output_path, $file_contents);
-    echo "done \n";
   }
 
   public static function replacments()
@@ -111,7 +111,7 @@ class GlobalProfileGenerator
 
         namespace App\Model\FIT;
 
-        class GlobalProfile {
+        class GlobalProfile2 {
 
           const BASE_TYPES = [
             0x00 => ['name' => 'enum',    'identifier' => 0x00, 'invalid_value' => 0xFF],

@@ -92,10 +92,6 @@ class TestCommand extends InteractiveOptionCommand
         echo "\n ok \n";
         break;
 
-      case 'generate_global_profile':
-        GlobalProfileGenerator::printCode();
-        break;
-
       default:
         $output->writeln('Executing sub-command ' . $input->getOption('cmd'));
         break;
