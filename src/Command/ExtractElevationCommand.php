@@ -14,7 +14,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ExtractElevationCommand extends InteractiveOptionCommand
 {
-  protected static $defaultName = 'gpstools:extractelevation';
+  protected static $defaultName = 'gpstools:extract-elevation';
   private $factory;
 
   public function __construct(GPSTrackFactory $factory)
