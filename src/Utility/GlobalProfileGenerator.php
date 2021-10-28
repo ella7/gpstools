@@ -54,7 +54,7 @@ class GlobalProfileGenerator
       ['replace' => 'ref_fields=(',               'with' => '\'ref_fields\' => ['],
       ['replace' => 'components=(',               'with' => '\'components\' => ['],
       ['replace' => 'fields=',                    'with' => '\'fields\' => '],
-      ['replace' => 'mesg_num=',                  'with' => '\'mesg_num\' => '],
+      ['replace' => 'mesg_num=',                  'with' => '\'global_number\' => '],
       ['replace' => 'raw_value=',                 'with' => '\'raw_value\' => '],
       ['replace' => 'value=',                     'with' => '\'value\' => '],
       ['replace' => 'type=',                      'with' => '\'type\' => '],

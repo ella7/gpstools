@@ -3985,7 +3985,7 @@ class GlobalProfile2 {
     # **************************** Common Messages *****************************
     0 => [  # Must be first message in file.
         'name' => 'file_id',
-        'mesg_num' => 0,
+        'global_number' => 0,
         'fields' => [
             0 => [
                 'name' => 'type',
@@ -4056,7 +4056,7 @@ class GlobalProfile2 {
     # ************************************  ************************************
     1 => [
         'name' => 'capabilities',
-        'mesg_num' => 1,
+        'global_number' => 1,
         'fields' => [
             0 => [  # Use language_bits_x types where x is index of array.
                 'name' => 'languages',
@@ -4082,7 +4082,7 @@ class GlobalProfile2 {
     ],
     4 => [
         'name' => 'hrm_profile',
-        'mesg_num' => 4,
+        'global_number' => 4,
         'fields' => [
             0 => [
                 'name' => 'enabled',
@@ -4113,7 +4113,7 @@ class GlobalProfile2 {
     ],
     5 => [
         'name' => 'sdm_profile',
-        'mesg_num' => 5,
+        'global_number' => 5,
         'fields' => [
             0 => [
                 'name' => 'enabled',
@@ -4163,7 +4163,7 @@ class GlobalProfile2 {
     ],
     6 => [
         'name' => 'bike_profile',
-        'mesg_num' => 6,
+        'global_number' => 6,
         'fields' => [
             0 => [
                 'name' => 'name',
@@ -4342,7 +4342,7 @@ class GlobalProfile2 {
     ],
     8 => [
         'name' => 'hr_zone',
-        'mesg_num' => 8,
+        'global_number' => 8,
         'fields' => [
             1 => [
                 'name' => 'high_bpm',
@@ -4364,7 +4364,7 @@ class GlobalProfile2 {
     ],
     9 => [
         'name' => 'power_zone',
-        'mesg_num' => 9,
+        'global_number' => 9,
         'fields' => [
             1 => [
                 'name' => 'high_value',
@@ -4386,7 +4386,7 @@ class GlobalProfile2 {
     ],
     10 => [
         'name' => 'met_zone',
-        'mesg_num' => 10,
+        'global_number' => 10,
         'fields' => [
             1 => [
                 'name' => 'high_bpm',
@@ -4416,7 +4416,7 @@ class GlobalProfile2 {
     ],
     12 => [
         'name' => 'sport',
-        'mesg_num' => 12,
+        'global_number' => 12,
         'fields' => [
             0 => [
                 'name' => 'sport',
@@ -4437,7 +4437,7 @@ class GlobalProfile2 {
     ],
     18 => [
         'name' => 'session',
-        'mesg_num' => 18,
+        'global_number' => 18,
         'fields' => [
             0 => [  # session
                 'name' => 'event',
@@ -5314,7 +5314,7 @@ class GlobalProfile2 {
     ],
     19 => [
         'name' => 'lap',
-        'mesg_num' => 19,
+        'global_number' => 19,
         'fields' => [
             0 => [
                 'name' => 'event',
@@ -6107,7 +6107,7 @@ class GlobalProfile2 {
     ],
     20 => [
         'name' => 'record',
-        'mesg_num' => 20,
+        'global_number' => 20,
         'fields' => [
             0 => [
                 'name' => 'position_lat',
@@ -6604,7 +6604,7 @@ class GlobalProfile2 {
     ],
     21 => [
         'name' => 'event',
-        'mesg_num' => 21,
+        'global_number' => 21,
         'fields' => [
             0 => [
                 'name' => 'event',
@@ -7013,7 +7013,7 @@ class GlobalProfile2 {
     ],
     23 => [
         'name' => 'device_info',
-        'mesg_num' => 23,
+        'global_number' => 23,
         'fields' => [
             0 => [
                 'name' => 'device_index',
@@ -7164,7 +7164,7 @@ class GlobalProfile2 {
     ],
     27 => [
         'name' => 'workout_step',
-        'mesg_num' => 27,
+        'global_number' => 27,
         'fields' => [
             0 => [
                 'name' => 'wkt_step_name',
@@ -7689,7 +7689,7 @@ class GlobalProfile2 {
     ],
     32 => [
         'name' => 'course_point',
-        'mesg_num' => 32,
+        'global_number' => 32,
         'fields' => [
             1 => [
                 'name' => 'timestamp',
@@ -7739,7 +7739,7 @@ class GlobalProfile2 {
     ],
     37 => [
         'name' => 'file_capabilities',
-        'mesg_num' => 37,
+        'global_number' => 37,
         'fields' => [
             0 => [
                 'name' => 'type',
@@ -7776,7 +7776,7 @@ class GlobalProfile2 {
     ],
     38 => [
         'name' => 'mesg_capabilities',
-        'mesg_num' => 38,
+        'global_number' => 38,
         'fields' => [
             0 => [
                 'name' => 'file',
@@ -7848,7 +7848,7 @@ class GlobalProfile2 {
     ],
     39 => [
         'name' => 'field_capabilities',
-        'mesg_num' => 39,
+        'global_number' => 39,
         'fields' => [
             0 => [
                 'name' => 'file',
@@ -7879,7 +7879,7 @@ class GlobalProfile2 {
     ],
     49 => [
         'name' => 'file_creator',
-        'mesg_num' => 49,
+        'global_number' => 49,
         'fields' => [
             0 => [
                 'name' => 'software_version',
@@ -7895,7 +7895,7 @@ class GlobalProfile2 {
     ],
     53 => [
         'name' => 'speed_zone',
-        'mesg_num' => 53,
+        'global_number' => 53,
         'fields' => [
             0 => [
                 'name' => 'high_value',
@@ -7918,7 +7918,7 @@ class GlobalProfile2 {
     ],
     55 => [
         'name' => 'monitoring',
-        'mesg_num' => 55,
+        'global_number' => 55,
         'fields' => [
             0 => [  # Associates this data to device_info message.  Not required for file with single device (sensor).
                 'name' => 'device_index',
@@ -8154,7 +8154,7 @@ class GlobalProfile2 {
     ],
     72 => [  # Corresponds to file_id of workout or course.
         'name' => 'training_file',
-        'mesg_num' => 72,
+        'global_number' => 72,
         'fields' => [
             0 => [
                 'name' => 'type',
@@ -8213,7 +8213,7 @@ class GlobalProfile2 {
     ],
     78 => [  # Heart rate variability
         'name' => 'hrv',
-        'mesg_num' => 78,
+        'global_number' => 78,
         'fields' => [
             0 => [  # Time between beats
                 'name' => 'time',
@@ -8226,7 +8226,7 @@ class GlobalProfile2 {
     ],
     80 => [
         'name' => 'ant_rx',
-        'mesg_num' => 80,
+        'global_number' => 80,
         'fields' => [
             0 => [
                 'name' => 'fractional_timestamp',
@@ -8325,7 +8325,7 @@ class GlobalProfile2 {
     ],
     81 => [
         'name' => 'ant_tx',
-        'mesg_num' => 81,
+        'global_number' => 81,
         'fields' => [
             0 => [
                 'name' => 'fractional_timestamp',
@@ -8424,7 +8424,7 @@ class GlobalProfile2 {
     ],
     82 => [
         'name' => 'ant_channel_id',
-        'mesg_num' => 82,
+        'global_number' => 82,
         'fields' => [
             0 => [
                 'name' => 'channel_number',
@@ -8455,7 +8455,7 @@ class GlobalProfile2 {
     ],
     101 => [
         'name' => 'length',
-        'mesg_num' => 101,
+        'global_number' => 101,
         'fields' => [
             0 => [
                 'name' => 'event',
@@ -8559,7 +8559,7 @@ class GlobalProfile2 {
     ],
     106 => [
         'name' => 'slave_device',
-        'mesg_num' => 106,
+        'global_number' => 106,
         'fields' => [
             0 => [
                 'name' => 'manufacturer',
@@ -8602,7 +8602,7 @@ class GlobalProfile2 {
     ],
     127 => [
         'name' => 'connectivity',
-        'mesg_num' => 127,
+        'global_number' => 127,
         'fields' => [
             0 => [  # Use Bluetooth for connectivity features
                 'name' => 'bluetooth_enabled',
@@ -8673,7 +8673,7 @@ class GlobalProfile2 {
     ],
     128 => [
         'name' => 'weather_conditions',
-        'mesg_num' => 128,
+        'global_number' => 128,
         'fields' => [
             0 => [  # Current or forecast
                 'name' => 'weather_report',
@@ -8764,7 +8764,7 @@ class GlobalProfile2 {
     ],
     129 => [
         'name' => 'weather_alert',
-        'mesg_num' => 129,
+        'global_number' => 129,
         'fields' => [
             0 => [  # Unique identifier from GCS report ID string, length is 12
                 'name' => 'report_id',
@@ -8796,7 +8796,7 @@ class GlobalProfile2 {
     ],
     131 => [
         'name' => 'cadence_zone',
-        'mesg_num' => 131,
+        'global_number' => 131,
         'fields' => [
             0 => [
                 'name' => 'high_value',
@@ -8818,7 +8818,7 @@ class GlobalProfile2 {
     ],
     132 => [
         'name' => 'hr',
-        'mesg_num' => 132,
+        'global_number' => 132,
         'fields' => [
             0 => [
                 'name' => 'fractional_timestamp',
@@ -8960,7 +8960,7 @@ class GlobalProfile2 {
     ],
     142 => [
         'name' => 'segment_lap',
-        'mesg_num' => 142,
+        'global_number' => 142,
         'fields' => [
             0 => [
                 'name' => 'event',
@@ -9514,7 +9514,7 @@ class GlobalProfile2 {
     ],
     149 => [  # Unique Identification data for an individual segment leader within a segment file
         'name' => 'segment_leaderboard_entry',
-        'mesg_num' => 149,
+        'global_number' => 149,
         'fields' => [
             0 => [  # Friendly name assigned to leader
                 'name' => 'name',
@@ -9557,7 +9557,7 @@ class GlobalProfile2 {
     ],
     150 => [  # Navigation and race evaluation point for a segment decribing a point along the segment path and time it took each segment leader to reach that point
         'name' => 'segment_point',
-        'mesg_num' => 150,
+        'global_number' => 150,
         'fields' => [
             1 => [
                 'name' => 'position_lat',
@@ -9602,7 +9602,7 @@ class GlobalProfile2 {
     ],
     158 => [
         'name' => 'workout_session',
-        'mesg_num' => 158,
+        'global_number' => 158,
         'fields' => [
             0 => [
                 'name' => 'sport',
@@ -9645,7 +9645,7 @@ class GlobalProfile2 {
     ],
     159 => [
         'name' => 'watchface_settings',
-        'mesg_num' => 159,
+        'global_number' => 159,
         'fields' => [
             0 => [
                 'name' => 'mode',
@@ -9694,7 +9694,7 @@ class GlobalProfile2 {
     ],
     160 => [
         'name' => 'gps_metadata',
-        'mesg_num' => 160,
+        'global_number' => 160,
         'fields' => [
             0 => [  # Millisecond part of the timestamp.
                 'name' => 'timestamp_ms',
@@ -9754,7 +9754,7 @@ class GlobalProfile2 {
     ],
     161 => [
         'name' => 'camera_event',
-        'mesg_num' => 161,
+        'global_number' => 161,
         'fields' => [
             0 => [  # Millisecond part of the timestamp.
                 'name' => 'timestamp_ms',
@@ -9782,7 +9782,7 @@ class GlobalProfile2 {
     ],
     162 => [
         'name' => 'timestamp_correlation',
-        'mesg_num' => 162,
+        'global_number' => 162,
         'fields' => [
             0 => [  # Fractional part of the UTC timestamp at the time the system timestamp was recorded.
                 'name' => 'fractional_timestamp',
@@ -9827,7 +9827,7 @@ class GlobalProfile2 {
     ],
     164 => [
         'name' => 'gyroscope_data',
-        'mesg_num' => 164,
+        'global_number' => 164,
         'fields' => [
             0 => [  # Millisecond part of the timestamp.
                 'name' => 'timestamp_ms',
@@ -9882,7 +9882,7 @@ class GlobalProfile2 {
     ],
     165 => [
         'name' => 'accelerometer_data',
-        'mesg_num' => 165,
+        'global_number' => 165,
         'fields' => [
             0 => [  # Millisecond part of the timestamp.
                 'name' => 'timestamp_ms',
@@ -9955,7 +9955,7 @@ class GlobalProfile2 {
     ],
     167 => [
         'name' => 'three_d_sensor_calibration',
-        'mesg_num' => 167,
+        'global_number' => 167,
         'fields' => [
             0 => [  # Indicates which sensor the calibration is for
                 'name' => 'sensor_type',
@@ -10024,7 +10024,7 @@ class GlobalProfile2 {
     ],
     169 => [
         'name' => 'video_frame',
-        'mesg_num' => 169,
+        'global_number' => 169,
         'fields' => [
             0 => [  # Millisecond part of the timestamp.
                 'name' => 'timestamp_ms',
@@ -10042,7 +10042,7 @@ class GlobalProfile2 {
     ],
     174 => [
         'name' => 'obdii_data',
-        'mesg_num' => 174,
+        'global_number' => 174,
         'fields' => [
             0 => [  # Fractional part of timestamp, added to timestamp
                 'name' => 'timestamp_ms',
@@ -10092,7 +10092,7 @@ class GlobalProfile2 {
     ],
     177 => [
         'name' => 'nmea_sentence',
-        'mesg_num' => 177,
+        'global_number' => 177,
         'fields' => [
             0 => [  # Fractional part of timestamp, added to timestamp
                 'name' => 'timestamp_ms',
@@ -10110,7 +10110,7 @@ class GlobalProfile2 {
     ],
     178 => [
         'name' => 'aviation_attitude',
-        'mesg_num' => 178,
+        'global_number' => 178,
         'fields' => [
             0 => [  # Fractional part of timestamp, added to timestamp
                 'name' => 'timestamp_ms',
@@ -10187,7 +10187,7 @@ class GlobalProfile2 {
     ],
     184 => [
         'name' => 'video',
-        'mesg_num' => 184,
+        'global_number' => 184,
         'fields' => [
             0 => [
                 'name' => 'url',
@@ -10209,7 +10209,7 @@ class GlobalProfile2 {
     ],
     185 => [
         'name' => 'video_title',
-        'mesg_num' => 185,
+        'global_number' => 185,
         'fields' => [
             0 => [  # Total number of title parts
                 'name' => 'message_count',
@@ -10230,7 +10230,7 @@ class GlobalProfile2 {
     ],
     186 => [
         'name' => 'video_description',
-        'mesg_num' => 186,
+        'global_number' => 186,
         'fields' => [
             0 => [  # Total number of description parts
                 'name' => 'message_count',
@@ -10251,7 +10251,7 @@ class GlobalProfile2 {
     ],
     187 => [
         'name' => 'video_clip',
-        'mesg_num' => 187,
+        'global_number' => 187,
         'fields' => [
             0 => [
                 'name' => 'clip_number',
@@ -10294,7 +10294,7 @@ class GlobalProfile2 {
     ],
     188 => [
         'name' => 'ohr_settings',
-        'mesg_num' => 188,
+        'global_number' => 188,
         'fields' => [
             0 => [
                 'name' => 'enabled',
@@ -10305,7 +10305,7 @@ class GlobalProfile2 {
     ],
     200 => [
         'name' => 'exd_screen_configuration',
-        'mesg_num' => 200,
+        'global_number' => 200,
         'fields' => [
             0 => [
                 'name' => 'screen_index',
@@ -10331,7 +10331,7 @@ class GlobalProfile2 {
     ],
     201 => [
         'name' => 'exd_data_field_configuration',
-        'mesg_num' => 201,
+        'global_number' => 201,
         'fields' => [
             0 => [
                 'name' => 'screen_index',
@@ -10383,7 +10383,7 @@ class GlobalProfile2 {
     ],
     202 => [
         'name' => 'exd_data_concept_configuration',
-        'mesg_num' => 202,
+        'global_number' => 202,
         'fields' => [
             0 => [
                 'name' => 'screen_index',
@@ -10460,7 +10460,7 @@ class GlobalProfile2 {
     ],
     206 => [  # Must be logged before developer field is used
         'name' => 'field_description',
-        'mesg_num' => 206,
+        'global_number' => 206,
         'fields' => [
             0 => [
                 'name' => 'developer_data_index',
@@ -10536,7 +10536,7 @@ class GlobalProfile2 {
     ],
     207 => [  # Must be logged before field description
         'name' => 'developer_data_id',
-        'mesg_num' => 207,
+        'global_number' => 207,
         'fields' => [
             0 => [
                 'name' => 'developer_id',
@@ -10567,7 +10567,7 @@ class GlobalProfile2 {
     ],
     208 => [
         'name' => 'magnetometer_data',
-        'mesg_num' => 208,
+        'global_number' => 208,
         'fields' => [
             0 => [  # Millisecond part of the timestamp.
                 'name' => 'timestamp_ms',
@@ -10622,7 +10622,7 @@ class GlobalProfile2 {
     ],
     209 => [
         'name' => 'barometer_data',
-        'mesg_num' => 209,
+        'global_number' => 209,
         'fields' => [
             0 => [  # Millisecond part of the timestamp.
                 'name' => 'timestamp_ms',
@@ -10647,7 +10647,7 @@ class GlobalProfile2 {
     ],
     210 => [
         'name' => 'one_d_sensor_calibration',
-        'mesg_num' => 210,
+        'global_number' => 210,
         'fields' => [
             0 => [  # Indicates which sensor the calibration is for
                 'name' => 'sensor_type',
@@ -10696,7 +10696,7 @@ class GlobalProfile2 {
     ],
     225 => [
         'name' => 'set',
-        'mesg_num' => 225,
+        'global_number' => 225,
         'fields' => [
             0 => [
                 'name' => 'duration',
@@ -10761,7 +10761,7 @@ class GlobalProfile2 {
     ],
     227 => [  # Value from 1 to 100 calculated by FirstBeat
         'name' => 'stress_level',
-        'mesg_num' => 227,
+        'global_number' => 227,
         'fields' => [
             0 => [
                 'name' => 'stress_level_value',
@@ -10778,7 +10778,7 @@ class GlobalProfile2 {
     ],
     258 => [
         'name' => 'dive_settings',
-        'mesg_num' => 258,
+        'global_number' => 258,
         'fields' => [
             0 => [
                 'name' => 'name',
@@ -10933,7 +10933,7 @@ class GlobalProfile2 {
     ],
     259 => [
         'name' => 'dive_gas',
-        'mesg_num' => 259,
+        'global_number' => 259,
         'fields' => [
             0 => [
                 'name' => 'helium_content',
@@ -10961,7 +10961,7 @@ class GlobalProfile2 {
     ],
     262 => [
         'name' => 'dive_alarm',
-        'mesg_num' => 262,
+        'global_number' => 262,
         'fields' => [
             0 => [
                 'name' => 'depth',
@@ -11005,7 +11005,7 @@ class GlobalProfile2 {
     ],
     264 => [
         'name' => 'exercise_title',
-        'mesg_num' => 264,
+        'global_number' => 264,
         'fields' => [
             0 => [
                 'name' => 'exercise_category',
@@ -11031,7 +11031,7 @@ class GlobalProfile2 {
     ],
     268 => [
         'name' => 'dive_summary',
-        'mesg_num' => 268,
+        'global_number' => 268,
         'fields' => [
             0 => [
                 'name' => 'reference_mesg',
@@ -11113,7 +11113,7 @@ class GlobalProfile2 {
     # ************************* Activity File Messages *************************
     34 => [
         'name' => 'activity',
-        'mesg_num' => 34,
+        'global_number' => 34,
         'fields' => [
             0 => [  # Exclude pauses
                 'name' => 'total_timer_time',
@@ -11160,7 +11160,7 @@ class GlobalProfile2 {
     # ********************** Blood Pressure File Messages **********************
     51 => [
         'name' => 'blood_pressure',
-        'mesg_num' => 51,
+        'global_number' => 51,
         'fields' => [
             0 => [
                 'name' => 'systolic_pressure',
@@ -11227,7 +11227,7 @@ class GlobalProfile2 {
     # ************************** Course File Messages **************************
     31 => [
         'name' => 'course',
-        'mesg_num' => 31,
+        'global_number' => 31,
         'fields' => [
             4 => [
                 'name' => 'sport',
@@ -11256,7 +11256,7 @@ class GlobalProfile2 {
     # ************************** Device File Messages **************************
     35 => [
         'name' => 'software',
-        'mesg_num' => 35,
+        'global_number' => 35,
         'fields' => [
             3 => [
                 'name' => 'version',
@@ -11281,7 +11281,7 @@ class GlobalProfile2 {
     # ************************** Goals File Messages ***************************
     15 => [
         'name' => 'goal',
-        'mesg_num' => 15,
+        'global_number' => 15,
         'fields' => [
             0 => [
                 'name' => 'sport',
@@ -11355,7 +11355,7 @@ class GlobalProfile2 {
     # ************************ Monitoring File Messages ************************
     103 => [
         'name' => 'monitoring_info',
-        'mesg_num' => 103,
+        'global_number' => 103,
         'fields' => [
             0 => [  # Use to convert activity timestamps to local time if device does not support time zone and daylight savings time correction.
                 'name' => 'local_timestamp',
@@ -11396,7 +11396,7 @@ class GlobalProfile2 {
     # ***************************** Other Messages *****************************
     145 => [
         'name' => 'memo_glob',
-        'mesg_num' => 145,
+        'global_number' => 145,
         'fields' => [
             0 => [  # Block of utf8 bytes
                 'name' => 'memo',
@@ -11425,7 +11425,7 @@ class GlobalProfile2 {
     # ************************* Schedule File Messages *************************
     28 => [
         'name' => 'schedule',
-        'mesg_num' => 28,
+        'global_number' => 28,
         'fields' => [
             0 => [  # Corresponds to file_id of scheduled workout / course.
                 'name' => 'manufacturer',
@@ -11496,7 +11496,7 @@ class GlobalProfile2 {
     # ************************* Segment File Messages **************************
     148 => [  # Unique Identification data for a segment file
         'name' => 'segment_id',
-        'mesg_num' => 148,
+        'global_number' => 148,
         'fields' => [
             0 => [  # Friendly name assigned to segment
                 'name' => 'name',
@@ -11550,7 +11550,7 @@ class GlobalProfile2 {
     # *********************** Segment List File Messages ***********************
     151 => [  # Summary of the unique segment and leaderboard information associated with a segment file. This message is used to compile a segment list file describing all segment files on a device. The segment list file is used when refreshing the contents of a segment file with the latest available leaderboard information.
         'name' => 'segment_file',
-        'mesg_num' => 151,
+        'global_number' => 151,
         'fields' => [
             1 => [  # UUID of the segment file
                 'name' => 'file_uuid',
@@ -11604,7 +11604,7 @@ class GlobalProfile2 {
     # ************************* Settings File Messages *************************
     2 => [
         'name' => 'device_settings',
-        'mesg_num' => 2,
+        'global_number' => 2,
         'fields' => [
             0 => [  # Index into time zone arrays.
                 'name' => 'active_time_zone',
@@ -11730,7 +11730,7 @@ class GlobalProfile2 {
     ],
     3 => [
         'name' => 'user_profile',
-        'mesg_num' => 3,
+        'global_number' => 3,
         'fields' => [
             0 => [
                 'name' => 'friendly_name',
@@ -11897,7 +11897,7 @@ class GlobalProfile2 {
     # ********************** Sport Settings File Messages **********************
     7 => [
         'name' => 'zones_target',
-        'mesg_num' => 7,
+        'global_number' => 7,
         'fields' => [
             1 => [
                 'name' => 'max_heart_rate',
@@ -11931,7 +11931,7 @@ class GlobalProfile2 {
     # ************************** Totals File Messages **************************
     33 => [
         'name' => 'totals',
-        'mesg_num' => 33,
+        'global_number' => 33,
         'fields' => [
             0 => [  # Excludes pauses
                 'name' => 'timer_time',
@@ -11991,7 +11991,7 @@ class GlobalProfile2 {
     # *********************** Weight Scale File Messages ***********************
     30 => [
         'name' => 'weight_scale',
-        'mesg_num' => 30,
+        'global_number' => 30,
         'fields' => [
             0 => [
                 'name' => 'weight',
@@ -12078,7 +12078,7 @@ class GlobalProfile2 {
     # ************************* Workout File Messages **************************
     26 => [
         'name' => 'workout',
-        'mesg_num' => 26,
+        'global_number' => 26,
         'fields' => [
             4 => [
                 'name' => 'sport',
