@@ -22,4 +22,14 @@ class GlobalProfileAccess
       : 'unknown'
     ;
   }
+
+  public static function getAllFieldDefinitions()
+  {
+    foreach (GlobalProfile::MESSAGE_TYPES as $message_global_number => $message_definition) {
+      foreach($message_definition['fields'] as $field_number => $field){
+        $all_field_definitions[] = self::getFieldDefinition($message_global_number, $field_number);
+      }
+    }
+    return $all_field_definitions;
+  }
 }

@@ -83,4 +83,22 @@ class FieldDefinition extends Field
 
     return $field_definition->setPropertiesFromArray($properties);
   }
+
+  public function getBaseType()
+  {
+    if(array_key_exists('base_type', $this->type)){
+      return $this->type['base_type'];
+    }
+    // if all three keys exist on the $type array, it is the base_type
+    if(!array_diff_key(array_flip(['name', 'identifier', 'invalid_value']), $this->type)){
+      return $this->type;
+    }
+    throw new \Exception("Couldn't find a base_type", 1);
+  }
+
+  public function getBaseTypeName()
+  {
+    $base_type = $this->getBaseType();
+    return $base_type['name'];
+  }
 }
