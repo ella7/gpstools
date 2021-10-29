@@ -3,6 +3,7 @@
 namespace App\Model\FIT;
 
 use App\Utility\AutoSettablePropertiesTrait;
+use App\Model\FIT\GlobalProfileAccess;
 
 class Message
 {
@@ -21,6 +22,9 @@ class Message
   public function __construct($properties)
   {
     $this->setPropertiesFromArray($properties);
+    if(isset($this->global_number) && $this->name === null){
+      $this->setNameFromGlobalNumber($this->global_number);
+    }
   }
 
   public function getType()
@@ -136,6 +140,16 @@ class Message
   public function getLocalNumber()
   {
     return $this->local_number;
+  }
+
+  public function setLocalNumber($local_number)
+  {
+    $this->local_number = $local_number;
+  }
+
+  public function setNameFromGlobalNumber($global_number)
+  {
+    $this->name = GlobalProfileAccess::getFieldTypeValue('global_number', $global_number);
   }
 
 }

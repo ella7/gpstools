@@ -27,6 +27,7 @@ trait AutoSettablePropertiesTrait
         }
       }
     }
+    return $this;
   }
 
   /**

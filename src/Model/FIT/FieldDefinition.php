@@ -2,6 +2,7 @@
 
 namespace App\Model\FIT;
 
+use App\Model\FIT\GlobalProfileAccess;
 use function Symfony\Component\String\u;
 
 class FieldDefinition extends Field
@@ -11,8 +12,9 @@ class FieldDefinition extends Field
   protected $components = [];
 
   /* *** Other properties that may be needed down the road *** */
-  protected $type;        // stores or references the Global MESSAGE_TYPE (the enum for the field)
+  protected $type;        // Either a FILED_TYPE or BASE_TYPE for the field - exact usage is still unclear
   protected $def_num;     // the definition number for the field - ordinal index
+  protected $size;        // Size (in bytes) of the field
   protected $scale;       // currently handled by the FitCSVTool, but might be good to know
   protected $offset;      // like scale, currently handled by the FitCSVTool
 
@@ -73,4 +75,12 @@ class FieldDefinition extends Field
     return (count($this->components) > 0);
   }
 
+  public static function initFromGlobalProfile($message_global_number, $properties)
+  {
+    $field_definition = GlobalProfileAccess::getFieldDefinition(
+      $message_global_number, $properties['def_num']
+    );
+
+    return $field_definition->setPropertiesFromArray($properties);
+  }
 }
