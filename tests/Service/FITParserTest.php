@@ -3,17 +3,21 @@ namespace App\Tests\Service;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use App\Service\FITParser;
+use Psr\Log\LoggerInterface;
 use function Symfony\Component\String\u;
 
 
 final class FITParserTest extends KernelTestCase
 {
   protected $project_dir;
+  protected $parser;
+  protected $logger;
 
   public function setUp() : void
   {
     self::bootKernel();
     $container = static::getContainer();
+    $this->logger = $container->get(LoggerInterface::class);
     $this->project_dir = $container->get('kernel')->getProjectDir();
   }
 
@@ -21,8 +25,8 @@ final class FITParserTest extends KernelTestCase
   {
     $fit_path = $this->project_dir . '/tests/resources/Activity-HDR-DEFN-DATA.fit';
     $parser = new FITParser($fit_path);
-    // $parser->parseFile();
-
+    $parser->setLogger($this->logger);
+    $parser->parseFile();
     $this->assertTrue(true);
   }
 
