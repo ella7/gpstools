@@ -15,18 +15,27 @@ use App\Service\FITCSVTool;
 use App\Model\FIT\GlobalProfile;
 use App\Utility\GlobalProfileGenerator;
 use App\Model\FIT\GlobalProfileAccess;
+use Psr\Log\LoggerInterface;
 
 class TestCommand extends InteractiveOptionCommand
 {
   protected static $defaultName = 'gpstools:test';
   private $factory;
   private $fit_parser;
+  private $logger;
 
-  public function __construct(GPSTrackFactory $factory, FITCSVParser $fit_parser, FITCSVWriter $fitcsv_writer, FitCSVTool $fitcsv_tool)
+  public function __construct(
+    GPSTrackFactory $factory,
+    FITCSVParser $fit_parser,
+    FITCSVWriter $fitcsv_writer,
+    FitCSVTool $fitcsv_tool,
+    LoggerInterface $logger
+  )
   {
     $this->fit_parser       = $fit_parser;
     $this->fitcsv_writer    = $fitcsv_writer;
     $this->factory          = $factory;
+    $this->logger           = $logger;
     $this->factory->disableCaching();
     parent::__construct();
   }
