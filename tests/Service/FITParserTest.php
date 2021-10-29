@@ -45,17 +45,12 @@ final class FITParserTest extends KernelTestCase
     $this->assertEquals($expected_header, $header);
   }
 
-  public function testReadRecord()
+  /**
+   * @dataProvider readRecordProvider
+   */
+  public function testReadRecord($fit_path, $expected_record_properties)
   {
-    $fit_path = $this->project_dir . '/tests/resources/Activity-DEFN.fit';
-    $expected_record_properties = [
-      'type'          => 'Definition',
-      'local_number'  => 0,
-      'global_number' => 0,
-      'name'          => 'file_id',
-    ];
-
-    $parser = new FITParser($fit_path);
+    $parser = new FITParser($this->project_dir . $fit_path);
     $record = $parser->readRecord();
 
     foreach ($expected_record_properties as $key => $expected_value) {
@@ -65,5 +60,20 @@ final class FITParserTest extends KernelTestCase
       }
       $this->assertEquals($expected_value, $value);
     }
+  }
+
+  public function readRecordProvider()
+  {
+    return [
+      [
+        'fit_path' => '/tests/resources/Activity-DEFN.fit',
+        'expected_record_properties' => [
+          'type'          => 'Definition',
+          'local_number'  => 0,
+          'global_number' => 0,
+          'name'          => 'file_id',
+        ]
+      ]
+    ];
   }
 }
