@@ -101,4 +101,8 @@ class FieldDefinition extends Field
     $base_type = $this->getBaseType();
     return $base_type['name'];
   }
+
+  public function getSize(){
+    return $this->size;
+  }
 }

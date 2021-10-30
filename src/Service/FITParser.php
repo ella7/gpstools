@@ -12,8 +12,10 @@ use PhpBinaryReader\BinaryReader;
 use PhpBinaryReader\Endian;
 use function Symfony\Component\String\u;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Psr\Log\LoggerAwareInterface;
 
-class FITParser {
+class FITParser implements LoggerAwareInterface
+{
 
   const MESSAGE_TYPE_DEFINITION = 1;
   const MESSAGE_TYPE_DATA = 0;
@@ -21,7 +23,10 @@ class FITParser {
   protected $reader;
   protected $file_header;
   protected $local_definitions;
+  protected $log;
 
+  // TODO: remove requirement to have a file path from the constructor so this service can be
+  // more easily injected into other parts of the code. Make logger injection automagic.
   public function __construct(string $file_path)
   {
     if (!file_exists($file_path)) {
@@ -35,12 +40,14 @@ class FITParser {
 
   public function parseFile()
   {
-		$this->readFileHeader();
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
+    $this->readFileHeader();
 	  $this->readRecords();
 	}
 
   public function readFileHeader()
   {
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
     $this->file_header = [
       'header_size'		     => $this->reader->readUInt8(),		   // FIT_FILE_HDR_SIZE (size of this structure)
 			'protocol_version'	 => $this->reader->readUInt8(),		   // FIT_PROTOCOL_VERSION
@@ -57,13 +64,15 @@ class FITParser {
 
   protected function readRecords()
   {
-		while ($this->reader->getPosition() - $this->file_header['header_size'] < $this->file_header['data_size']) {
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
+    while ($this->reader->getPosition() - $this->file_header['header_size'] < $this->file_header['data_size']) {
 			$this->readRecord();
 		}
 	}
 
   public function readRecord()
   {
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
     $position = $this->reader->getPosition();
     list('local_number' => $local_number, 'message_type' => $message_type) = $this->readRecordHeader();
 
@@ -84,6 +93,7 @@ class FITParser {
 
   protected function readRecordHeader()
   {
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
     $byte = $this->reader->readUInt8();
     $bits = self::bitsFromByte($byte);
     // echo "# Record header byte and bits: #\n";
@@ -115,13 +125,15 @@ class FITParser {
 
   protected function readDefinitionMessage()
   {
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
     $definition = [
 			'reserved'			=> $this->reader->readUInt8(),
 			'architecture'	=> $this->reader->readUInt8(),	//Architecture Type 0 = Little Endian | 1 = Big Endian
 		];
-		$is_big_endian = ($definition['architecture'] === Endian::BIG);
+    $endian = ($definition['architecture'] === Endian::BIG) ? Endian::BIG : Endian::LITTLE;
+		$this->reader->setEndian($endian);
 		$definition += [
-			'global_number' => $this->reader->readUInt16($definition['architecture']),
+			'global_number' => $this->reader->readUInt16(),
 			'num_fields'	  => $this->reader->readUInt8(),
 			'fields'			  => [],
 		];
@@ -143,9 +155,26 @@ class FITParser {
 
   protected function readDataMessage($definition_message)
   {
+    // TODO: Handle endianness 
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
     foreach ($definition_message->getFields() as $field_definition) {
       $field_data = $this->readFieldData($field_definition);
+      $fields[] = new Field([
+        'name'      => $field_definition->getName(),
+        'value'     => $field_data, // need to add something like $definition->getValueFromRawValue()
+        'units'     => $field_definition->getUnits(),
+        'raw_value' => $field_data
+      ]);
     }
+    // TODO:  add DataMessageBuilder or something to DefinitionMessage - construct a DataMessage from a DefinitionMessage and raw fields data
+    return new DataMessage([
+      'type' => Message::MESSAGE_TYPE_DATA,
+      'local_number' => $definition_message->getLocalNumber(),
+      'global_number' => $definition_message->getGlobalNumber(),
+      'name' => $definition_message->getName(),
+      'fields' => $fields,
+      'definition' => $definition_message
+    ]);
   }
 
   protected function addLocalDefinition(&$definition, $local_number)
@@ -164,32 +193,45 @@ class FITParser {
 
   protected function readFieldData($field_definition)
   {
-    // dump($field_definition);
-    /*
-    switch($field_def['base_type']['base_type_definition']['name']) {
-					case 'string'	: $value = $this->reader->readString8($field_def['size']); break;
-					case 'sint8'	: $value = $this->reader->readInt8(); break;
-					case 'enum'		:
-					case 'uint8z'	:
-					case 'uint8'	: $value = $this->reader->readUInt8(); break;
-					case 'sint16'	: $value = $is_big_endian ? $this->reader->readInt16BE() : $this->reader->readInt16LE(); break;
-					case 'uint16z'	:
-					case 'uint16'	: $value = $is_big_endian ? $this->reader->readUInt16BE() : $this->reader->readUInt16LE(); break;
-					case 'sint32'	: $value = $is_big_endian ? $this->reader->readInt32BE() : $this->reader->readInt32LE(); break;
-					case 'uint32z'	:
-					case 'uint32'	: $value = $is_big_endian ? $this->reader->readUInt32BE() : $this->reader->readUInt32LE(); break;
-					case 'float32'	: $value = $is_big_endian ? $this->reader->readFloatBE() : $this->reader->readFloatLE(); break;
-					case 'float64'	: $value = $is_big_endian ? $this->reader->readDoubleBE() : $this->reader->readDoubleLE(); break;
-					case 'byte'		:
-					default			: $value = $this->reader->read($field_def['size']);
-				}
-      */
+    switch($field_definition->getBaseTypeName()) {
+			case 'string'	: $value = $this->reader->readString8($field_definition->getSize()); break;
+			case 'sint8'	: $value = $this->reader->readInt8(); break;
+			case 'enum'		:
+			case 'uint8z'	:
+			case 'uint8'	: $value = $this->reader->readUInt8(); break;
+			case 'sint16'	: $value = $this->reader->readInt16(); break;
+			case 'uint16z':
+			case 'uint16'	: $value = $this->reader->readUInt16(); break;
+			case 'sint32'	: $value = $this->reader->readInt32(); break;
+			case 'uint32z':
+			case 'uint32'	: $value = $this->reader->readUInt32(); break;
+			case 'float32': $value = $this->reader->readFloat(); break;
+			case 'float64': $value = $this->reader->readDouble(); break;
+			case 'byte'		:
+			default			  : $value = $this->reader->read($field_definition->getSize());
+		}
+    return $value;
   }
 
   public static function bitsFromByte($byte)
   {
     $bits = decbin($byte);
     return strrev(str_pad($bits, 8, 0, STR_PAD_LEFT));
+  }
+
+  public function setLogger($logger)
+  {
+    $this->log = $logger;
+  }
+
+  public function useLogger()
+  {
+    $this->log->warning('this is a warning from inside the FitParser');
+  }
+
+  public function dumpLogger()
+  {
+    dump($this->log);
   }
 
 }

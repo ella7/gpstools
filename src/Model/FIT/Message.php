@@ -147,6 +147,11 @@ class Message
     $this->local_number = $local_number;
   }
 
+  public function getGlobalNumber()
+  {
+    return $this->global_number;
+  }
+
   public function setNameFromGlobalNumber($global_number)
   {
     $this->name = GlobalProfileAccess::getFieldTypeValue('global_number', $global_number);
