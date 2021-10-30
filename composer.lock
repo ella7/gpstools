@@ -52,12 +52,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ella7/php-binary-reader.git",
-                "reference": "087cbd75db0b4a9e27c13f6cae50d7d10ce2b870"
+                "reference": "d2f3cbb50bf597190abc2704822a35417180bf7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ella7/php-binary-reader/zipball/087cbd75db0b4a9e27c13f6cae50d7d10ce2b870",
-                "reference": "087cbd75db0b4a9e27c13f6cae50d7d10ce2b870",
+                "url": "https://api.github.com/repos/ella7/php-binary-reader/zipball/d2f3cbb50bf597190abc2704822a35417180bf7f",
+                "reference": "d2f3cbb50bf597190abc2704822a35417180bf7f",
                 "shasum": ""
             },
             "require": {
@@ -97,7 +97,7 @@
             "support": {
                 "source": "https://github.com/ella7/php-binary-reader/tree/master"
             },
-            "time": "2021-10-17T01:55:10+00:00"
+            "time": "2021-10-30T00:07:00+00:00"
         },
         {
             "name": "monolog/monolog",
