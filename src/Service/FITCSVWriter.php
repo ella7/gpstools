@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Model\FIT\Message;
+use App\Model\FIT\File;
 
 class FITCSVWriter {
 
@@ -10,6 +11,12 @@ class FITCSVWriter {
   const COLUMNS_BEFORE_FIELDS = 3;        // number of columns in the FIT CSV before the field columns
   const ENCLOSURE_TRIGGER = '# ! # ! #';  // HACK: need to find a better way to force string enclosure
 
+  public function writeFile(File $file, $path)
+  {
+    $this->CSVFileFromMessages($path, $file->getMessages());
+  }
+
+  // TODO: change order of arguments
   public function CSVFileFromMessages($path, $messages)
   {
     // $max_number_of_fields = $this->getMaxNumberOfFields($messages);
