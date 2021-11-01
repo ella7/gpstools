@@ -32,4 +32,9 @@ class GlobalProfileAccess
     }
     return $all_field_definitions;
   }
+
+  public static function getBaseTypesArray()
+  {
+    return GlobalProfile::BASE_TYPES;
+  }
 }
