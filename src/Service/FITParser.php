@@ -8,6 +8,7 @@ use App\Model\FIT\DataMessage;
 use App\Model\FIT\Field;
 use App\Model\FIT\FieldDefinition;
 use App\Model\FIT\GlobalProfile;
+use App\Model\FIT\File;
 use PhpBinaryReader\BinaryReader;
 use PhpBinaryReader\Endian;
 use function Symfony\Component\String\u;
@@ -25,24 +26,26 @@ class FITParser implements LoggerAwareInterface
   protected $local_definitions;
   protected $log;
 
+  protected $message_limit; // max number of records/messages to parse
+
   // TODO: remove requirement to have a file path from the constructor so this service can be
   // more easily injected into other parts of the code. Make logger injection automagic.
-  public function __construct(string $file_path)
+  public function __construct(string $file_path, $message_limit = -1)
   {
     if (!file_exists($file_path)) {
       throw new \Exception('File \''.$file_path.'\' does not exist!');
     }
-
-    $this->reader = new BinaryReader(
-      file_get_contents($file_path)
-    );
+    $this->reader = new BinaryReader(file_get_contents($file_path));
+    $this->message_limit = $message_limit;
   }
 
   public function parseFile()
   {
     $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
-    $this->readFileHeader();
-	  $this->readRecords();
+    return new File([
+      'header'    => $this->readFileHeader(),
+      'messages'  => $this->readRecords()
+    ]);
 	}
 
   public function readFileHeader()
@@ -65,10 +68,22 @@ class FITParser implements LoggerAwareInterface
   protected function readRecords()
   {
     $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
-    while ($this->reader->getPosition() - $this->file_header['header_size'] < $this->file_header['data_size']) {
-			$this->readRecord();
+    $records = [];
+    while ($this->continueReadingRecords(count($records))) {
+			$records[] = $this->readRecord();
 		}
+    return $records;
 	}
+
+  // added primarily to make the code more readible - simple, but long logic expression
+  protected function continueReadingRecords($records_read): bool
+  {
+    $header_and_data_size = $this->file_header['header_size'] + $this->file_header['data_size'];
+    return (
+      $this->reader->getPosition() < $header_and_data_size
+      && $records_read < $this->message_limit
+    );
+  }
 
   public function readRecord()
   {
@@ -155,7 +170,7 @@ class FITParser implements LoggerAwareInterface
 
   protected function readDataMessage($definition_message)
   {
-    // TODO: Handle endianness 
+    // TODO: Handle endianness
     $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
     foreach ($definition_message->getFields() as $field_definition) {
       $field_data = $this->readFieldData($field_definition);
@@ -232,6 +247,11 @@ class FITParser implements LoggerAwareInterface
   public function dumpLogger()
   {
     dump($this->log);
+  }
+
+  public function setMessageLimit($limit)
+  {
+    $this->message_limit = $limit;
   }
 
 }
