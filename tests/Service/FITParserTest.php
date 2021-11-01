@@ -19,6 +19,8 @@ final class FITParserTest extends KernelTestCase
     $container = static::getContainer();
     $this->logger = $container->get(LoggerInterface::class);
     $this->project_dir = $container->get('kernel')->getProjectDir();
+    // TODO: create parser here - setLogger and deal with setting the path later - requires
+    // change to FITParser constructor
   }
 
   public function testParseFile()
@@ -34,6 +36,7 @@ final class FITParserTest extends KernelTestCase
   {
     $fit_path = $this->project_dir . '/tests/resources/Activity-HDR.fit';
     $parser = new FITParser($fit_path);
+    $parser->setLogger($this->logger);
     $header = $parser->readFileHeader();
 
     $expected_header = [
@@ -55,6 +58,7 @@ final class FITParserTest extends KernelTestCase
   public function testReadRecord($fit_path, $expected_record_properties)
   {
     $parser = new FITParser($this->project_dir . $fit_path);
+    $parser->setLogger($this->logger);
     $record = $parser->readRecord();
 
     foreach ($expected_record_properties as $key => $expected_value) {
