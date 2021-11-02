@@ -58,12 +58,12 @@ final class ApplicationTest extends KernelTestCase
     $actual_lines   = file($output_path);
 
     for ($i=0; $i < $n; $i++) {
-      if(substr($actual_lines[$i], 0, 4 ) === "Data"){
-        // $this->assertEquals($expected_lines[$i], $actual_lines[$i]);
+      if(substr($actual_lines[$i], 0, 4 ) === "Defi"){
+        $this->assertEquals(rtrim($expected_lines[$i], ",\n"), rtrim($actual_lines[$i], ",\n"));
       }
     }
     // WIP
-    $this->assertTrue(true);
+    // $this->assertTrue(true);
 
   }
 }
