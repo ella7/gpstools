@@ -239,20 +239,23 @@ class FITCSVParser
         list($name, $value, $units) = $c;
 
         if($type === Message::MESSAGE_TYPE_DEFINITION){
-          $field_array = [
+          $field_properties = [
             'name'  => $name,
             'raw_value' => $value,
             'units' => $units
           ];
-          $fields[$name] = new FieldDefinition($field_array);
+          $fields[] = FieldDefinition::initFromGlobalProfileByNames(
+            $message_name,
+            $field_properties
+          );
         }
         if($type === Message::MESSAGE_TYPE_DATA){
-          $field_array = [
+          $field_properties = [
             'name'  => $name,
             'value' => $value,
             'units' => $units
           ];
-          $fields[$name] = new Field($field_array);
+          $fields[] = new Field($field_properties);
         }
       }
     }

@@ -10,16 +10,29 @@ final class FITCSVParserTest extends KernelTestCase
 {
 
   protected $parser;
+  protected $project_dir;
 
   public function setUp() : void
   {
     self::bootKernel();
     $container      = static::getContainer();
     $this->parser   = $container->get(FITCSVParser::class);
+    $this->project_dir = $container->get('kernel')->getProjectDir();
+  }
+
+  // TODO: This is a bad test and should be replaced or removed.
+  public function testMessagesFromCSVFile()
+  {
+    $csv_path = $this->project_dir . '/tests/resources/Activity.csv';
+    $messages = $this->parser->messagesFromCSVFile($csv_path);
+    $this->assertEquals(9232, count($messages));
+    $this->assertEquals('uint32', $messages[0]->getFields()[3]->getBaseTypeName());
   }
 
   /**
    * @dataProvider getMessageFromCSVLineProvider
+   *
+   * // TODO: This is a bad test and should be replaced or removed.
    */
   public function testGetMessageFromCSVLine($line, $expectedMessage): void
   {
@@ -38,12 +51,7 @@ final class FITCSVParserTest extends KernelTestCase
           'type'              => 'Definition',
           'local_number'      => '0',
           'name'              => 'file_id',
-          'fields'            => [
-            'type'         => new FieldDefinition(['name' => 'type',          'raw_value' => '1', 'units' => '']),
-            'manufacturer' => new FieldDefinition(['name' => 'manufacturer',  'raw_value' => '1', 'units' => '']),
-            'product'      => new FieldDefinition(['name' => 'product',       'raw_value' => '1', 'units' => '']),
-            'time_created' => new FieldDefinition(['name' => 'time_created',  'raw_value' => '1', 'units' => '']),
-          ],
+          'fields'            => self::getExpectedFields(),
           'num_empty_fields'  => 0
         ])
       ]
@@ -60,7 +68,7 @@ final class FITCSVParserTest extends KernelTestCase
     //$this->assertTrue(true);
   }
 
-
+  // TODO: This is a bad test and should be replaced or removed.
   public function getFieldsFromCSVArrayProvider()
   {
     return [
@@ -82,13 +90,18 @@ final class FITCSVParserTest extends KernelTestCase
           13 => "1",
           14 => ""
         ],
-        'expected_fields' => [
-          'type'         => new FieldDefinition(['name' => 'type',          'raw_value' => '1', 'units' => '']),
-          'manufacturer' => new FieldDefinition(['name' => 'manufacturer',  'raw_value' => '1', 'units' => '']),
-          'product'      => new FieldDefinition(['name' => 'product',       'raw_value' => '1', 'units' => '']),
-          'time_created' => new FieldDefinition(['name' => 'time_created',  'raw_value' => '1', 'units' => '']),
-        ]
+        'expected_fields' => self::getExpectedFields()
       ]
+    ];
+  }
+
+  public static function getExpectedFields()
+  {
+    return [
+      FieldDefinition::initFromGlobalProfileByNames('file_id', ['name' => 'type',          'raw_value' => '1', 'units' => '']),
+      FieldDefinition::initFromGlobalProfileByNames('file_id', ['name' => 'manufacturer',  'raw_value' => '1', 'units' => '']),
+      FieldDefinition::initFromGlobalProfileByNames('file_id', ['name' => 'product',       'raw_value' => '1', 'units' => '']),
+      FieldDefinition::initFromGlobalProfileByNames('file_id', ['name' => 'time_created',  'raw_value' => '1', 'units' => ''])
     ];
   }
 

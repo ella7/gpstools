@@ -80,7 +80,14 @@ class FieldDefinition extends Field
     $field_definition = GlobalProfileAccess::getFieldDefinition(
       $message_global_number, $properties['def_num']
     );
+    return $field_definition->setPropertiesFromArray($properties);
+  }
 
+  public static function initFromGlobalProfileByNames($message_type_name, $properties) : FieldDefinition
+  {
+    $field_definition = GlobalProfileAccess::getFieldDefinitionByNames(
+      $message_type_name, $properties['name']
+    );
     return $field_definition->setPropertiesFromArray($properties);
   }
 

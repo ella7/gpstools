@@ -45,7 +45,7 @@ final class ApplicationTest extends KernelTestCase
     $n = 47; // number of rows to parse and compare with expected CSV file
     $fit_path           = $this->project_dir . '/tests/resources/Activity.fit';
     $expected_csv_path  = $this->project_dir . '/tests/resources/Activity.csv';
-    $output_path        = $this->project_dir . '/tests/resources/tmp/test.csv';
+    $output_path        = $this->project_dir . '/tests/resources/tmp/test.csv'; // TODO: write this to the cache/test directory
 
     $this->fit_parser  = new FITParser($fit_path);
     $this->fit_parser->setLogger($this->logger);
