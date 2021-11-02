@@ -97,7 +97,7 @@ class TestCommand extends InteractiveOptionCommand
         break;
 
       case 'misc':
-        dump(GlobalProfileAccess::getFieldDefinition(0, 0));
+        dump(GlobalProfileAccess::getFieldDefinitionByNames('session', 'sport'));
         echo "\n ok \n";
         break;
 
