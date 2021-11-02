@@ -34,6 +34,11 @@ class Field
     return $this->units;
   }
 
+  public function getRawValue()
+  {
+    return $this->raw_value;
+  }
+
   public function setName($name)
   {
     $this->name = $name;

@@ -3,6 +3,7 @@
 namespace App\Model\FIT;
 
 use App\Model\FIT\GlobalProfile2 as GlobalProfile;
+use App\Model\FIT\BaseType;
 
 class GlobalProfileAccess
 {
@@ -36,5 +37,10 @@ class GlobalProfileAccess
   public static function getBaseTypesArray()
   {
     return GlobalProfile::BASE_TYPES;
+  }
+
+  public function getBaseType($identifier)
+  {
+    return new BaseType(GlobalProfile::BASE_TYPES[$identifier]);
   }
 }

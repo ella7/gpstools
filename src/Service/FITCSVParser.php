@@ -237,16 +237,21 @@ class FITCSVParser
     foreach ($b as $c) {
       if($c[0]){
         list($name, $value, $units) = $c;
-        $field_array = [
-          'name'  => $name,
-          'value' => $value,
-          'units' => $units
-        ];
 
         if($type === Message::MESSAGE_TYPE_DEFINITION){
+          $field_array = [
+            'name'  => $name,
+            'raw_value' => $value,
+            'units' => $units
+          ];
           $fields[$name] = new FieldDefinition($field_array);
         }
         if($type === Message::MESSAGE_TYPE_DATA){
+          $field_array = [
+            'name'  => $name,
+            'value' => $value,
+            'units' => $units
+          ];
           $fields[$name] = new Field($field_array);
         }
       }

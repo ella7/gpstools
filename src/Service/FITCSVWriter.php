@@ -45,7 +45,7 @@ class FITCSVWriter {
       foreach($message->getFields() as $field){
         $line = array_merge($line, [
           $field->getName(),
-          $field->getValue(),
+          $field->getNumberOfValues(),
           '',                         // units should be left empty
         ]);
       }

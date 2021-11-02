@@ -40,6 +40,7 @@ final class GlobalProfileAccessTest extends TestCase
           'type' => [
             "name" => "uint32",
             "identifier" => 134,
+            "size" => 4,
             "invalid_value" => 4294967295
           ],
           'def_num' => 3,

@@ -102,7 +102,30 @@ class FieldDefinition extends Field
     return $base_type['name'];
   }
 
-  public function getSize(){
+  public function getBaseTypeSize()
+  {
+    $base_type = $this->getBaseType();
+    return $base_type['size'];
+  }
+
+  public function getSize()
+  {
     return $this->size;
+  }
+
+  // TODO: Test to make sure an error is thrown for invalid values
+  public function setSize($size)
+  {
+    $base_type_size = $this->getBaseTypeSize();
+    if($size % $base_type_size !== 0){
+      throw new \Exception("Attempting to set field size to $size. Must be a multiple of the base type size: $base_type_size", 1);
+    }
+    $this->size = $size;
+  }
+
+  public function getNumberOfValues()
+  {
+    if($this->raw_value) return $this->raw_value; // TODO: This is a hack - need to fix
+    return (int)$this->size / $this->getBaseTypeSize();
   }
 }

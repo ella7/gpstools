@@ -36,13 +36,13 @@ final class FITCSVParserTest extends KernelTestCase
         'line' => 'Definition,0,file_id,type,1,,manufacturer,1,,product,1,,time_created,1,,',
         'message' => new DefinitionMessage([
           'type'              => 'Definition',
-          'local_number'      => 0,
+          'local_number'      => '0',
           'name'              => 'file_id',
           'fields'            => [
-            'type'         => new FieldDefinition(['name' => 'type',          'value' => '1', 'units' => '']),
-            'manufacturer' => new FieldDefinition(['name' => 'manufacturer',  'value' => '1', 'units' => '']),
-            'product'      => new FieldDefinition(['name' => 'product',       'value' => '1', 'units' => '']),
-            'time_created' => new FieldDefinition(['name' => 'time_created',  'value' => '1', 'units' => '']),
+            'type'         => new FieldDefinition(['name' => 'type',          'raw_value' => '1', 'units' => '']),
+            'manufacturer' => new FieldDefinition(['name' => 'manufacturer',  'raw_value' => '1', 'units' => '']),
+            'product'      => new FieldDefinition(['name' => 'product',       'raw_value' => '1', 'units' => '']),
+            'time_created' => new FieldDefinition(['name' => 'time_created',  'raw_value' => '1', 'units' => '']),
           ],
           'num_empty_fields'  => 0
         ])
@@ -83,10 +83,10 @@ final class FITCSVParserTest extends KernelTestCase
           14 => ""
         ],
         'expected_fields' => [
-          'type'         => new FieldDefinition(['name' => 'type',          'value' => '1', 'units' => '']),
-          'manufacturer' => new FieldDefinition(['name' => 'manufacturer',  'value' => '1', 'units' => '']),
-          'product'      => new FieldDefinition(['name' => 'product',       'value' => '1', 'units' => '']),
-          'time_created' => new FieldDefinition(['name' => 'time_created',  'value' => '1', 'units' => '']),
+          'type'         => new FieldDefinition(['name' => 'type',          'raw_value' => '1', 'units' => '']),
+          'manufacturer' => new FieldDefinition(['name' => 'manufacturer',  'raw_value' => '1', 'units' => '']),
+          'product'      => new FieldDefinition(['name' => 'product',       'raw_value' => '1', 'units' => '']),
+          'time_created' => new FieldDefinition(['name' => 'time_created',  'raw_value' => '1', 'units' => '']),
         ]
       ]
     ];
