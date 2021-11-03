@@ -2,7 +2,12 @@
 
 namespace App\Model\FIT;
 
+use App\Model\FIT\Field;
+use App\Model\FIT\BaseType;
+use App\Model\FIT\FieldType;
+use App\Model\FIT\SubfieldDefinition;
 use App\Model\FIT\GlobalProfileAccess;
+use App\Model\FIT\ComponentDefinition;
 use function Symfony\Component\String\u;
 
 class FieldDefinition extends Field
@@ -12,7 +17,7 @@ class FieldDefinition extends Field
   protected $components = [];
 
   /* *** Other properties that may be needed down the road *** */
-  protected $type;        // Either a FILED_TYPE or BASE_TYPE for the field - exact usage is still unclear
+  protected $type;        // Either a FieldType or BaseType for the field - will create an abstract class or interface for both to use
   protected $def_num;     // the definition number for the field - ordinal index
   protected $size;        // Size (in bytes) of the field
   protected $scale;       // currently handled by the FitCSVTool, but might be good to know
@@ -55,8 +60,12 @@ class FieldDefinition extends Field
     $this->subfields = [];
     foreach($a as $subfield){
       if(is_array($subfield)){
-        $this->subfields[] = new SubfieldDefinition($subfield);
+        $subfield = new SubfieldDefinition($subfield);
       }
+      if(!($subfield instanceof SubfieldDefinition)){
+        throw new \Exception("Attempting to add a subfield to a FieldDefinition that is not an instance of SubfieldDefinition");
+      }
+      $this->subfields[] = $subfield;
     }
   }
 
@@ -65,8 +74,12 @@ class FieldDefinition extends Field
     $this->components = [];
     foreach($a as $component){
       if(is_array($component)){
-        $this->components[] = new ComponentDefinition($component);
+        $component = new ComponentDefinition($component);
       }
+      if(!($component instanceof ComponentDefinition)){
+        throw new \Exception("Attempting to add a component to a FieldDefinition that is not an instance of ComponentDefinition");
+      }
+      $this->components[] = $component;
     }
   }
 
@@ -91,28 +104,43 @@ class FieldDefinition extends Field
     return $field_definition->setPropertiesFromArray($properties);
   }
 
+  public function setType($type)
+  {
+    // if the array contains the base_type properties
+    if(BaseType::looksLikeValidPropertiesArray($type)){
+      $type = new BaseType($type);
+    }
+    // if the array contains the field_type properties
+    if(FieldType::looksLikeValidPropertiesArray($type)){
+      $type = new FieldType($type);
+    }
+    if(!($type instanceof FieldType || $type instanceof BaseType)){
+      throw new \Exception("Attempting to set the FieldDefinition type to a value that is not an instance of FieldType");
+    }
+    $this->type = $type;
+  }
+
   public function getBaseType()
   {
-    if(array_key_exists('base_type', $this->type)){
-      return $this->type['base_type'];
-    }
-    // if all three keys exist on the $type array, it is the base_type
-    if(!array_diff_key(array_flip(['name', 'identifier', 'invalid_value']), $this->type)){
+    if($this->type instanceof BaseType){
       return $this->type;
     }
+
+    if($this->type instanceof FieldType){
+      return $this->type->getBaseType();
+    }
+
     throw new \Exception("Couldn't find a base_type", 1);
   }
 
   public function getBaseTypeName()
   {
-    $base_type = $this->getBaseType();
-    return $base_type['name'];
+    return $this->getBaseType()->getName();
   }
 
   public function getBaseTypeSize()
   {
-    $base_type = $this->getBaseType();
-    return $base_type['size'];
+    return $this->getBaseType()->getSize();
   }
 
   public function getSize()

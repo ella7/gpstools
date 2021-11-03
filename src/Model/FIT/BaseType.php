@@ -70,4 +70,14 @@ class BaseType
     ];
   }
 
+  public static function looksLikeValidPropertiesArray($array)
+  {
+    if(!is_array($array)) return false;
+    $required_keys = ['name', 'identifier', 'size', 'invalid_value'];
+    foreach($required_keys as $required_key){
+      if(!array_key_exists($required_key, $array)) return false;
+    }
+    return true;
+  }
+
 }

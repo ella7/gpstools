@@ -9,7 +9,7 @@ class Field
   use AutoSettablePropertiesTrait;
 
   protected $name;
-  protected $value; // TODO: I don't know what value represents in a definition field in the CSV file
+  protected $value;
   protected $units;
   protected $raw_value; // TODO: Create a FieldData class and move this there. Make this class abstract.
 
