@@ -7,7 +7,6 @@ use App\Model\FIT\DefinitionMessage;
 use App\Model\FIT\DataMessage;
 use App\Model\FIT\Field;
 use App\Model\FIT\FieldDefinition;
-use App\Model\FIT\GlobalProfile;
 use App\Model\FIT\File;
 use PhpBinaryReader\BinaryReader;
 use PhpBinaryReader\Endian;

@@ -2,7 +2,7 @@
 
 namespace App\Model\FIT;
 
-use App\Model\FIT\GlobalProfile2 as GlobalProfile;
+use App\Model\FIT\GlobalProfile;
 use App\Model\FIT\FieldDefinition;
 use App\Model\FIT\BaseType;
 

@@ -112,7 +112,7 @@ class GlobalProfileGenerator
 
         namespace App\Model\FIT;
 
-        class GlobalProfile2 {
+        class GlobalProfile {
 
           const BASE_TYPES = [
             0x00 => ['name' => 'enum',    'identifier' => 0x00, 'size' => 1, 'invalid_value' => 0xFF],

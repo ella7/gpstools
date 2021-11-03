@@ -12,7 +12,6 @@ use App\Service\FITCSVParser;
 use App\Service\FITParser;
 use App\Service\FITCSVWriter;
 use App\Service\FITCSVTool;
-use App\Model\FIT\GlobalProfile;
 use App\Utility\GlobalProfileGenerator;
 use App\Model\FIT\GlobalProfileAccess;
 use Psr\Log\LoggerInterface;
@@ -88,7 +87,7 @@ class TestCommand extends InteractiveOptionCommand
         break;
 
       case 'global_profile':
-        print_r(GlobalProfile::getFieldDefinition('event', 'data'));
+        print_r(GlobalProfileAccess::getFieldDefinitionByNames('event', 'data'));
         break;
 
       case 'new_fit_parser':
