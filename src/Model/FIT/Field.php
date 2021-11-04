@@ -11,8 +11,6 @@ class Field
   protected $name;
   protected $value;
   protected $units;
-  protected $raw_value; // TODO: Create a FieldData class and move this there. Make this class abstract.
-
 
   public function __construct($properties)
   {
@@ -32,11 +30,6 @@ class Field
   public function getUnits()
   {
     return $this->units;
-  }
-
-  public function getRawValue()
-  {
-    return $this->raw_value;
   }
 
   public function setName($name)

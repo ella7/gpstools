@@ -175,9 +175,8 @@ class FITParser implements LoggerAwareInterface
       $field_data = $this->readFieldData($field_definition);
       $fields[] = new Field([
         'name'      => $field_definition->getName(),
-        'value'     => $field_data, // need to add something like $definition->getValueFromRawValue()
+        'value'     => $field_data,
         'units'     => $field_definition->getUnits(),
-        'raw_value' => $field_data
       ]);
     }
     // TODO:  add DataMessageBuilder or something to DefinitionMessage - construct a DataMessage from a DefinitionMessage and raw fields data

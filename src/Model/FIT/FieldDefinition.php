@@ -158,9 +158,13 @@ class FieldDefinition extends Field
     $this->size = $size;
   }
 
+  public function setSizeFromNumberOfValues($n)
+  {
+    $this->setSize($n * $this->getBaseTypeSize());
+  }
+
   public function getNumberOfValues()
   {
-    if($this->raw_value) return $this->raw_value; // TODO: This is a hack - need to fix
     return (int)$this->size / $this->getBaseTypeSize();
   }
 }

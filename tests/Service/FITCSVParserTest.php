@@ -98,10 +98,10 @@ final class FITCSVParserTest extends KernelTestCase
   public static function getExpectedFields()
   {
     return [
-      FieldDefinition::initFromGlobalProfileByNames('file_id', ['name' => 'type',          'raw_value' => '1', 'units' => '']),
-      FieldDefinition::initFromGlobalProfileByNames('file_id', ['name' => 'manufacturer',  'raw_value' => '1', 'units' => '']),
-      FieldDefinition::initFromGlobalProfileByNames('file_id', ['name' => 'product',       'raw_value' => '1', 'units' => '']),
-      FieldDefinition::initFromGlobalProfileByNames('file_id', ['name' => 'time_created',  'raw_value' => '1', 'units' => ''])
+      FieldDefinition::initFromGlobalProfileByNames('file_id', ['name' => 'type',          'size' => '1', 'units' => '']),
+      FieldDefinition::initFromGlobalProfileByNames('file_id', ['name' => 'manufacturer',  'size' => '2', 'units' => '']),
+      FieldDefinition::initFromGlobalProfileByNames('file_id', ['name' => 'product',       'size' => '2', 'units' => '']),
+      FieldDefinition::initFromGlobalProfileByNames('file_id', ['name' => 'time_created',  'size' => '4', 'units' => ''])
     ];
   }
 

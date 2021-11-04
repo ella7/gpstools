@@ -241,13 +241,14 @@ class FITCSVParser
         if($type === Message::MESSAGE_TYPE_DEFINITION){
           $field_properties = [
             'name'  => $name,
-            'raw_value' => $value,
             'units' => $units
           ];
-          $fields[] = FieldDefinition::initFromGlobalProfileByNames(
+          $field = FieldDefinition::initFromGlobalProfileByNames(
             $message_name,
             $field_properties
           );
+          $field->setSizeFromNumberOfValues($value);
+          $fields[] = $field;
         }
         if($type === Message::MESSAGE_TYPE_DATA){
           $field_properties = [
