@@ -18,15 +18,9 @@ class FieldDefinition extends Field
 
   /* *** Other properties that may be needed down the road *** */
   protected $type;        // Either a FieldType or BaseType for the field - will create an abstract class or interface for both to use
-  protected $def_num;     // the definition number for the field - ordinal index
   protected $size;        // Size (in bytes) of the field
   protected $scale;       // currently handled by the FitCSVTool, but might be good to know
   protected $offset;      // like scale, currently handled by the FitCSVTool
-
-  public function getNumber()
-  {
-    return $this->def_num;
-  }
 
   /**
    * TODO:  getFinalFieldDefinition in other classes could return a Field, Subfield or Comoponent.
@@ -53,6 +47,11 @@ class FieldDefinition extends Field
   public function hasSubfields()
   {
     return (count($this->subfields) > 0);
+  }
+
+  public function getSubfields()
+  {
+    return $this->subfields;
   }
 
   public function setSubfields($a)

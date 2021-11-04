@@ -3,6 +3,7 @@
 namespace App\Model\FIT;
 
 use App\Utility\AutoSettablePropertiesTrait;
+use App\Model\FIT\FieldDefinition;
 use App\Model\FIT\GlobalProfileAccess;
 
 class Message
@@ -50,6 +51,26 @@ class Message
     return $this->fields;
   }
 
+  // if the function is passed an array of arrays, create a new Field or FieldDefinition
+  public function setFields($a)
+  {
+    $this->fields = [];
+    foreach($a as $field){
+      if(is_array($field)){
+        $field = ($this->type === self::MESSAGE_TYPE_DATA) ? new Field($field) : new FieldDefinition($field);
+      }
+      if(!($field instanceof Field)){
+        throw new \Exception("Attempting to add a field to a Message that is not an instance of Field");
+      }
+      $this->addField($field);
+    }
+  }
+
+  public function addField(Field $field)
+  {
+    $this->fields[] = $field;
+  }
+
   public function numberOfFields()
   {
     return count($this->fields);
@@ -59,74 +80,6 @@ class Message
   {
     return $this->num_empty_fields;
   }
-
-  /**
-   * Get a field by it's name index in the fields array
-   *
-   * TODO: validate that field names are unique in a message
-   *
-   * @param  string    $field_name    Key (which is name) to the field in fields array
-   * @return Field                    The field object stored at field_name in the fields array
-   */
-  public function getFieldByName(string $field_name)
-  {
-    return $this->fields[$field_name];
-  }
-
-  /**
-   * Get the value associated with the field $field_name
-   *
-   * @param  string $field_name   Name of the feild
-   * @return mixed                The value stored for the given field
-   */
-  public function getFieldValue(string $field_name)
-  {
-    return $this->getFieldByName($field_name)->getValue();
-  }
-
-  /**
-   * Get the units associated with the field $field_name
-   *
-   * @param  string $field_name   Name of the feild
-   * @return mixed                The units stored for the given field
-   */
-  public function getFieldUnits(string $field_name)
-  {
-    return $this->getFieldByName($field_name)->getUnits();
-  }
-
-  /**
-   * Get a field by it's "field index" - index in the fields array
-   *
-   * This makes the bad assumption that associative arrays can be counted on to preserve order.
-   * TODO: come up with a better solution - it's helpful for the fields array to be both associative and index based
-   *
-   * @param  int    $field_index   index in the fields array
-   * @return mixed                 The value stored at field_index in the fields array.
-   */
-  public function getFieldByIndex(int $field_index)
-  {
-    $this->validateFieldIndex($field_index);
-    $fields_keys = array_keys($this->fields);
-    return $this->fields[ $fields_keys[ $field_index ] ];
-  }
-
-  public function validateFieldIndex(int $field_index)
-  {
-    if(!$this->isValidFieldIndex($field_index)){
-      $exception_message =
-        'This ' . $this->name . ' ' . $this->type . ' message has ' . $this->numberOfFields()
-        . ' fields. Trying to access field ' . ($field_index + 1)
-      ;
-      throw new \Exception($exception_message);
-    }
-  }
-
-  public function isValidFieldIndex(int $field_index)
-  {
-    return ($this->numberOfFields() > $field_index && $field_index >= 0);
-  }
-
 
   public function getMessageKey()
   {

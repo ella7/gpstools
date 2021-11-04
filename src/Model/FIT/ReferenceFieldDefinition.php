@@ -7,8 +7,9 @@ use App\Utility\AutoSettablePropertiesTrait;
 class ReferenceFieldDefinition
 {
   use AutoSettablePropertiesTrait;
-  
+
   protected $name;
+  protected $def_num;
   protected $value;
   protected $raw_value;
 
@@ -21,6 +22,11 @@ class ReferenceFieldDefinition
   public function getName()
   {
     return $this->name;
+  }
+
+  public function getDefNum()
+  {
+    return $this->def_num;
   }
 
   public function getValue()

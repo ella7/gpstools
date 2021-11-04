@@ -14,26 +14,6 @@ class DefinitionMessage extends Message
     $this->type = Message::MESSAGE_TYPE_DEFINITION;
   }
 
-  // if the function is passed an array of arrays, create a new FieldDefinition
-  public function setFields($a)
-  {
-    $this->fields = [];
-    foreach($a as $field){
-      if(is_array($field)){
-        $field = new FieldDefinition($field);
-      }
-      if(!($field instanceof FieldDefinition)){
-        throw new \Exception("Attempting to add a field to a DefinitionMessage that is not an instance of FieldDefinition");
-      }
-      $this->addField($field);
-    }
-  }
-
-  public function addField(FieldDefinition $field)
-  {
-    $this->fields[] = $field;
-  }
-
   public function setType($type)
   {
     if($type !== self::MESSAGE_TYPE_DEFINITION){

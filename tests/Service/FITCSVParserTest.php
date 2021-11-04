@@ -21,12 +21,13 @@ final class FITCSVParserTest extends KernelTestCase
   }
 
   // TODO: This is a bad test and should be replaced or removed.
+  // Only tests that we can successfully create the right number of messages
   public function testMessagesFromCSVFile()
   {
+    $num_messages_in_activity = 9232;
     $csv_path = $this->project_dir . '/tests/resources/Activity.csv';
     $messages = $this->parser->messagesFromCSVFile($csv_path);
-    $this->assertEquals(9232, count($messages));
-    $this->assertEquals('uint32', $messages[0]->getFields()[3]->getBaseTypeName());
+    $this->assertEquals($num_messages_in_activity, count($messages));
   }
 
   /**

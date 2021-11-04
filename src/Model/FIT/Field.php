@@ -11,6 +11,7 @@ class Field
   protected $name;
   protected $value;
   protected $units;
+  protected $def_num;     // the definition number for the field
 
   public function __construct($properties)
   {
@@ -45,6 +46,11 @@ class Field
   public function setUnits($units)
   {
     $this->units = $units;
+  }
+
+  public function getNumber()
+  {
+    return $this->def_num;
   }
 
 }
