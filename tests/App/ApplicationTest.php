@@ -21,6 +21,7 @@ final class ApplicationTest extends KernelTestCase
     $container = static::getContainer();
     $this->logger      = $container->get(LoggerInterface::class);
     $this->project_dir = $container->get('kernel')->getProjectDir();
+    $this->cache_dir =   $container->get('kernel')->getCacheDir();
     $this->csv_parser  = $container->get(FITCSVParser::class);
     $this->csv_writer  = $container->get(FITCSVWriter::class);
   }
@@ -45,7 +46,7 @@ final class ApplicationTest extends KernelTestCase
     $n = 47; // number of rows to parse and compare with expected CSV file
     $fit_path           = $this->project_dir . '/tests/resources/Activity.fit';
     $expected_csv_path  = $this->project_dir . '/tests/resources/Activity.csv';
-    $output_path        = $this->project_dir . '/tests/resources/tmp/test.csv'; // TODO: write this to the cache/test directory
+    $output_path        = $this->cache_dir   . '/tests/TestParseFITFile-Output.csv';
 
     $this->fit_parser  = new FITParser($fit_path);
     $this->fit_parser->setLogger($this->logger);

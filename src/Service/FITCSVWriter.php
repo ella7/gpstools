@@ -4,6 +4,8 @@ namespace App\Service;
 
 use App\Model\FIT\Message;
 use App\Model\FIT\File;
+use Symfony\Component\Filesystem\Filesystem;
+
 
 class FITCSVWriter {
 
@@ -25,7 +27,8 @@ class FITCSVWriter {
     foreach($messages as $message){
       $output .= $this->getCSVString($message) . "\n";
     }
-    file_put_contents($path, $output);
+    $file_system = new Filesystem;
+    $file_system->dumpFile($path, $output);
   }
 
   public function getMaxNumberOfFields($messages)
