@@ -175,7 +175,7 @@ class FITParser implements LoggerAwareInterface
     foreach ($definition_message->getFields() as $field_definition) {
       $field_data = $this->readFieldData($field_definition);
       if($field_definition->getScale()){
-        $field_data /= $field_definition->getScale();
+        $field_data = (float) $field_data/$field_definition->getScale();
       }
       $fields[] = new Field([
         'name'      => $field_definition->getName(),

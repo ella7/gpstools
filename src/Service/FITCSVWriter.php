@@ -57,7 +57,7 @@ class FITCSVWriter {
       foreach($message->getFields() as $field){
         $line = array_merge($line, [
           $field->getName(),
-          $field->getValue().self::ENCLOSURE_TRIGGER,
+          $field->getValueAsString().self::ENCLOSURE_TRIGGER,
           $field->getUnits(),
         ]);
       }
@@ -70,8 +70,7 @@ class FITCSVWriter {
       }
     }
     $length = ($message->numberOfFields() + $message->numberOfEmptyFields()) * self::COLUMNS_PER_FIELD + self::COLUMNS_BEFORE_FIELDS;
-    $line = $line = array_pad($line, $length + 1, ''); // the + 1 is to match input file, we're adding an empty column to the end of each row
-    return self::str_putcsv($line);
+    return self::str_putcsv(array_pad($line, $length + 1, '')); // the + 1 is to match input file, we're adding an empty column to the end of each row
   }
 
   // TODO: move into a utility class

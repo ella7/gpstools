@@ -2,6 +2,7 @@
 
 namespace App\Model\FIT;
 
+use App\Utility\Utility;
 use App\Utility\AutoSettablePropertiesTrait;
 
 class Field
@@ -26,6 +27,12 @@ class Field
   public function getValue()
   {
     return $this->value;
+  }
+
+  public function getValueAsString()
+  {
+    $value = $this->getValue();
+    return (is_float($value)) ? Utility::formatFloat($value) : (string)$value;
   }
 
   public function getUnits()
