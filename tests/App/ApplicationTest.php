@@ -43,7 +43,7 @@ final class ApplicationTest extends KernelTestCase
   public function testParseFITFile(): void
   {
 
-    $n = 47; // number of rows to parse and compare with expected CSV file
+    $n = 6; // number of rows to parse and compare with expected CSV file
     $fit_path           = $this->project_dir . '/tests/resources/Activity.fit';
     $expected_csv_path  = $this->project_dir . '/tests/resources/Activity.csv';
     $output_path        = $this->cache_dir   . '/tests/TestParseFITFile-Output.csv';
@@ -59,12 +59,8 @@ final class ApplicationTest extends KernelTestCase
     $actual_lines   = file($output_path);
 
     for ($i=0; $i < $n; $i++) {
-      if(substr($actual_lines[$i], 0, 4 ) === "Defi"){
-        $this->assertEquals(rtrim($expected_lines[$i], ",\n"), rtrim($actual_lines[$i], ",\n"));
-      }
+      $this->assertEquals(rtrim($expected_lines[$i], ",\n"), rtrim($actual_lines[$i], ",\n"));
     }
     // WIP
-    // $this->assertTrue(true);
-
   }
 }

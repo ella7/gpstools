@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Model\FIT;
+use App\Model\FIT\Field;
 
 class DataMessage extends Message
 {
@@ -30,15 +31,31 @@ class DataMessage extends Message
   public function evaluateSubfields(): void
   {
     foreach ($this->getFields() as $field) {
-      if($field->hasSubfields()){
-        foreach ($field->getSubfields() as $subfield) {
+      $def_field = $this->getDefinitionFieldByDefNum($field->getNumber());
+      if($def_field->hasSubfields()){
+        foreach ($def_field->getSubfields() as $subfield) {
           if($subfield->matchesMessage($this)){
-            // set values in the field accordingly
-            // TODO: This isn't done. Marking so I don't lose track
+            $field->setName($subfield->getName());
+            $field->setUnits($subfield->getUnits());
+            // TODO: This is incomplete. We don't currently handle a situation where the base type
+            // changes. The spec allows the subfield to have a different base_type as long as it
+            // is equal to or smaller than the main field's base_type. It's unclear how this is
+            // supposed to work. 
           }
         }
       }
     }
+  }
+
+  /**
+   * Returns the field from the definition message with a def_num equal to the passed value
+   *
+   * @param  int   $def_num
+   * @return Field
+   */
+  public function getDefinitionFieldByDefNum(int $def_num): Field
+  {
+    return $this->definition->getFieldByDefNum($def_num);
   }
 
 }

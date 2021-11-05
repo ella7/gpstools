@@ -110,4 +110,41 @@ class Message
     $this->name = GlobalProfileAccess::getFieldTypeValue('global_number', $global_number);
   }
 
+  public function getFieldValueByDefNum($def_num)
+  {
+    return $this->getFieldByDefNum($def_num)->getValue();
+  }
+
+  /**
+   * Returns true if the message contains a field with the def_num
+   *
+   * @param  int   $def_num
+   * @return bool
+   */
+  public function hasAFieldDefNum(int $def_num): bool
+  {
+    foreach ($this->fields as $field) {
+      if($def_num == $field->getNumber()){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Returns the field with a def_num equal to the passed value
+   *
+   * @param  int   $def_num
+   * @return Field
+   */
+  public function getFieldByDefNum(int $def_num): Field
+  {
+    foreach ($this->fields as $field) {
+      if($def_num == $field->getNumber()){
+        return $field;
+      }
+    }
+    throw new \Exception("This message does not contain any fields of def_num: $num", 1);
+  }
+
 }

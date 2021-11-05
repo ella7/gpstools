@@ -34,4 +34,9 @@ class ReferenceFieldDefinition
     return $this->value;
   }
 
+  public function getRawValue()
+  {
+    return $this->raw_value;
+  }
+
 }

@@ -18,7 +18,10 @@ class SubfieldDefinition extends FieldDefinition
       throw new \Exception('Subfields must contain at least one Reference Field');
     }
     foreach ($this->ref_fields as $ref_field) {
-      if($message->getFieldValue($ref_field->getName()) == $ref_field->getValue()){ // WILL NOT WORK
+      if(
+        $message->hasAFieldDefNum($ref_field->getDefNum()) &&
+        $message->getFieldValueByDefNum($ref_field->getDefNum()) == $ref_field->getRawValue()
+      ){
         return true;
       }
     }

@@ -53,4 +53,9 @@ class Field
     return $this->def_num;
   }
 
+  public function setNumber($def_num)
+  {
+    $this->def_num = $def_num;
+  }
+
 }

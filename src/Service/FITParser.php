@@ -101,6 +101,7 @@ class FITParser implements LoggerAwareInterface
       // echo "we are reading a DataMessage\n";
       $definition = $this->getLocalDefinition($local_number);
       $data = $this->readDataMessage($definition);
+      $data->evaluateSubfields();
       return $data;
 		}
   }
@@ -177,9 +178,11 @@ class FITParser implements LoggerAwareInterface
         'name'      => $field_definition->getName(),
         'value'     => $field_data,
         'units'     => $field_definition->getUnits(),
+        'def_num'   => $field_definition->getNumber()
       ]);
     }
-    // TODO:  add DataMessageBuilder or something to DefinitionMessage - construct a DataMessage from a DefinitionMessage and raw fields data
+    // TODO: change Field constructor so you just hav to pass the field_definition and the 'value' OR create a factory-like function
+    // TODO: add DataMessageBuilder or something to DefinitionMessage - construct a DataMessage from a DefinitionMessage and raw fields data
     return new DataMessage([
       'type' => Message::MESSAGE_TYPE_DATA,
       'local_number' => $definition_message->getLocalNumber(),
