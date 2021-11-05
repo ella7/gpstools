@@ -19,8 +19,8 @@ class FieldDefinition extends Field
   /* *** Other properties that may be needed down the road *** */
   protected $type;        // Either a FieldType or BaseType for the field - will create an abstract class or interface for both to use
   protected $size;        // Size (in bytes) of the field
-  protected $scale;       // currently handled by the FitCSVTool, but might be good to know
-  protected $offset;      // like scale, currently handled by the FitCSVTool
+  protected $scale;       // A scale factor to be applied to the raw value found in the fit file
+  protected $offset;      // An offset to be added to the raw value in the fit file
 
   /**
    * TODO:  getFinalFieldDefinition in other classes could return a Field, Subfield or Comoponent.
@@ -165,5 +165,10 @@ class FieldDefinition extends Field
   public function getNumberOfValues()
   {
     return (int)$this->size / $this->getBaseTypeSize();
+  }
+
+  public function getScale()
+  {
+    return $this->scale;
   }
 }

@@ -174,12 +174,18 @@ class FITParser implements LoggerAwareInterface
     $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
     foreach ($definition_message->getFields() as $field_definition) {
       $field_data = $this->readFieldData($field_definition);
+      if($field_definition->getScale()){
+        $field_data /= $field_definition->getScale();
+      }
       $fields[] = new Field([
         'name'      => $field_definition->getName(),
         'value'     => $field_data,
         'units'     => $field_definition->getUnits(),
         'def_num'   => $field_definition->getNumber()
       ]);
+      if($field_definition->getScale()){
+
+      }
     }
     // TODO: change Field constructor so you just hav to pass the field_definition and the 'value' OR create a factory-like function
     // TODO: add DataMessageBuilder or something to DefinitionMessage - construct a DataMessage from a DefinitionMessage and raw fields data
