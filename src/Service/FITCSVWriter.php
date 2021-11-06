@@ -54,7 +54,7 @@ class FITCSVWriter {
       }
     }
     if($message->getType() === MESSAGE::MESSAGE_TYPE_DATA){
-      foreach($message->getFields() as $field){
+      foreach($message->getValidFields() as $field){
         $line = array_merge($line, [
           $field->getName(),
           $field->getValueAsString().self::ENCLOSURE_TRIGGER,

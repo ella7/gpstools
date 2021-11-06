@@ -142,6 +142,11 @@ class FieldDefinition extends Field
     return $this->getBaseType()->getSize();
   }
 
+  public function getInvalidValue()
+  {
+    return $this->getBaseType()->getInvalidValue();
+  }
+
   public function getSize()
   {
     return $this->size;
@@ -170,5 +175,10 @@ class FieldDefinition extends Field
   public function getScale()
   {
     return $this->scale;
+  }
+
+  public function getOffset()
+  {
+    return $this->offset;
   }
 }
