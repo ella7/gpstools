@@ -72,7 +72,20 @@ class DataMessage extends Message
 
   public function getDefinitionFieldForField($field)
   {
+    if($field instanceof ComponentDefinition) return $field;          // HACK: is this a hack?
     return $this->getDefinitionFieldByDefNum($field->getNumber());
+  }
+
+  public function addComponents($components)
+  {
+    foreach ($components as $component) {
+      $compenet_base_type = GlobalProfileAccess::getFieldDefinition(
+        $this->getGlobalNumber(),
+        $component->getNumber()
+      )->getBaseType();
+      $component->setType($compenet_base_type);                                           // HACK: More hack to be fixed
+      $this->addField($component);
+    }
   }
 
 }

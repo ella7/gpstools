@@ -144,7 +144,7 @@ class Message
         return $field;
       }
     }
-    throw new \Exception("This message does not contain any fields of def_num: $num", 1);
+    throw new \Exception("This message does not contain any fields of def_num: $def_num", 1);
   }
 
 }

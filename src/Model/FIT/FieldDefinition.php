@@ -87,6 +87,11 @@ class FieldDefinition extends Field
     return (count($this->components) > 0);
   }
 
+  public function getComponents()
+  {
+    return $this->components;
+  }
+
   public static function initFromGlobalProfile($message_global_number, $properties)
   {
     $field_definition = GlobalProfileAccess::getFieldDefinition(

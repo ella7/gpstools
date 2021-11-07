@@ -23,6 +23,7 @@ class FITParser implements LoggerAwareInterface
   protected $reader;
   protected $file_header;
   protected $local_definitions;
+  protected $component_buffer = [];
   protected $log;
 
   protected $message_limit; // max number of records/messages to parse
@@ -102,6 +103,7 @@ class FITParser implements LoggerAwareInterface
       $definition = $this->getLocalDefinition($local_number);
       $data = $this->readDataMessage($definition);
       $data->evaluateSubfields();
+      $data->addComponents($this->flushComponentBuffer());
       return $data;
 		}
   }
@@ -220,27 +222,63 @@ class FITParser implements LoggerAwareInterface
 
   protected function readFieldData($field_definition)
   {
-    switch($field_definition->getBaseTypeName()) {
-			case 'string'	: $value = $this->reader->readString8($field_definition->getSize()); break;
-			case 'sint8'	: $value = $this->reader->readInt8(); break;
-			case 'enum'		:
-			case 'uint8z'	:
-			case 'uint8'	: $value = $this->reader->readUInt8(); break;
-			case 'sint16'	: $value = $this->reader->readInt16(); break;
-			case 'uint16z':
-			case 'uint16'	: $value = $this->reader->readUInt16(); break;
-			case 'sint32'	: $value = $this->reader->readInt32(); break;
-			case 'uint32z':
-			case 'uint32'	: $value = $this->reader->readUInt32(); break;
-			case 'float32': $value = $this->reader->readFloat(); break;
-			case 'float64': $value = $this->reader->readDouble(); break;
-			case 'byte'		:
-			default			  : $value = $this->reader->read($field_definition->getSize());
-		}
+    $starting_position = $this->reader->getPosition();
+    $value = $this->readBytesAs($field_definition->getBaseTypeName());
     if($value !== $field_definition->getInvalidValue()){
       $value = self::applyScaleAndOffset($value, $field_definition);
     }
+    // expand components
+    if($field_definition->hasComponents()){
+      $this->reader->setPosition($starting_position);
+    }
+    foreach ($field_definition->getComponents() as $component_def) {
+      $this->readComponent($component_def);
+    }
     return $value;
+  }
+
+  /**
+   * I'm unhappy with the current flow. All other similar functions read the
+   * element in question, and then return an object representation of what was
+   * read. Because expanded components are a bit different, it doesn't make
+   * sense to return them here (I don't think). I think they'll need to get
+   * put in some expanded component buffer and then added to the message later.
+   * To be clear, the specific problem is that they are being read before the
+   * DataMessage has been created.
+   *
+   * @param  ComponentDefinition  $component_def
+   */
+  protected function readComponent($component_def)
+  {
+    $component = clone $component_def;
+    $component->setValue(
+      $this->applyScaleAndOffset(
+        $this->reader->readBits($component_def->getBits()),
+        $component_def
+      )
+    );
+    $this->component_buffer[] = $component;
+  }
+
+  protected function readBytesAs($type, $size = null)
+  {
+    switch($type) {
+			case 'string'	: return $this->reader->readString8($size); break;
+			case 'sint8'	: return $this->reader->readInt8(); break;
+			case 'enum'		:
+			case 'uint8z'	:
+			case 'uint8'	: return $this->reader->readUInt8(); break;
+			case 'sint16'	: return $this->reader->readInt16(); break;
+			case 'uint16z':
+			case 'uint16'	: return $this->reader->readUInt16(); break;
+			case 'sint32'	: return $this->reader->readInt32(); break;
+			case 'uint32z':
+			case 'uint32'	: return $this->reader->readUInt32(); break;
+			case 'float32': return $this->reader->readFloat(); break;
+			case 'float64': return $this->reader->readDouble(); break;
+			case 'byte'		:
+			default			  : return $this->reader->read($size);
+		}
   }
 
   public static function bitsFromByte($byte)
@@ -267,6 +305,13 @@ class FITParser implements LoggerAwareInterface
   public function setMessageLimit($limit)
   {
     $this->message_limit = $limit;
+  }
+
+  public function flushComponentBuffer()
+  {
+    $components = $this->component_buffer;
+    $this->component_buffer = [];
+    return $components;
   }
 
 }
