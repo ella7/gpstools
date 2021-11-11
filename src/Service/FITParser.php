@@ -88,18 +88,15 @@ class FITParser implements LoggerAwareInterface
   public function readRecord()
   {
     $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
-    $position = $this->reader->getPosition();
     list('local_number' => $local_number, 'message_type' => $message_type) = $this->readRecordHeader();
 
     if($message_type == self::MESSAGE_TYPE_DEFINITION) {
-      // echo "we are reading a DefinitionMessage\n";
       $definition = $this->readDefinitionMessage();
       $this->addLocalDefinition($definition, $local_number);
       return $definition;
 		}
 
     if($message_type == self::MESSAGE_TYPE_DATA) {
-      // echo "we are reading a DataMessage\n";
       $definition = $this->getLocalDefinition($local_number);
       $data = $this->readDataMessage($definition);
       $data->evaluateSubfields();
@@ -206,7 +203,7 @@ class FITParser implements LoggerAwareInterface
     return $value;
   }
 
-  protected function addLocalDefinition(&$definition, $local_number)
+  public function addLocalDefinition(&$definition, $local_number)
   {
     $definition->setLocalNumber($local_number);
     $this->local_definitions[$local_number] = $definition;
@@ -318,6 +315,11 @@ class FITParser implements LoggerAwareInterface
     $components = $this->component_buffer;
     $this->component_buffer = [];
     return $components;
+  }
+
+  public function setPosition(int $position)
+  {
+    $this->reader->setPosition($position);
   }
 
 }
