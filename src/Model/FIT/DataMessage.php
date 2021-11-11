@@ -26,16 +26,24 @@ class DataMessage extends Message
 
   public function getValidFields()
   {
+    // if the field has a def_num, check for a valid value
+    // if the field doesn't have a def_num, just check for any value
     $valid_fields = [];
     foreach ($this->getFields() as $field) {
-      $def_field = $this->getDefinitionFieldForField($field);
+      if($field->getNumber() !== null){
+        $def_field = $this->getDefinitionFieldForField($field);
 
-      // TODO: Need more careful handling of multi-value fields
-      $value = $field->getValue();
-      if(is_array($value)) $value = $value[0];
+        // TODO: Need more careful handling of multi-value fields
+        $value = $field->getValue();
+        if(is_array($value)) $value = $value[0];
 
-      if($value !== $def_field->getInvalidValue()){
-        $valid_fields[] = $field;
+        if($value !== $def_field->getInvalidValue()){
+          $valid_fields[] = $field;
+        }
+      } else {
+        if($field->getValue()){
+          $valid_fields[] = $field;
+        }
       }
     }
     return $valid_fields;
