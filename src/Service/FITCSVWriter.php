@@ -25,7 +25,7 @@ class FITCSVWriter {
     $max_number_of_fields = 52;
     $output = $this->getHeaderString($max_number_of_fields) . "\n";
     foreach($messages as $message){
-      $output .= $this->getCSVString($message) . "\n";
+      $output .= $this->getMessageString($message) . "\n";
     }
     $file_system = new Filesystem;
     $file_system->dumpFile($path, $output);
@@ -40,7 +40,7 @@ class FITCSVWriter {
     return $max;
   }
 
-  public function getCSVString(Message $message)
+  public function getMessageString(Message $message)
   {
     $line = $message->getMessageKey();
 
@@ -62,11 +62,8 @@ class FITCSVWriter {
         ]);
       }
       if($message->getDefinition()->numberOfFields() > $message->numberOfFields()){
-        // echo "here's the problem \n\n";
         $length = $message->getDefinition()->numberOfFields() * 3 + 3; // 3 columns per field plus the 3 beginning fields
         $line = array_pad($line, $length, '');
-        // echo self::str_putcsv($line);
-        // exit();
       }
     }
     $length = ($message->numberOfFields() + $message->numberOfEmptyFields()) * self::COLUMNS_PER_FIELD + self::COLUMNS_BEFORE_FIELDS;
