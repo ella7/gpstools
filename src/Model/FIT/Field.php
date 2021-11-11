@@ -29,10 +29,23 @@ class Field
     return $this->value;
   }
 
+  // TODO: Make decision about if/how to store multiple values
+  public function getValues()
+  {
+    $values = $this->getValue();
+    if(!is_array($values)){
+      $values = [$values];
+    }
+    return $values;
+  }
+
   public function getValueAsString()
   {
-    $value = $this->getValue();
-    return (is_float($value)) ? Utility::formatFloat($value) : (string)$value;
+    $values = $this->getValues();
+    foreach ($values as $key => $value) {
+      $values[$key] = (is_float($value)) ? Utility::formatFloat($value) : (string)$value;
+    }
+    return implode('|', $values);
   }
 
   public function getUnits()

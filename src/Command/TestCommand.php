@@ -96,8 +96,11 @@ class TestCommand extends InteractiveOptionCommand
         break;
 
       case 'misc':
-        dump(GlobalProfileAccess::getFieldDefinitionByNames('session', 'sport'));
-        echo "\n ok \n";
+        $fp = new FITParser($input->getOption('path'));
+        $fp->setLogger($this->logger);
+        $fp->setMessageLimit(47);
+        $file = $fp->parseFile();
+        dump($file->getMessage(46));
         break;
 
       default:

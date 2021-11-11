@@ -223,10 +223,16 @@ class FITParser implements LoggerAwareInterface
   protected function readFieldData($field_definition)
   {
     $starting_position = $this->reader->getPosition();
-    $value = $this->readBytesAs($field_definition->getBaseTypeName());
-    if($value !== $field_definition->getInvalidValue()){
-      $value = self::applyScaleAndOffset($value, $field_definition);
+
+    // read each value for fields containing multiple values
+    for ($i=0; $i < $field_definition->getNumberOfValues(); $i++) {
+      $value = $this->readBytesAs($field_definition->getBaseTypeName());
+      if($value !== $field_definition->getInvalidValue()){
+        $value = self::applyScaleAndOffset($value, $field_definition);
+      }
+      $values[] = $value;
     }
+
     // expand components
     if($field_definition->hasComponents()){
       $this->reader->setPosition($starting_position);
@@ -234,7 +240,7 @@ class FITParser implements LoggerAwareInterface
     foreach ($field_definition->getComponents() as $component_def) {
       $this->readComponent($component_def);
     }
-    return $value;
+    return (count($values) > 1) ? $values : $value;
   }
 
   /**

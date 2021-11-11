@@ -29,7 +29,12 @@ class DataMessage extends Message
     $valid_fields = [];
     foreach ($this->getFields() as $field) {
       $def_field = $this->getDefinitionFieldForField($field);
-      if($field->getValue() !== $def_field->getInvalidValue()){
+
+      // TODO: Need more careful handling of multi-value fields
+      $value = $field->getValue();
+      if(is_array($value)) $value = $value[0];
+
+      if($value !== $def_field->getInvalidValue()){
         $valid_fields[] = $field;
       }
     }
@@ -73,6 +78,12 @@ class DataMessage extends Message
   public function getDefinitionFieldForField($field)
   {
     if($field instanceof ComponentDefinition) return $field;          // HACK: is this a hack?
+    if($field->getNumber() === null){
+      return GlobalProfileAccess::getFieldDefinitionByNames(
+        $this->getName(),
+        $field->getName()
+      );
+    }
     return $this->getDefinitionFieldByDefNum($field->getNumber());
   }
 
@@ -83,7 +94,7 @@ class DataMessage extends Message
         $this->getGlobalNumber(),
         $component->getNumber()
       )->getBaseType();
-      $component->setType($compenet_base_type);                                           // HACK: More hack to be fixed
+      $component->setType($compenet_base_type);                       // HACK: More hack to be fixed
       $this->addField($component);
     }
   }
