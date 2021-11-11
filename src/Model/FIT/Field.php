@@ -29,6 +29,15 @@ class Field
     return $this->value;
   }
 
+  public function addValue($value)
+  {
+    if ($this->value === null) $this->value = $value;
+    if (is_array($this->value)) $this->value[] = $value;
+    if ($this->value !== null && !is_array($this->value)){
+      $this->value = [$this->value, $value];
+    }
+  }
+
   // TODO: Make decision about if/how to store multiple values
   public function getValues()
   {

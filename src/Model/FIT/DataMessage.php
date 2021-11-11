@@ -98,12 +98,17 @@ class DataMessage extends Message
   public function addComponents($components)
   {
     foreach ($components as $component) {
-      $compenet_base_type = GlobalProfileAccess::getFieldDefinition(
-        $this->getGlobalNumber(),
-        $component->getNumber()
-      )->getBaseType();
-      $component->setType($compenet_base_type);                       // HACK: More hack to be fixed
-      $this->addField($component);
+      $component->setType(
+        GlobalProfileAccess::getFieldDefinition($this->getGlobalNumber(),$component->getNumber())
+        ->getBaseType()
+      );
+      // if the message already has a field with the same def_num, add the component value to the existing field
+      // it may make sense to move this functionality into addField()
+      if($this->hasAFieldDefNum($component->getNumber())){
+        $this->getFieldByDefNum($component->getNumber())->addValue($component->getValue());
+      } else {
+        $this->addField($component);
+      }
     }
   }
 
