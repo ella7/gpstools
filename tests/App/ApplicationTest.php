@@ -29,21 +29,29 @@ final class ApplicationTest extends KernelTestCase
   /**
    * @group slowTests
    */
-  public function testReadAndWriteSampleActivityCSV(): void
+  public function testParseFITCSVFile(): void
   {
-    $input_path  = $this->project_dir . '/tests/resources/Activity.csv';
-    $output_path = $this->project_dir . '/tests/resources/Activity-Parsed.csv';
+    $n = 2;
+    $this->csv_parser->setMessageLimit($n);
+
+    $input_path  = $this->project_dir   . '/tests/resources/Activity.csv';
+    $output_path = $this->cache_dir     . '/tests/TestParseFITCSVFile-Output.csv';
 
     $messages = $this->csv_parser->messagesFromCSVFile($input_path);
     $this->csv_writer->CSVFileFromMessages($output_path, $messages);
 
-    $this->assertFileEquals($input_path, $output_path);
+    $expected_lines = array_slice(file($input_path), 0, $n);
+    $actual_lines   = file($output_path);
+
+    for ($i=0; $i < $n; $i++) {
+      $this->assertEquals(rtrim($expected_lines[$i], ",\n"), rtrim($actual_lines[$i], ",\n"));
+    }
   }
 
   public function testParseFITFile(): void
   {
 
-    $n = 47; // number of rows to parse and compare with expected CSV file
+    $n = 1166; // number of rows to parse and compare with expected CSV file
     $fit_path           = $this->project_dir . '/tests/resources/Activity.fit';
     $expected_csv_path  = $this->project_dir . '/tests/resources/Activity.csv';
     $output_path        = $this->cache_dir   . '/tests/TestParseFITFile-Output.csv';
