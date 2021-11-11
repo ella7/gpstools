@@ -23,6 +23,8 @@ class FITCSVParser
   protected $csv_key = '';
   protected $converted_to_csv = false;
 
+  protected $message_limit; // max number of records/messages to parse
+
   public function __construct(string $fitcsv_jar_path, string $tmp_unpack_path)
   {
     // TODO: use symfony/filesystem component rather than direct access
@@ -171,17 +173,15 @@ class FITCSVParser
    * @param  string $csv_path         Path to a CSV file which has been converted using the FitCSVTool from a .fit file
    * @return [\Model\FIT\Messages]    Array of Messages extracted from the file
    */
-  public static function messagesFromCSVFile($csv_path)
+  public function messagesFromCSVFile($csv_path)
   {
     $messages = [];
     $current_definitions = [];
     $lines = file($csv_path);
     array_shift($lines);
 
-    // For debugging only
-    $line_limit = null;
-    if($line_limit){
-      $lines = array_slice($lines, 0, $line_limit);
+    if($this->message_limit){
+      $lines = array_slice($lines, 0, $this->message_limit);
     }
 
     foreach($lines as $line){
@@ -298,5 +298,11 @@ class FITCSVParser
       self::arrayFromFitCSV(self::remove_utf8_bom($line))
     );
   }
+
+  public function setMessageLimit($limit)
+  {
+    $this->message_limit = $limit;
+  }
+
 
 } // end class FITCSVParser
