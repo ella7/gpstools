@@ -98,9 +98,8 @@ class TestCommand extends InteractiveOptionCommand
       case 'misc':
         $fp = new FITParser($input->getOption('path'));
         $fp->setLogger($this->logger);
-        $fp->setMessageLimit(47);
         $file = $fp->parseFile();
-        dump($file->getMessage(46));
+        dump($file->getMessage(9231));
         break;
 
       default:

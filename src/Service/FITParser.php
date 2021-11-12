@@ -81,7 +81,7 @@ class FITParser implements LoggerAwareInterface
     $header_and_data_size = $this->file_header['header_size'] + $this->file_header['data_size'];
     return (
       $this->reader->getPosition() < $header_and_data_size
-      && $records_read < $this->message_limit
+      && ($records_read < $this->message_limit || $this->message_limit === -1)
     );
   }
 
