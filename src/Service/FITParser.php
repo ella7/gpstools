@@ -22,7 +22,7 @@ class FITParser implements LoggerAwareInterface
 
   protected $reader;
   protected $file_header;
-  protected $local_definitions;
+  protected $local_definitions = [];
   protected $component_buffer = [];
   protected $log;
 
@@ -231,12 +231,13 @@ class FITParser implements LoggerAwareInterface
     }
 
     // expand components
-    if($field_definition->hasComponents()){
+    if($field_definition->hasComponents() && $value !== $field_definition->getInvalidValue()){ // this will not work for multivalue fields
       $this->reader->setPosition($starting_position);
+      foreach ($field_definition->getComponents() as $component_def) {
+        $this->readComponent($component_def);
+      }
     }
-    foreach ($field_definition->getComponents() as $component_def) {
-      $this->readComponent($component_def);
-    }
+
     return (count($values) > 1) ? $values : $value;
   }
 
@@ -256,7 +257,7 @@ class FITParser implements LoggerAwareInterface
     $component = clone $component_def;
     $component->setValue(
       $this->applyScaleAndOffset(
-        $this->reader->readBits($component_def->getBits()),
+        $this->reader->readUBits($component_def->getBits()),
         $component_def
       )
     );
