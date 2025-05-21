@@ -14,10 +14,11 @@ The project is built on the Symfony framework and uses custom libraries for bina
 
 ## Prerequisites
 
-- PHP 7.2.5 or higher
+- PHP 8.3 or higher
 - PHP Extensions:
   - ext-ctype
   - ext-iconv
+  - ext-bcmath
 - Composer (for dependency management)
 - Java Runtime Environment (JRE) 8 or higher (for FitCSVTool.jar)
 - Git (for cloning the repository and its dependencies)

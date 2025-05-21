@@ -5,22 +5,22 @@ echo "Setting up environment for GPSTools..."
 
 # ——— language runtimes ———
 # Codex-universal image will auto-install the versions you request
-export CODEX_ENV_PHP_VERSION=7.4   # Using PHP 7.4 for compatibility with dependencies
+export CODEX_ENV_PHP_VERSION=8.3   # Using PHP 8.3 as specified in composer.json
 
 # ——— Check existing tools ———
 MISSING_PACKAGES=""
 
 # Check PHP and required extensions
-if ! command -v php &> /dev/null || [[ "$(php -r 'echo PHP_VERSION;' | cut -c1-3)" < "7.4" ]]; then
+if ! command -v php &> /dev/null || [[ "$(php -r 'echo PHP_VERSION;' | cut -c1-3)" < "8.3" ]]; then
     # Include all needed extensions when installing PHP
-    MISSING_PACKAGES="$MISSING_PACKAGES php7.4-cli php7.4-mbstring php7.4-xml php7.4-bcmath"
+    MISSING_PACKAGES="$MISSING_PACKAGES php8.3-cli php8.3-mbstring php8.3-xml php8.3-bcmath"
 else
     # If PHP is installed, check individual extensions
     PHP_EXTENSIONS="mbstring xml bcmath"
     for ext in $PHP_EXTENSIONS; do
         if ! php -m | grep -q -i "$ext" && ! php -r "echo extension_loaded('$ext') ? 'yes' : '';" | grep -q "yes"; then
             echo "⚠️ PHP extension $ext is missing, adding to installation list"
-            MISSING_PACKAGES="$MISSING_PACKAGES php7.4-$ext"
+            MISSING_PACKAGES="$MISSING_PACKAGES php8.3-$ext"
         else
             echo "✓ PHP extension $ext is available"
         fi

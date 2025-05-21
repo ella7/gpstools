@@ -4,9 +4,10 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-bcmath": "*",
         "ella7/console-command": "dev-dev",
         "ella7/php-binary-reader": "dev-master",
         "symfony/console": "5.3.*",
