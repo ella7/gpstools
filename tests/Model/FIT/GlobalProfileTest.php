@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Tests\Model\FIT;
+
 use PHPUnit\Framework\TestCase;
 use App\Model\FIT\GlobalProfile;
 
