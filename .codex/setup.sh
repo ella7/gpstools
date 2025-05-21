@@ -59,7 +59,14 @@ fi
 
 # ——— Project deps ———
 echo "Installing project dependencies..."
-cd /workspace      # Codex clones your repo here
-composer install --no-interaction --prefer-dist --optimize-autoloader
+
+# Check if composer.json exists in the current directory
+if [ -f "./composer.json" ]; then
+    # We're already in the project root, install dependencies
+    composer install --no-interaction --prefer-dist --optimize-autoloader
+else
+    echo "⚠️ Could not find composer.json in the current directory."
+    echo "The setup script should be run from the root of the project."
+fi
 
 echo "✅ Environment ready for offline execution"
