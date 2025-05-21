@@ -68,6 +68,14 @@ if [ -f "./composer.json" ]; then
         rm ./composer.lock
     fi
     
+    # Allow the symfony/flex plugin (required for Symfony projects)
+    echo "Allowing symfony/flex plugin..."
+    composer config --no-plugins allow-plugins.symfony/flex true
+    
+    # Also allow other common plugins that might be needed
+    composer config --no-plugins allow-plugins.symfony/runtime true
+    composer config --no-plugins allow-plugins.symfony/thanks true
+    
     # We're already in the project root, update dependencies
     echo "Running composer update to resolve dependency issues..."
     composer update --no-interaction --prefer-dist --optimize-autoloader
