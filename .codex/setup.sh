@@ -13,10 +13,10 @@ MISSING_PACKAGES=""
 # Check PHP and required extensions
 if ! command -v php &> /dev/null || [[ "$(php -r 'echo PHP_VERSION;' | cut -c1-3)" < "8.3" ]]; then
     # Include all needed extensions when installing PHP
-    MISSING_PACKAGES="$MISSING_PACKAGES php8.3-cli php8.3-mbstring php8.3-xml php8.3-bcmath"
+    MISSING_PACKAGES="$MISSING_PACKAGES php8.3-cli php8.3-mbstring php8.3-xml php8.3-bcmath php8.3-curl"
 else
     # If PHP is installed, check individual extensions
-    PHP_EXTENSIONS="mbstring xml bcmath"
+    PHP_EXTENSIONS="mbstring xml bcmath curl"
     for ext in $PHP_EXTENSIONS; do
         if ! php -m | grep -q -i "$ext" && ! php -r "echo extension_loaded('$ext') ? 'yes' : '';" | grep -q "yes"; then
             echo "⚠️ PHP extension $ext is missing, adding to installation list"
