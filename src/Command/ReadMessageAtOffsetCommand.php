@@ -15,12 +15,29 @@ class ReadMessageAtOffsetCommand extends InteractiveOptionCommand
 {
   protected static $defaultName = 'gpstools:read-message';
 
+  /**
+   * Initialize the command and store the injected logger.
+   *
+   * Stores the provided LoggerInterface on $this->logger and calls the parent constructor.
+   */
   public function __construct(LoggerInterface $logger)
   {
     $this->logger = $logger;
     parent::__construct();
   }
 
+  /**
+   * Configure the gpstools:read-message console command.
+   *
+   * Defines command description, help text, and four optional options:
+   *  - --path        Path to the .fit file (optional).
+   *  - --offset      Byte offset of the start of the message (optional).
+   *  - --size        Number of bytes to read from the offset (optional).
+   *  - --defn-offset Offset of the associated definition message (optional).
+   *
+   * Also registers interactive prompts for `path` and `offset` that are
+   * activated only when the corresponding option is unset.
+   */
   protected function configure()
   {
     $this
@@ -63,7 +80,18 @@ class ReadMessageAtOffsetCommand extends InteractiveOptionCommand
   }
 
   // This command is not fully functional, and there is no error handling.
-  // This can be used to get information about a specific message if the offset of that message is known
+  /**
+   * Read and display a FIT message located at a given byte offset in a FIT file.
+   *
+   * If a definition offset is provided, the command first reads the DefinitionMessage
+   * at that offset and registers it as a local definition so the subsequent DataMessage
+   * at the main offset can be interpreted. The DataMessage is read and dumped, and a
+   * hex dump of `size` bytes starting at the message offset is written to stdout.
+   *
+   * Side effects: reads from the filesystem, writes dumps and hex output to stdout.
+   *
+   * @return int Symfony Console command exit status (InteractiveOptionCommand::SUCCESS on success).
+   */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
     $path = $input->getOption('path');

@@ -8,12 +8,29 @@ class DefinitionMessage extends Message
 
   protected $architecture;
 
+  /**
+   * Create a DefinitionMessage.
+   *
+   * Initializes the message using the provided properties and sets the message
+   * type to Message::MESSAGE_TYPE_DEFINITION.
+   *
+   * @param mixed $properties Initialization properties forwarded to the parent constructor.
+   */
   public function __construct($properties)
   {
     parent::__construct($properties);
     $this->type = Message::MESSAGE_TYPE_DEFINITION;
   }
 
+  /**
+   * Enforces that the message type is the Definition type and sets it.
+   *
+   * Ensures the object's type can only be set to self::MESSAGE_TYPE_DEFINITION. If a different
+   * type is provided an exception is thrown; otherwise the internal type is assigned.
+   *
+   * @param string $type The message type to set; must equal self::MESSAGE_TYPE_DEFINITION.
+   * @throws \Exception If $type is not self::MESSAGE_TYPE_DEFINITION.
+   */
   public function setType($type)
   {
     if($type !== self::MESSAGE_TYPE_DEFINITION){

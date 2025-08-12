@@ -15,6 +15,13 @@ class GPSTrackFactory
   protected $cache;
   protected $fit_parser;
 
+  /**
+   * Construct the GPSTrackFactory with runtime options and injected dependencies.
+   *
+   * @param array $options Runtime options. Supported keys:
+   *   - 'use_cache' (bool): enable or disable caching (default: true).
+   *   - 'set_distance_from_coords' (bool): compute distances from coordinates when building tracks (default: false).
+   */
   public function __construct(array $options = [], CacheInterface $cache, FITCSVParser $fit_parser)
   {
     $resolver = new OptionsResolver();
@@ -76,6 +83,17 @@ class GPSTrackFactory
     // as well as several totals for the track. Feels out of place here.
   }
 
+  /**
+   * Build a GPSTrack from a Garmin FIT file.
+   *
+   * Parses the FIT file at the given path using the injected FITCSVParser, constructs a GPSTrack,
+   * populates track properties from the FIT session data, and converts each FIT record into
+   * GPSTrackPoint instances which are added to the track. If cadence values are present in records,
+   * the method computes and sets the track's average and maximum cadence.
+   *
+   * @param string $path Path to the FIT file.
+   * @return GPSTrack The constructed GPSTrack with populated points and cadence statistics (when available).
+   */
   public function buildTrackFromFITFile($path)
   {
     $this->fit_parser->setFitPath($path);

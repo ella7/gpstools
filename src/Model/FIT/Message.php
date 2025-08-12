@@ -18,7 +18,15 @@ class Message
   protected $global_number;     // this is the index to be used to find the message definition in the GlobalProfile
   protected $name;              // $name is derived from the Global Profile
   protected $fields;            // array of FIT\Field (or child) objects
-  protected $num_empty_fields;  // I expect this to be removed - currently helps handle the extra commas issue when parsing a FIT CSV file
+  protected $num_empty_fields;  /**
+   * Construct a Message instance from an array of properties.
+   *
+   * Populates the object's properties from the provided associative array and,
+   * if a `global_number` is present and `name` is not set, derives and sets the
+   * message `name` from the global profile.
+   *
+   * @param array $properties Associative array of properties used to populate the instance.
+   */
 
   public function __construct($properties)
   {
@@ -28,11 +36,27 @@ class Message
     }
   }
 
+  /**
+   * Get the message type.
+   *
+   * Returns the message's type identifier. Expected values are the class constants
+   * `MESSAGE_TYPE_DATA` ("Data") or `MESSAGE_TYPE_DEFINITION` ("Definition").
+   *
+   * @return string The message type.
+   */
   public function getType()
   {
     return $this->type;
   }
 
+  /**
+   * Set the message type.
+   *
+   * Accepts only self::MESSAGE_TYPE_DATA or self::MESSAGE_TYPE_DEFINITION and assigns it to the message.
+   *
+   * @param string $type The message type to set.
+   * @throws \Exception If $type is not `Data` or `Definition`.
+   */
   public function setType($type)
   {
     if(!($type === self::MESSAGE_TYPE_DATA || $type === self::MESSAGE_TYPE_DEFINITION)){
@@ -41,17 +65,41 @@ class Message
     $this->type = $type;
   }
 
+  /**
+   * Get the message name.
+   *
+   * Returns the message name, which may be derived from the global profile or left null if unset.
+   *
+   * @return string|null The message name or null if not set.
+   */
   public function getName()
   {
     return $this->name;
   }
 
+  /**
+   * Get the message's fields.
+   *
+   * Returns the array of Field (or FieldDefinition) objects belonging to this message.
+   *
+   * @return Field[] Array of fields (may be empty).
+   */
   public function getFields()
   {
     return $this->fields;
   }
 
-  // if the function is passed an array of arrays, create a new Field or FieldDefinition
+  /**
+   * Set the message's fields from an array of items.
+   *
+   * Accepts an array of Field instances, FieldDefinition instances, or associative arrays.
+   * If an element is an array it will be converted to a Field when this message's type
+   * is MESSAGE_TYPE_DATA, or to a FieldDefinition otherwise. Each resulting Field is
+   * appended via addField().
+   *
+   * @param array $a Array of Field|FieldDefinition|array entries representing fields.
+   * @throws \Exception If any item after conversion is not an instance of Field.
+   */
   public function setFields($a)
   {
     $this->fields = [];
@@ -66,21 +114,49 @@ class Message
     }
   }
 
+  /**
+   * Append a Field to this message's fields collection.
+   *
+   * @param Field $field The field to add; must be an instance of App\Model\FIT\Field (or subclass).
+   */
   public function addField(Field $field)
   {
     $this->fields[] = $field;
   }
 
+  / **
+   * Return the number of fields contained in this message.
+   *
+   * @return int The count of Field objects in the message's fields array.
+   */
   public function numberOfFields()
   {
     return count($this->fields);
   }
 
+  /**
+   * Get the number of empty fields tracked for this message.
+   *
+   * This value is intended to assist CSV FIT data parsing and represents
+   * how many fields are considered empty for the message.
+   *
+   * @return int The number of empty fields.
+   */
   public function numberOfEmptyFields()
   {
     return $this->num_empty_fields;
   }
 
+  /**
+   * Return a compact key describing this message.
+   *
+   * The returned associative array contains three entries:
+   * - `type`: message type (one of MESSAGE_TYPE_DATA or MESSAGE_TYPE_DEFINITION).
+   * - `local_number`: local message number used within a FIT file (may be null).
+   * - `name`: message name (may be null or derived from the global profile).
+   *
+   * @return array{type:string,local_number:int|null,name:string|null}
+   */
   public function getMessageKey()
   {
     return [
@@ -90,36 +166,73 @@ class Message
     ];
   }
 
+  /**
+   * Get the message's local number (index used within a FIT file).
+   *
+   * @return int|null The local message number, or null if not set.
+   */
   public function getLocalNumber()
   {
     return $this->local_number;
   }
 
+  /**
+   * Set the local message number used within a FIT file.
+   *
+   * The local number identifies this message instance inside a FIT file (distinct from the
+   * global_number which indexes the Global Profile). Typically used for message definitions.
+   *
+   * @param int $local_number The local message number.
+   */
   public function setLocalNumber($local_number)
   {
     $this->local_number = $local_number;
   }
 
+  /**
+   * Get the message's global number (index into the Global Profile).
+   *
+   * The global number identifies this message type in the shared Global Profile and may be null
+   * when the message is not associated with a global definition.
+   *
+   * @return int|null The global profile index for this message, or null if not set.
+   */
   public function getGlobalNumber()
   {
     return $this->global_number;
   }
 
+  /**
+   * Set the message name by looking up the global profile name for a global message number.
+   *
+   * Uses GlobalProfileAccess to resolve the name for the provided global message number and assigns it
+   * to this message's `name` property.
+   *
+   * @param int $global_number Global profile message number used to derive the message name.
+   */
   public function setNameFromGlobalNumber($global_number)
   {
     $this->name = GlobalProfileAccess::getFieldTypeValue('global_number', $global_number);
   }
 
+  /**
+   * Get the value of the field with the given definition number.
+   *
+   * Looks up the Field by its definition number and returns that Field's value.
+   *
+   * @param int $def_num The field definition number to look up.
+   * @return mixed The value stored in the matched Field.
+   */
   public function getFieldValueByDefNum($def_num)
   {
     return $this->getFieldByDefNum($def_num)->getValue();
   }
 
   /**
-   * Returns true if the message contains a field with the def_num
+   * Determine whether the message contains a field with the specified definition number.
    *
-   * @param  int   $def_num
-   * @return bool
+   * @param int $def_num The field definition number to look for.
+   * @return bool True if a field with the given definition number exists, false otherwise.
    */
   public function hasAFieldDefNum(int $def_num): bool
   {
@@ -132,10 +245,13 @@ class Message
   }
 
   /**
-   * Returns the field with a def_num equal to the passed value
+   * Return the Field whose definition number equals the given definition number.
    *
-   * @param  int   $def_num
-   * @return Field
+   * Searches this message's fields for a Field with a matching definition number.
+   *
+   * @param int $def_num Definition number to find.
+   * @return Field The matching Field.
+   * @throws \Exception If no field with the given definition number exists.
    */
   public function getFieldByDefNum(int $def_num): Field
   {

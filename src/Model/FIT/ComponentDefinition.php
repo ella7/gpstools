@@ -10,6 +10,11 @@ class ComponentDefinition extends FieldDefinition
   protected $bits;
   protected $bit_offset;
 
+  /**
+   * Get the stored bits value for this component.
+   *
+   * @return mixed The value of the protected $bits property.
+   */
   public function getBits()
   {
     return $this->bits;

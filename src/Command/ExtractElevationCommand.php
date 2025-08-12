@@ -17,6 +17,12 @@ class ExtractElevationCommand extends InteractiveOptionCommand
   protected static $defaultName = 'gpstools:extract-elevation';
   private $factory;
 
+  /**
+   * Initialize the command with a GPSTrackFactory.
+   *
+   * Stores the provided factory on the instance, disables its internal caching so
+   * each run builds fresh tracks, and invokes the parent constructor.
+   */
   public function __construct(GPSTrackFactory $factory)
   {
     $this->factory = $factory;
@@ -24,6 +30,18 @@ class ExtractElevationCommand extends InteractiveOptionCommand
     parent::__construct();
   }
 
+  /**
+   * Configure the console command: description, help, options, and interactive prompts.
+   *
+   * Defines two optional options:
+   *  - `fitpath` (optional): path to a .fit file. When unset in interactive mode a text
+   *    Question is prompted to ask the user for the FIT file path.
+   *  - `output-format` (optional): desired output format (`json` or `csv`). When unset in
+   *    interactive mode a ChoiceQuestion prompts the user to select `json` or `csv`.
+   *
+   * Both options default to `false` when not provided; interactive prompts are attached
+   * for unset options to collect values during interactive command execution.
+   */
   protected function configure()
   {
     $this
@@ -52,7 +70,24 @@ class ExtractElevationCommand extends InteractiveOptionCommand
     $this->addInteractivityForOption('output-format', self::INTERACTION_UNSET_ONLY, $question);
   }
 
-// TODO: add testing
+/**
+   * Execute the command: extract elevation points from a FIT file and write them to disk.
+   *
+   * Builds a GPSTrack from the provided FIT file, retrieves elevation points, converts
+   * elevations from meters to feet (rounded), and writes the result as JSON or CSV.
+   *
+   * The output file is created in the same directory as the input FIT file and is named
+   * "<input_basename>_elevation.<format>" where <format> is "json" or "csv".
+   *
+   * Supported output formats:
+   * - "json": JSON-encoded array of elevation points.
+   * - "csv": CSV lines produced by FITCSVWriter::str_putcsv().
+   *
+   * Side effects:
+   * - Writes the output file to disk using Symfony Filesystem->dumpFile().
+   *
+   * @return int Exit status code (InteractiveOptionCommand::SUCCESS on success).
+   */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
     $fit_path = $input->getOption('fitpath');

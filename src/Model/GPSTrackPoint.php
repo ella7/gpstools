@@ -38,6 +38,41 @@ class GPSTrackPoint {
 
 	}
 
+	/**
+	 * Populate this GPSTrackPoint from a FIT-like associative record.
+	 *
+	 * Reads well-known FIT-derived keys from $record and sets the instance's
+	 * properties (timestamp, coord, altitude, heart_rate, cadence, distance,
+	 * speed, power, temperature, elapsed_time). Values are converted to the
+	 * expected units/types used by the class:
+	 * - timestamp: unix seconds (computed from 'record.timestamp[s]' using the
+	 *   file-specific epoch offset present in FIT exports)
+	 * - altitude: meters (float). 'record.enhanced_altitude[m]' overrides
+	 *   'record.altitude[m]' when present.
+	 * - coord: GPSCoord constructed from semicircle-encoded latitude/longitude
+	 *   when 'record.position_lat[semicircles]' is present.
+	 * - heart_rate, cadence: integers
+	 * - distance: meters (float)
+	 * - speed: meters/second (float). 'record.enhanced_speed[m/s]' overrides
+	 *   'record.speed[m/s]' when present.
+	 * - power: watts (float)
+	 * - temperature: degrees Celsius (float)
+	 *
+	 * If $track_start_time is provided (unix seconds), elapsed_time is set to
+	 * timestamp - $track_start_time.
+	 *
+	 * @param array $record Associative FIT-like record. Expected keys (examples):
+	 *                      'record.timestamp[s]', 'record.altitude[m]',
+	 *                      'record.enhanced_altitude[m]',
+	 *                      'record.heart_rate[bpm]', 'record.cadence[rpm]',
+	 *                      'record.distance[m]', 'record.speed[m/s]',
+	 *                      'record.enhanced_speed[m/s]',
+	 *                      'record.power[watts]', 'record.temperature[C]',
+	 *                      'record.position_lat[semicircles]',
+	 *                      'record.position_long[semicircles]'.
+	 * @param int|float|null $track_start_time Optional track start unix timestamp
+	 *                                          used to compute elapsed_time.
+	 */
 	function initFromFITArray($record, $track_start_time)
 	{
 		if(array_key_exists('record.timestamp[s]', $record))    			$this->timestamp 	  = $record['record.timestamp[s]'] + (20*365.25*24*60*60)-(24*60*60);
