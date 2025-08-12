@@ -6,10 +6,20 @@ namespace App\Model\FIT;
 class DefinitionMessage extends Message
 {
 
+  protected $architecture;
+
   public function __construct($properties)
   {
     parent::__construct($properties);
     $this->type = Message::MESSAGE_TYPE_DEFINITION;
+  }
+
+  public function setType($type)
+  {
+    if($type !== self::MESSAGE_TYPE_DEFINITION){
+      throw new \Exception("FIT\DefinitionMessage type cannot be set to $type. Must be `Definition`", 1);
+    }
+    $this->type = $type;
   }
 
 

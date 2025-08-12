@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Model\FIT;
+use App\Model\FIT\Field;
 
 class DataMessage extends Message
 {
@@ -13,48 +14,102 @@ class DataMessage extends Message
     $this->type = Message::MESSAGE_TYPE_DATA;
   }
 
-  /**
-   * Get the value associated with the field $field_name
-   *
-   * @param  string $field_name   Name of the feild
-   * @return mixed                The value stored for the given field
-   */
-  public function getFieldValue(string $field_name)
-  {
-    return $this->fields[$field_name];
-  }
-
   public function setDefinition(DefinitionMessage $definition)
   {
       $this->definition = $definition;
   }
 
-  /**
-   * Get the units associated with the field $field_name
-   *
-   * @param  int    $field_index   The index of the field in the fields array
-   * @return mixed                 The units stored for the given field
-   */
-  public function getFieldDefinitionUnits(int $field_index)
-  {
-    return $this->definition->getFieldUnits($field_index, $this);
-  }
-
-  /**
-   * Returns the final FieldDefinition for a given index, name, and this DataMessage
-   *
-   * FieldDefinitions may contain SubfieldDefinitions and/or ComponentDefinitions whose properties
-   * should supersede those from the FieldDefinition. This method gets the acutal FieldDefinition
-   * that should be used for a given field index and name.
-   */
-  public function getFinalFieldDefinition(int $field_index, string $field_name)
-  {
-    return $this->definition->getFinalFieldDefinition($field_index, $field_name, $this);
-  }
-
   public function getDefinition()
   {
     return $this->definition;
+  }
+
+  public function getValidFields()
+  {
+    // if the field has a def_num, check for a valid value
+    // if the field doesn't have a def_num, just check for any value
+    $valid_fields = [];
+    foreach ($this->getFields() as $field) {
+      if($field->getNumber() !== null){
+        $def_field = $this->getDefinitionFieldForField($field);
+
+        // TODO: Need more careful handling of multi-value fields
+        $value = $field->getValue();
+        if(is_array($value)) $value = $value[0];
+
+        if($value !== $def_field->getInvalidValue()){
+          $valid_fields[] = $field;
+        }
+      } else {
+        if($field->getValue()){
+          $valid_fields[] = $field;
+        }
+      }
+    }
+    return $valid_fields;
+  }
+
+  /**
+   * Look at each field to see if a subfield exists - then look at each subfield to see if the
+   * criteria defined in a reference fields is met. If so, replace the field accordingly.
+   */
+  public function evaluateSubfields(): void
+  {
+    foreach ($this->getFields() as $field) {
+      $def_field = $this->getDefinitionFieldForField($field);
+      if($def_field->hasSubfields()){
+        foreach ($def_field->getSubfields() as $subfield) {
+          if($subfield->matchesMessage($this)){
+            $field->setName($subfield->getName());
+            $field->setUnits($subfield->getUnits());
+            // TODO: This is incomplete. We don't currently handle a situation where the base type
+            // changes. The spec allows the subfield to have a different base_type as long as it
+            // is equal to or smaller than the main field's base_type. It's unclear how this is
+            // supposed to work.
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Returns the field from the definition message with a def_num equal to the passed value
+   *
+   * @param  int   $def_num
+   * @return Field
+   */
+  public function getDefinitionFieldByDefNum(int $def_num): Field
+  {
+    return $this->definition->getFieldByDefNum($def_num);
+  }
+
+  public function getDefinitionFieldForField($field)
+  {
+    if($field instanceof ComponentDefinition) return $field;          // HACK: is this a hack?
+    if($field->getNumber() === null){
+      return GlobalProfileAccess::getFieldDefinitionByNames(
+        $this->getName(),
+        $field->getName()
+      );
+    }
+    return $this->getDefinitionFieldByDefNum($field->getNumber());
+  }
+
+  public function addComponents($components)
+  {
+    foreach ($components as $component) {
+      $component->setType(
+        GlobalProfileAccess::getFieldDefinition($this->getGlobalNumber(),$component->getNumber())
+        ->getBaseType()
+      );
+      // if the message already has a field with the same def_num, add the component value to the existing field
+      // it may make sense to move this functionality into addField()
+      if($this->hasAFieldDefNum($component->getNumber())){
+        $this->getFieldByDefNum($component->getNumber())->addValue($component->getValue());
+      } else {
+        $this->addField($component);
+      }
+    }
   }
 
 }

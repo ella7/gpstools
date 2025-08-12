@@ -8,22 +8,33 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use App\Service\GPSTrackFactory;
+use App\Service\FITCSVParser;
 use App\Service\FITParser;
-use App\Service\FITParser2;
 use App\Service\FITCSVWriter;
-use App\Model\FIT\GlobalProfile;
+use App\Service\FITCSVTool;
+use App\Utility\GlobalProfileGenerator;
+use App\Model\FIT\GlobalProfileAccess;
+use Psr\Log\LoggerInterface;
 
 class TestCommand extends InteractiveOptionCommand
 {
   protected static $defaultName = 'gpstools:test';
   private $factory;
   private $fit_parser;
+  private $logger;
 
-  public function __construct(GPSTrackFactory $factory, FITParser $fit_parser, FITCSVWriter $fitcsv_writer)
+  public function __construct(
+    GPSTrackFactory $factory,
+    FITCSVParser $fit_parser,
+    FITCSVWriter $fitcsv_writer,
+    FitCSVTool $fitcsv_tool,
+    LoggerInterface $logger
+  )
   {
     $this->fit_parser       = $fit_parser;
     $this->fitcsv_writer    = $fitcsv_writer;
     $this->factory          = $factory;
+    $this->logger           = $logger;
     $this->factory->disableCaching();
     parent::__construct();
   }
@@ -53,7 +64,7 @@ class TestCommand extends InteractiveOptionCommand
     $this->addInteractivityForOption('cmd', self::INTERACTION_UNSET_ONLY, $question);
 
     $question = new Question('Please provide the path to the FIT file' . "\n > ");
-    $this->addInteractivityForOption('path', self::INTERACTION_UNSET_ONLY, $question);
+    $this->addInteractivityForOption('path', self::INTERACTION_NONE, $question);
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
@@ -76,18 +87,20 @@ class TestCommand extends InteractiveOptionCommand
         break;
 
       case 'global_profile':
-        print_r(GlobalProfile::getFieldDefinition('event', 'data'));
+        print_r(GlobalProfileAccess::getFieldDefinitionByNames('event', 'data'));
         break;
 
       case 'new_fit_parser':
-        $fp = new FITParser2($input->getOption('path'));
+        $fp = new FITParser($input->getOption('path'));
         $fp->parseFile();
         break;
 
       case 'misc':
-        foreach (GlobalProfile::MESSAGE_TYPES as $message_type) {
-          echo '\'' . $message_type['name'] . '\' => ' . $message_type['global_message_number'] . ",\n";
-        }
+        $fp = new FITParser($input->getOption('path'));
+        $fp->setLogger($this->logger);
+        $file = $fp->parseFile();
+        dump($file->getMessage(9231));
+        break;
 
       default:
         $output->writeln('Executing sub-command ' . $input->getOption('cmd'));
@@ -112,7 +125,9 @@ class TestCommand extends InteractiveOptionCommand
       'test',
       'read_fit',
       'global_profile',
-      'new_fit_parser'
+      'new_fit_parser',
+      'misc',
+      'generate_global_profile'
     ];
   }
 

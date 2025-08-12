@@ -5,22 +5,22 @@ namespace App\Utility;
 class GlobalProfileGenerator
 {
 
-  public static function printCode()
+  // TODO: allow output path to be specified - at some point, this should overwrite the actual
+  // profile file.
+  public static function generateProfile($output_path = null)
   {
     $path = dirname(__FILE__).'/profile.py';
-    $output_path = dirname(__FILE__).'/profile.php.txt';
-    $file_contents = file_get_contents($path);
+    $output_path = $output_path ? $output_path : dirname(__FILE__).'/profile.php.txt';
 
+    $file_contents = file_get_contents($path);
     $file_contents = str_replace(self::blockTextToRemove(),'',$file_contents);
 
     foreach (self::replacments() as $replacement) {
       $file_contents = str_replace($replacement['replace'],$replacement['with'],$file_contents);
     }
-
-    $file_contents = self::headerTextToInsert() . $file_contents . "}";
+    $file_contents = self::headerTextToInsert() . $file_contents . "}\n";
 
     file_put_contents($output_path, $file_contents);
-    echo "done \n";
   }
 
   public static function replacments()
@@ -54,7 +54,7 @@ class GlobalProfileGenerator
       ['replace' => 'ref_fields=(',               'with' => '\'ref_fields\' => ['],
       ['replace' => 'components=(',               'with' => '\'components\' => ['],
       ['replace' => 'fields=',                    'with' => '\'fields\' => '],
-      ['replace' => 'mesg_num=',                  'with' => '\'mesg_num\' => '],
+      ['replace' => 'mesg_num=',                  'with' => '\'global_number\' => '],
       ['replace' => 'raw_value=',                 'with' => '\'raw_value\' => '],
       ['replace' => 'value=',                     'with' => '\'value\' => '],
       ['replace' => 'type=',                      'with' => '\'type\' => '],
@@ -64,6 +64,7 @@ class GlobalProfileGenerator
       ['replace' => 'accumulate=',                'with' => '\'accumulate\' => '],
       ['replace' => 'bits=',                      'with' => '\'bits\' => '],
       ['replace' => '253: FIELD_TYPE_TIMESTAMP',  'with' => '253 => self::FIELD_TYPE_TIMESTAMP'],
+      ['replace' => '\'mesg_num\'',               'with' => '\'global_number\'']
 
     ];
   }
@@ -114,23 +115,23 @@ class GlobalProfileGenerator
         class GlobalProfile {
 
           const BASE_TYPES = [
-            0x00 => ['name' => 'enum',    'identifier' => 0x00, 'invalid_value' => 0xFF],
-            0x01 => ['name' => 'sint8',   'identifier' => 0x01, 'invalid_value' => 0x7F],
-            0x02 => ['name' => 'uint8',   'identifier' => 0x02, 'invalid_value' => 0xFF],
-            0x83 => ['name' => 'sint16',  'identifier' => 0x83, 'invalid_value' => 0x7FFF],
-            0x84 => ['name' => 'uint16',  'identifier' => 0x84, 'invalid_value' => 0xFFFF],
-            0x85 => ['name' => 'sint32',  'identifier' => 0x85, 'invalid_value' => 0x7FFFFFFF],
-            0x86 => ['name' => 'uint32',  'identifier' => 0x86, 'invalid_value' => 0xFFFFFFFF],
-            0x07 => ['name' => 'string',  'identifier' => 0x07, 'invalid_value' => null],
-            0x88 => ['name' => 'float32', 'identifier' => 0x88, 'invalid_value' => null],
-            0x89 => ['name' => 'float64', 'identifier' => 0x89, 'invalid_value' => null],
-            0x0A => ['name' => 'uint8z',  'identifier' => 0x0A, 'invalid_value' => 0x0],
-            0x8B => ['name' => 'uint16z', 'identifier' => 0x8B, 'invalid_value' => 0x0],
-            0x8C => ['name' => 'uint32z', 'identifier' => 0x8C, 'invalid_value' => 0x0],
-            0x0D => ['name' => 'byte',    'identifier' => 0x0D, 'invalid_value' => null],
-            0x8E => ['name' => 'sint64',  'identifier' => 0x8E, 'invalid_value' => 0x7FFFFFFFFFFFFFFF],
-            0x8F => ['name' => 'uint64',  'identifier' => 0x8F, 'invalid_value' => 0xFFFFFFFFFFFFFFFF],
-            0x90 => ['name' => 'uint64z', 'identifier' => 0x90, 'invalid_value' => 0],
+            0x00 => ['name' => 'enum',    'identifier' => 0x00, 'size' => 1, 'invalid_value' => 0xFF],
+            0x01 => ['name' => 'sint8',   'identifier' => 0x01, 'size' => 1, 'invalid_value' => 0x7F],
+            0x02 => ['name' => 'uint8',   'identifier' => 0x02, 'size' => 1, 'invalid_value' => 0xFF],
+            0x83 => ['name' => 'sint16',  'identifier' => 0x83, 'size' => 2, 'invalid_value' => 0x7FFF],
+            0x84 => ['name' => 'uint16',  'identifier' => 0x84, 'size' => 2, 'invalid_value' => 0xFFFF],
+            0x85 => ['name' => 'sint32',  'identifier' => 0x85, 'size' => 4, 'invalid_value' => 0x7FFFFFFF],
+            0x86 => ['name' => 'uint32',  'identifier' => 0x86, 'size' => 4, 'invalid_value' => 0xFFFFFFFF],
+            0x07 => ['name' => 'string',  'identifier' => 0x07, 'size' => 1, 'invalid_value' => null],
+            0x88 => ['name' => 'float32', 'identifier' => 0x88, 'size' => 4, 'invalid_value' => null],
+            0x89 => ['name' => 'float64', 'identifier' => 0x89, 'size' => 8, 'invalid_value' => null],
+            0x0A => ['name' => 'uint8z',  'identifier' => 0x0A, 'size' => 1, 'invalid_value' => 0x0],
+            0x8B => ['name' => 'uint16z', 'identifier' => 0x8B, 'size' => 2, 'invalid_value' => 0x0],
+            0x8C => ['name' => 'uint32z', 'identifier' => 0x8C, 'size' => 4, 'invalid_value' => 0x0],
+            0x0D => ['name' => 'byte',    'identifier' => 0x0D, 'size' => 1, 'invalid_value' => null],
+            0x8E => ['name' => 'sint64',  'identifier' => 0x8E, 'size' => 8, 'invalid_value' => 0x7FFFFFFFFFFFFFFF],
+            0x8F => ['name' => 'uint64',  'identifier' => 0x8F, 'size' => 8, 'invalid_value' => 0xFFFFFFFFFFFFFFFF],
+            0x90 => ['name' => 'uint64z', 'identifier' => 0x90, 'size' => 8, 'invalid_value' => 0],
           ];
 
 

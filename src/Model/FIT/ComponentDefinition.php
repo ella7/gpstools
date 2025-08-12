@@ -10,4 +10,9 @@ class ComponentDefinition extends FieldDefinition
   protected $bits;
   protected $bit_offset;
 
+  public function getBits()
+  {
+    return $this->bits;
+  }
+
 }

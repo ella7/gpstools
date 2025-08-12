@@ -5,292 +5,322 @@ namespace App\Service;
 use App\Model\FIT\Message;
 use App\Model\FIT\DefinitionMessage;
 use App\Model\FIT\DataMessage;
-use App\Model\FIT\FieldDefinition;
 use App\Model\FIT\Field;
-use App\Model\FIT\GlobalProfile;
+use App\Model\FIT\FieldDefinition;
+use App\Model\FIT\File;
+use PhpBinaryReader\BinaryReader;
+use PhpBinaryReader\Endian;
 use function Symfony\Component\String\u;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Psr\Log\LoggerAwareInterface;
 
-class FITParser {
+class FITParser implements LoggerAwareInterface
+{
 
-  const COLUMNS_PER_FIELD = 3;      // number of columns in the FIT CSV file per field
-  const COLUMNS_BEFORE_FIELDS = 3;  // number of columns in the FIT CSV before the field columns
+  const MESSAGE_TYPE_DEFINITION = 1;
+  const MESSAGE_TYPE_DATA = 0;
 
-  protected $fitcsv_jar_path;
-  protected $tmp_unpack_path;
+  protected $reader;
+  protected $file_header;
+  protected $local_definitions = [];
+  protected $component_buffer = [];
+  protected $log;
 
-  protected $fit_path = '';
-  protected $csv_key = '';
-  protected $converted_to_csv = false;
+  protected $message_limit; // max number of records/messages to parse
 
-  public function __construct(string $fitcsv_jar_path, string $tmp_unpack_path)
+  // TODO: remove requirement to have a file path from the constructor so this service can be
+  // more easily injected into other parts of the code. Make logger injection automagic.
+  public function __construct(string $file_path, $message_limit = -1)
   {
-    // TODO: use symfony/filesystem component rather than direct access
-    if(!file_exists($fitcsv_jar_path)){
-      throw new \Exception('The FitCSVTool was not found at "'.$fitcsv_jar_path.'" extension');
+    if (!file_exists($file_path)) {
+      throw new \Exception('File \''.$file_path.'\' does not exist!');
     }
-
-    if(!file_exists($tmp_unpack_path)){
-      mkdir($tmp_unpack_path, 0755, true);
-    }
-
-    $this->fitcsv_jar_path = $fitcsv_jar_path;
-    $this->tmp_unpack_path = $tmp_unpack_path;
+    $this->reader = new BinaryReader(file_get_contents($file_path));
+    $this->message_limit = $message_limit;
   }
 
-  public function setFitPath(string $path)
+  public function parseFile()
   {
-    if(!file_exists($path)){
-      throw new \Exception('The file "'.$path.'" was not found');
-    }
-    $this->fit_path = $path;
-    $this->csv_key  = self::cacheKeyFromFilePath($path);
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
+    return new File([
+      'header'    => $this->readFileHeader(),
+      'messages'  => $this->readRecords()
+    ]);
+	}
 
-    $this->converted_to_csv = $this->cachedCSVFilesExist();
+  public function readFileHeader()
+  {
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
+    $this->file_header = [
+      'header_size'		     => $this->reader->readUInt8(),		   // FIT_FILE_HDR_SIZE (size of this structure)
+			'protocol_version'	 => $this->reader->readUInt8(),		   // FIT_PROTOCOL_VERSION
+			'profile_version'	   => $this->reader->readUInt16(),		 // FIT_PROFILE_VERSION
+			'data_size'			     => $this->reader->readUInt32(),  	 // Does not include file header or crc.  Little endian format.
+			'data_type'			     => $this->reader->readString(4),	   // ".FIT"
+    ];
+
+    if($this->file_header['header_size'] === 14) {
+      $this->file_header['crc'] = $this->reader->readUInt16();
+    }
+		return $this->file_header;
   }
 
-  public static function cacheKeyFromFilePath($path)
+  protected function readRecords()
   {
-    if(file_exists($path)){
-      return md5(date("YmdHis",filemtime($path)).$path);
-    } else {
-      throw new \Exception('Cannot create cache key. File "' . $path . '" does not exist');
-    }
-  }
-
-  public function cachedCSVFilesExist()
-  {
-    foreach ($this->getCSVPaths() as $path) {
-      if(!file_exists($path)){
-        return false;
-      }
-    }
-    return true;
-  }
-
-  public function activitySessionData()
-  {
-
-    if(!$this->converted_to_csv){
-      $this->_writeCSVFilesToTmp();
-    }
-
-    $csv_paths = $this->getCSVPaths();
-    $lines = file($csv_paths['session_data']);
-
-    $headers = self::arrayFromFitCSV($lines[0]);
-    return array_combine($headers, self::arrayFromFitCSV($lines[1]));
-
-  }
-
-  // handle substring and trimming before getting array from CSV line - remove extra comma at the end of the line
-  public static function arrayFromFitCSV($line)
-  {
-    return str_getcsv(substr(trim($line),0,-1));
-  }
-
-  // the new version of the FIT tool adds a BOM
-  // TODO: just remove from the file when writing
-  public static function remove_utf8_bom($text)
-  {
-      $bom = pack('H*','EFBBBF');
-      $text = preg_replace("/^$bom/", '', $text);
-      return $text;
-  }
-
-  public function activityRecordsData()
-  {
-    // This function will not work if the data file contains more than one record type
-    $records = array();
-
-    if(!$this->converted_to_csv){
-      $this->_writeCSVFilesToTmp();
-    }
-
-    $csv_paths = $this->getCSVPaths();
-    $lines = file($csv_paths['records_data']);
-    $num_records = count($lines) - 1;
-
-    $headers = self::arrayFromFitCSV(SELF::remove_utf8_bom($lines[0]));
-    $num_header_columns = count($headers);
-
-    for($i = 1; $i <= $num_records; $i++){
-      $record_fields = self::arrayFromFitCSV($lines[$i]);
-      $num_record_fields = count($record_fields);
-
-      if($num_record_fields < $num_header_columns){
-        for($j = $num_record_fields; $j < $num_header_columns; $j++){
-          $record_fields[$j] = '';
-        }
-      }
-      $records[] = array_combine($headers, $record_fields);
-    }
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
+    $records = [];
+    while ($this->continueReadingRecords(count($records))) {
+			$records[] = $this->readRecord();
+		}
     return $records;
-  }
+	}
 
-  private function _writeCSVFilesToTmp()
+  // added primarily to make the code more readible - simple, but long logic expression
+  protected function continueReadingRecords($records_read): bool
   {
-
-    $csv_paths = $this->getCSVPaths();
-    $cmd_common = 'java -jar '.$this->fitcsv_jar_path.' -b '.$this->fit_path.' ';
-
-    // TODO: replace exec with commands from symfony/process component
-    exec($cmd_common.$csv_paths['session'].' --data session');
-    exec($cmd_common.$csv_paths['records'].' --data record');
-
-    if(!file_exists ($csv_paths['session_data'])){
-      throw new \Exception('The FITParser failed to write the csv session cache file: '.$csv_paths['session_data']);
-    }
-    if(!file_exists ($csv_paths['records_data'])){
-      throw new \Exception('The FITParser failed to write the csv records cache file: '.$csv_paths['records_data']);
-    }
-    $this->converted_to_csv = true;
-  }
-
-  public function getCSVPaths()
-  {
-    $common_path = $this->tmp_unpack_path.$this->csv_key;
-    return [
-      'session'       => $common_path . '_session.csv',
-      'records'       => $common_path . '_records.csv',
-      'session_data'  => $common_path . '_session_data.csv',
-      'records_data'  => $common_path . '_records_data.csv',
-    ];
-  }
-
-/*****************************************************************************************
-  New functionality for parsing CSV FIT file is below this divider
-******************************************************************************************/
-
-  /**
-   * Get all FIT\Messages from a given CSV FIT file
-   *
-   * This is the start of new functionality to deal in FIT models rather than
-   * GPSTrack* models.
-   *
-   * @param  string $csv_path         Path to a CSV file which has been converted using the FitCSVTool from a .fit file
-   * @return [\Model\FIT\Messages]    Array of Messages extracted from the file
-   */
-  public static function messagesFromCSVFile($csv_path)
-  {
-    $messages = [];
-    $current_definitions = [];
-    $lines = file($csv_path);
-    array_shift($lines);
-
-    // For debugging only
-    $line_limit = null;
-    if($line_limit){
-      $lines = array_slice($lines, 0, $line_limit);
-    }
-
-    foreach($lines as $line){
-      $message = self::getMessageFromCSVLine($line);
-      if($message->getType() === Message::MESSAGE_TYPE_DEFINITION){
-        $current_definitions[$message->getLocalNumber()] = $message;
-      }
-      if($message->getType() === Message::MESSAGE_TYPE_DATA){
-        if(!$current_definitions[$message->getLocalNumber()]){
-          throw new \Exception("Attempting to parse data row when no definition has been parsed for local_number " . $message->getLocalNumber());
-        }
-        $message->setDefinition($current_definitions[$message->getLocalNumber()]);
-      }
-      $messages[] = $message;
-    }
-    return $messages;
-  }
-
-  public static function getMessageFromCSVLine($line)
-  {
-    $line_array = self::arrayFromFitCSV($line);
-
-    $message_array = [
-      'type'              => $line_array[0],
-      'local_number'      => $line_array[1],
-      'name'              => $line_array[2],
-      'fields'            => self::getFieldsFromCSVArray($line_array),
-      'num_empty_fields'  => self::getNumberOfEmptyFields($line_array)
-    ];
-
-    if($message_array['type'] === Message::MESSAGE_TYPE_DEFINITION){
-      return new DefinitionMessage($message_array);
-    }
-    if($message_array['type'] === Message::MESSAGE_TYPE_DATA){
-      return new DataMessage($message_array);
-    }
-  }
-
-  /**
-   * Takes the `field{n}`, `value{n}`, and `untis{n}` elements from the CSV
-   * array and creates `FIT\Fields` or `FIT\FieldDefinitions`
-   *
-   * This function assumes the array $a will have triplets of name, value, units
-   * preceeded by the type, local number, message name triplet
-   *
-   * @return [FIT\Field] an array of Fields
-   */
-  public static function getFieldsFromCSVArray(array $a)
-  {
-    $fields = [];
-    $b = array_chunk($a, self::COLUMNS_PER_FIELD);
-    list($type, $local_number, $message_name) = array_shift($b);
-    foreach ($b as $c) {
-      if($c[0]){
-        list($name, $value, $units) = $c;
-        $field_array = [
-          'name'  => $name,
-          'value' => $value,
-          'units' => $units
-        ];
-        if($type === Message::MESSAGE_TYPE_DEFINITION){
-          $fields[$name] = new FieldDefinition($field_array);
-
-          // TODO: add getGlobalDefinition($message_name) to FieldDefinition
-          // $fields[$name] = GlobalProfile::getFieldDefinition($message_name, $name);
-          // $fields[$name]->setValue($value);
-        }
-        if($type === Message::MESSAGE_TYPE_DATA){
-          $fields[$name] = new Field($field_array);
-        }
-      }
-    }
-    return $fields;
-  }
-
-  /**
-   * Takes a row from a FIT CSV file and returns the number of empty $fields
-   *
-   * This functionality is hopefully temporary to deal with the "extra commas"
-   * issue
-   *
-   * @param  string $row  a row of CSV from the FIT CSV file
-   * @return int          number of empty fields in the provided row of CSV
-   */
-  public static function getNumberOfEmptyFields(array $line_array) : int
-  {
-    $num_empty_fields = 0;
-    $grouped_columns = array_chunk($line_array, self::COLUMNS_PER_FIELD);
-    foreach ($grouped_columns as $column_group) {
-      if(!$column_group[0] && !$column_group[1] && !$column_group[2]){
-        $num_empty_fields++;
-      }
-    }
-    return $num_empty_fields;
-  }
-
-  /**
-   * Take a line of CSV (presumably the first line of a file), and return a normalized array of values
-   * @param  string $line   string of CSV containing headers
-   * @return array          array containing normalized header values
-   */
-  public static function normalizeHeaders($line)
-  {
-    return array_map(
-      function($header) {
-        return u($header)->snake();
-      },
-      self::arrayFromFitCSV(self::remove_utf8_bom($line))
+    $header_and_data_size = $this->file_header['header_size'] + $this->file_header['data_size'];
+    return (
+      $this->reader->getPosition() < $header_and_data_size
+      && ($records_read < $this->message_limit || $this->message_limit === -1)
     );
   }
 
-} // end class FITParser
+  public function readRecord()
+  {
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
+    list('local_number' => $local_number, 'message_type' => $message_type) = $this->readRecordHeader();
+
+    if($message_type == self::MESSAGE_TYPE_DEFINITION) {
+      $definition = $this->readDefinitionMessage();
+      $this->addLocalDefinition($definition, $local_number);
+      return $definition;
+		}
+
+    if($message_type == self::MESSAGE_TYPE_DATA) {
+      $definition = $this->getLocalDefinition($local_number);
+      $data = $this->readDataMessage($definition);
+      $data->evaluateSubfields();
+      $data->addComponents($this->flushComponentBuffer());
+      return $data;
+		}
+  }
+
+  protected function readRecordHeader()
+  {
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
+    $byte = $this->reader->readUInt8();
+    $bits = self::bitsFromByte($byte);
+    // echo "# Record header byte and bits: #\n";
+    // dump($byte, $bits);
+
+    $record_header['compressed_timestamp_header'] = $bits[7];
+    if (!$record_header['compressed_timestamp_header']) {
+			//normal header
+			$record_header = [
+				'compressed_timestamp_header'	=> $bits[7],
+				'message_type'			          => $bits[6],
+				'reserved1'				            => $bits[5],
+				'reserved2'				            => $bits[4],
+				'local_number'	              => bindec(strrev(substr($bits, 0, 4)))
+			];
+		}
+		else {
+			//compressed timestamp header
+			$record_header = array(
+				'compressed_timestamp_header'	=> $bits[7],
+				'message_type'			          => false,
+				'local_number'	              => bindec(strrev(substr($bits, 5, 2))),
+				'time_offset'			            => bindec(strrev(substr($bits, 0, 5))),
+			);
+		}
+
+    return $record_header;
+  }
+
+  protected function readDefinitionMessage()
+  {
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
+    $definition = [
+			'reserved'			=> $this->reader->readUInt8(),
+			'architecture'	=> $this->reader->readUInt8(),	//Architecture Type 0 = Little Endian | 1 = Big Endian
+		];
+    $endian = ($definition['architecture'] === Endian::BIG) ? Endian::BIG : Endian::LITTLE;
+		$this->reader->setEndian($endian);
+		$definition += [
+			'global_number' => $this->reader->readUInt16(),
+			'num_fields'	  => $this->reader->readUInt8(),
+			'fields'			  => [],
+		];
+
+		for ($i = 0; $i < $definition['num_fields']; $i++) {
+			$field_properties = [
+				'def_num'	  => $this->reader->readUInt8(),
+				'size'			=> $this->reader->readUInt8(),
+				'base_type' => $this->reader->readUInt8(),
+			];
+
+			$definition['fields'][] = FieldDefinition::initFromGlobalProfile(
+        $definition['global_number'],
+        $field_properties
+      );
+		}
+		return new DefinitionMessage($definition);
+  }
+
+  protected function readDataMessage($definition_message)
+  {
+    // TODO: Handle endianness
+    $this->log->info(__METHOD__, ['position' => $this->reader->getPosition()]);
+    foreach ($definition_message->getFields() as $field_definition) {
+      $field_data = $this->readFieldData($field_definition);
+      $fields[] = new Field([
+        'name'      => $field_definition->getName(),
+        'value'     => $field_data,
+        'units'     => $field_definition->getUnits(),
+        'def_num'   => $field_definition->getNumber()
+      ]);
+    }
+    // TODO: change Field constructor so you just hav to pass the field_definition and the 'value' OR create a factory-like function
+    // TODO: add DataMessageBuilder or something to DefinitionMessage - construct a DataMessage from a DefinitionMessage and raw fields data
+    return new DataMessage([
+      'type' => Message::MESSAGE_TYPE_DATA,
+      'local_number' => $definition_message->getLocalNumber(),
+      'global_number' => $definition_message->getGlobalNumber(),
+      'name' => $definition_message->getName(),
+      'fields' => $fields,
+      'definition' => $definition_message
+    ]);
+  }
+
+  protected static function applyScaleAndOffset($value, $field_definition)
+  {
+    if($field_definition->getScale()){
+      $value = (float) $value/$field_definition->getScale();
+    }
+    if($field_definition->getOffset()){
+      $value = $value - $field_definition->getOffset();
+    }
+    return $value;
+  }
+
+  public function addLocalDefinition(&$definition, $local_number)
+  {
+    $definition->setLocalNumber($local_number);
+    $this->local_definitions[$local_number] = $definition;
+  }
+
+  protected function getLocalDefinition($local_number)
+  {
+    if(!array_key_exists($local_number, $this->local_definitions)){
+      throw new \Exception("No local definition has been set for local_number: $local_number", 1);
+    }
+    return $this->local_definitions[$local_number];
+  }
+
+  protected function readFieldData($field_definition)
+  {
+    $starting_position = $this->reader->getPosition();
+
+    // read each value for fields containing multiple values
+    for ($i=0; $i < $field_definition->getNumberOfValues(); $i++) {
+      $value = $this->readBytesAs($field_definition->getBaseTypeName());
+      if($value !== $field_definition->getInvalidValue()){
+        $value = self::applyScaleAndOffset($value, $field_definition);
+      }
+      $values[] = $value;
+    }
+
+    // expand components
+    if($field_definition->hasComponents() && $value !== $field_definition->getInvalidValue()){ // this will not work for multivalue fields
+      $this->reader->setPosition($starting_position);
+      foreach ($field_definition->getComponents() as $component_def) {
+        $this->readComponent($component_def);
+      }
+    }
+
+    return (count($values) > 1) ? $values : $value;
+  }
+
+  /**
+   * I'm unhappy with the current flow. All other similar functions read the
+   * element in question, and then return an object representation of what was
+   * read. Because expanded components are a bit different, it doesn't make
+   * sense to return them here (I don't think). I think they'll need to get
+   * put in some expanded component buffer and then added to the message later.
+   * To be clear, the specific problem is that they are being read before the
+   * DataMessage has been created.
+   *
+   * @param  ComponentDefinition  $component_def
+   */
+  protected function readComponent($component_def)
+  {
+    $component = clone $component_def;
+    $component->setValue(
+      $this->applyScaleAndOffset(
+        $this->reader->readUBits($component_def->getBits()),
+        $component_def
+      )
+    );
+    $this->component_buffer[] = $component;
+  }
+
+  protected function readBytesAs($type, $size = null)
+  {
+    switch($type) {
+			case 'string'	: return $this->reader->readString8($size); break;
+			case 'sint8'	: return $this->reader->readInt8(); break;
+			case 'enum'		:
+			case 'uint8z'	:
+			case 'uint8'	: return $this->reader->readUInt8(); break;
+			case 'sint16'	: return $this->reader->readInt16(); break;
+			case 'uint16z':
+			case 'uint16'	: return $this->reader->readUInt16(); break;
+			case 'sint32'	: return $this->reader->readInt32(); break;
+			case 'uint32z':
+			case 'uint32'	: return $this->reader->readUInt32(); break;
+			case 'float32': return $this->reader->readFloat(); break;
+			case 'float64': return $this->reader->readDouble(); break;
+			case 'byte'		:
+			default			  : return $this->reader->read($size);
+		}
+  }
+
+  public static function bitsFromByte($byte)
+  {
+    $bits = decbin($byte);
+    return strrev(str_pad($bits, 8, 0, STR_PAD_LEFT));
+  }
+
+  public function setLogger($logger)
+  {
+    $this->log = $logger;
+  }
+
+  public function useLogger()
+  {
+    $this->log->warning('this is a warning from inside the FitParser');
+  }
+
+  public function dumpLogger()
+  {
+    dump($this->log);
+  }
+
+  public function setMessageLimit($limit)
+  {
+    $this->message_limit = $limit;
+  }
+
+  public function flushComponentBuffer()
+  {
+    $components = $this->component_buffer;
+    $this->component_buffer = [];
+    return $components;
+  }
+
+  public function setPosition(int $position)
+  {
+    $this->reader->setPosition($position);
+  }
+
+}

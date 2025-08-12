@@ -13,23 +13,23 @@ namespace App\Model\FIT;
 class GlobalProfile {
 
   const BASE_TYPES = [
-    0x00 => ['name' => 'enum',    'identifier' => 0x00, 'invalid_value' => 0xFF],
-    0x01 => ['name' => 'sint8',   'identifier' => 0x01, 'invalid_value' => 0x7F],
-    0x02 => ['name' => 'uint8',   'identifier' => 0x02, 'invalid_value' => 0xFF],
-    0x83 => ['name' => 'sint16',  'identifier' => 0x83, 'invalid_value' => 0x7FFF],
-    0x84 => ['name' => 'uint16',  'identifier' => 0x84, 'invalid_value' => 0xFFFF],
-    0x85 => ['name' => 'sint32',  'identifier' => 0x85, 'invalid_value' => 0x7FFFFFFF],
-    0x86 => ['name' => 'uint32',  'identifier' => 0x86, 'invalid_value' => 0xFFFFFFFF],
-    0x07 => ['name' => 'string',  'identifier' => 0x07, 'invalid_value' => null],
-    0x88 => ['name' => 'float32', 'identifier' => 0x88, 'invalid_value' => null],
-    0x89 => ['name' => 'float64', 'identifier' => 0x89, 'invalid_value' => null],
-    0x0A => ['name' => 'uint8z',  'identifier' => 0x0A, 'invalid_value' => 0x0],
-    0x8B => ['name' => 'uint16z', 'identifier' => 0x8B, 'invalid_value' => 0x0],
-    0x8C => ['name' => 'uint32z', 'identifier' => 0x8C, 'invalid_value' => 0x0],
-    0x0D => ['name' => 'byte',    'identifier' => 0x0D, 'invalid_value' => null],
-    0x8E => ['name' => 'sint64',  'identifier' => 0x8E, 'invalid_value' => 0x7FFFFFFFFFFFFFFF],
-    0x8F => ['name' => 'uint64',  'identifier' => 0x8F, 'invalid_value' => 0xFFFFFFFFFFFFFFFF],
-    0x90 => ['name' => 'uint64z', 'identifier' => 0x90, 'invalid_value' => 0],
+    0x00 => ['name' => 'enum',    'identifier' => 0x00, 'size' => 1, 'invalid_value' => 0xFF],
+    0x01 => ['name' => 'sint8',   'identifier' => 0x01, 'size' => 1, 'invalid_value' => 0x7F],
+    0x02 => ['name' => 'uint8',   'identifier' => 0x02, 'size' => 1, 'invalid_value' => 0xFF],
+    0x83 => ['name' => 'sint16',  'identifier' => 0x83, 'size' => 2, 'invalid_value' => 0x7FFF],
+    0x84 => ['name' => 'uint16',  'identifier' => 0x84, 'size' => 2, 'invalid_value' => 0xFFFF],
+    0x85 => ['name' => 'sint32',  'identifier' => 0x85, 'size' => 4, 'invalid_value' => 0x7FFFFFFF],
+    0x86 => ['name' => 'uint32',  'identifier' => 0x86, 'size' => 4, 'invalid_value' => 0xFFFFFFFF],
+    0x07 => ['name' => 'string',  'identifier' => 0x07, 'size' => 1, 'invalid_value' => null],
+    0x88 => ['name' => 'float32', 'identifier' => 0x88, 'size' => 4, 'invalid_value' => null],
+    0x89 => ['name' => 'float64', 'identifier' => 0x89, 'size' => 8, 'invalid_value' => null],
+    0x0A => ['name' => 'uint8z',  'identifier' => 0x0A, 'size' => 1, 'invalid_value' => 0x0],
+    0x8B => ['name' => 'uint16z', 'identifier' => 0x8B, 'size' => 2, 'invalid_value' => 0x0],
+    0x8C => ['name' => 'uint32z', 'identifier' => 0x8C, 'size' => 4, 'invalid_value' => 0x0],
+    0x0D => ['name' => 'byte',    'identifier' => 0x0D, 'size' => 1, 'invalid_value' => null],
+    0x8E => ['name' => 'sint64',  'identifier' => 0x8E, 'size' => 8, 'invalid_value' => 0x7FFFFFFFFFFFFFFF],
+    0x8F => ['name' => 'uint64',  'identifier' => 0x8F, 'size' => 8, 'invalid_value' => 0xFFFFFFFFFFFFFFFF],
+    0x90 => ['name' => 'uint64z', 'identifier' => 0x90, 'size' => 8, 'invalid_value' => 0],
   ];
 
 
@@ -2282,8 +2282,8 @@ class GlobalProfile {
               2 => 'max_per_file_type',
           ],
       ],
-      'global_message_number' => [
-          'name' => 'global_message_number',
+      'global_number' => [
+          'name' => 'global_number',
           'base_type' => self::BASE_TYPES[0x84],  # uint16
           'values' => [
               0 => 'file_id',
@@ -3978,8263 +3978,8146 @@ class GlobalProfile {
   ];
 
 
-  const FIELD_TYPE_TIMESTAMP = [
-    'name' => 'timestamp',
-    'type' =>  self::FIELD_TYPES['date_time'],
-    'def_num' => 253,
-    'units' => 's'
-  ];
+  const FIELD_TYPE_TIMESTAMP = ['name' => 'timestamp', 'type' => self::FIELD_TYPES['date_time'], 'def_num' => 253, 'units' => 's'];
 
 
   const MESSAGE_TYPES = [
-      # **************************** Common Messages *****************************
-      'file_id' => [  # Must be first message in file.
-          'name' => 'file_id',
-          'global_message_number' => 0,
-          'fields' => [
-              'type' => [
-                  'name' => 'type',
-                  'type' =>  self::FIELD_TYPES['file'],
-                  'def_num' => 0,
-              ],
-              'manufacturer' => [
-                  'name' => 'manufacturer',
-                  'type' =>  self::FIELD_TYPES['manufacturer'],
-                  'def_num' => 1,
-              ],
-              'product' => [
-                  'name' => 'product',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-                    'subfields' => [
-                      [
-                          'name' => 'garmin_product',
-                          'def_num' => 2,
-                          'type' =>  self::FIELD_TYPES['garmin_product'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 1,
-                                  'value' => 'garmin',
-                                  'raw_value' => 1,
-                              ],
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 1,
-                                  'value' => 'dynastream',
-                                  'raw_value' => 15,
-                              ],
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 1,
-                                  'value' => 'dynastream_oem',
-                                  'raw_value' => 13,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'serial_number' => [
-                  'name' => 'serial_number',
-                  'type' => self::BASE_TYPES[0x8C],  # uint32z
-                  'def_num' => 3,
-              ],
-              'time_created' => [  # Only set for files that are can be created/erased.
-                  'name' => 'time_created',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 4,
-              ],
-              'number' => [  # Only set for files that are not created/erased.
-                  'name' => 'number',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 5,
-              ],
-              'product_name' => [  # Optional free form string to indicate the devices name or model
-                  'name' => 'product_name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 8,
-              ],
-          ],
-      ],
+    # **************************** Common Messages *****************************
+    0 => [  # Must be first message in file.
+        'name' => 'file_id',
+        'global_number' => 0,
+        'fields' => [
+            0 => [
+                'name' => 'type',
+                'type' => self::FIELD_TYPES['file'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'manufacturer',
+                'type' => self::FIELD_TYPES['manufacturer'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'product',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+                'subfields' => [
+                    [
+                        'name' => 'garmin_product',
+                        'def_num' => 2,
+                        'type' => self::FIELD_TYPES['garmin_product'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 1,
+                                'value' => 'garmin',
+                                'raw_value' => 1,
+                            ],
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 1,
+                                'value' => 'dynastream',
+                                'raw_value' => 15,
+                            ],
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 1,
+                                'value' => 'dynastream_oem',
+                                'raw_value' => 13,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            3 => [
+                'name' => 'serial_number',
+                'type' => self::BASE_TYPES[0x8C],  # uint32z
+                'def_num' => 3,
+            ],
+            4 => [  # Only set for files that are can be created/erased.
+                'name' => 'time_created',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 4,
+            ],
+            5 => [  # Only set for files that are not created/erased.
+                'name' => 'number',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 5,
+            ],
+            8 => [  # Optional free form string to indicate the devices name or model
+                'name' => 'product_name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 8,
+            ],
+        ],
+    ],
 
 
-      # ************************************  ************************************
-      'capabilities' => [
-          'name' => 'capabilities',
-          'global_message_number' => 1,
-          'fields' => [
-              'languages' => [  # Use language_bits_x types where x is index of array.
-                  'name' => 'languages',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 0,
-              ],
-              'sports' => [  # Use sport_bits_x types where x is index of array.
-                  'name' => 'sports',
-                  'type' =>  self::FIELD_TYPES['sport_bits_0'],
-                  'def_num' => 1,
-              ],
-              'workouts_supported' => [
-                  'name' => 'workouts_supported',
-                  'type' =>  self::FIELD_TYPES['workout_capabilities'],
-                  'def_num' => 21,
-              ],
-              'connectivity_supported' => [
-                  'name' => 'connectivity_supported',
-                  'type' =>  self::FIELD_TYPES['connectivity_capabilities'],
-                  'def_num' => 23,
-              ],
-          ],
-      ],
-      'hrm_profile' => [
-          'name' => 'hrm_profile',
-          'global_message_number' => 4,
-          'fields' => [
-              'enabled' => [
-                  'name' => 'enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 0,
-              ],
-              'hrm_ant_id' => [
-                  'name' => 'hrm_ant_id',
-                  'type' => self::BASE_TYPES[0x8B],  # uint16z
-                  'def_num' => 1,
-              ],
-              'log_hrv' => [
-                  'name' => 'log_hrv',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 2,
-              ],
-              'hrm_ant_id_trans_type' => [
-                  'name' => 'hrm_ant_id_trans_type',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 3,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'sdm_profile' => [
-          'name' => 'sdm_profile',
-          'global_message_number' => 5,
-          'fields' => [
-              'enabled' => [
-                  'name' => 'enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 0,
-              ],
-              'sdm_ant_id' => [
-                  'name' => 'sdm_ant_id',
-                  'type' => self::BASE_TYPES[0x8B],  # uint16z
-                  'def_num' => 1,
-              ],
-              'sdm_cal_factor' => [
-                  'name' => 'sdm_cal_factor',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-                  'scale' => 10,
-                  'units' => '%',
-              ],
-              'odometer' => [
-                  'name' => 'odometer',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 3,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'speed_source' => [  # Use footpod for speed source instead of GPS
-                  'name' => 'speed_source',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 4,
-              ],
-              'sdm_ant_id_trans_type' => [
-                  'name' => 'sdm_ant_id_trans_type',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 5,
-              ],
-              'odometer_rollover' => [  # Rollover counter that can be used to extend the odometer
-                  'name' => 'odometer_rollover',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 7,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'bike_profile' => [
-          'name' => 'bike_profile',
-          'global_message_number' => 6,
-          'fields' => [
-              'name' => [
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 0,
-              ],
-              'sport' => [
-                  'name' => 'sport',
-                  'type' =>  self::FIELD_TYPES['sport'],
-                  'def_num' => 1,
-              ],
-              'sub_sport' => [
-                  'name' => 'sub_sport',
-                  'type' =>  self::FIELD_TYPES['sub_sport'],
-                  'def_num' => 2,
-              ],
-              'odometer' => [
-                  'name' => 'odometer',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 3,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'bike_spd_ant_id' => [
-                  'name' => 'bike_spd_ant_id',
-                  'type' => self::BASE_TYPES[0x8B],  # uint16z
-                  'def_num' => 4,
-              ],
-              'bike_cad_ant_id' => [
-                  'name' => 'bike_cad_ant_id',
-                  'type' => self::BASE_TYPES[0x8B],  # uint16z
-                  'def_num' => 5,
-              ],
-              'bike_spdcad_ant_id' => [
-                  'name' => 'bike_spdcad_ant_id',
-                  'type' => self::BASE_TYPES[0x8B],  # uint16z
-                  'def_num' => 6,
-              ],
-              'bike_power_ant_id' => [
-                  'name' => 'bike_power_ant_id',
-                  'type' => self::BASE_TYPES[0x8B],  # uint16z
-                  'def_num' => 7,
-              ],
-              'custom_wheelsize' => [
-                  'name' => 'custom_wheelsize',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 8,
-                  'scale' => 1000,
-                  'units' => 'm',
-              ],
-              'auto_wheelsize' => [
-                  'name' => 'auto_wheelsize',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 9,
-                  'scale' => 1000,
-                  'units' => 'm',
-              ],
-              'bike_weight' => [
-                  'name' => 'bike_weight',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 10,
-                  'scale' => 10,
-                  'units' => 'kg',
-              ],
-              'power_cal_factor' => [
-                  'name' => 'power_cal_factor',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 11,
-                  'scale' => 10,
-                  'units' => '%',
-              ],
-              'auto_wheel_cal' => [
-                  'name' => 'auto_wheel_cal',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 12,
-              ],
-              'auto_power_zero' => [
-                  'name' => 'auto_power_zero',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 13,
-              ],
-              'id' => [
-                  'name' => 'id',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 14,
-              ],
-              'spd_enabled' => [
-                  'name' => 'spd_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 15,
-              ],
-              'cad_enabled' => [
-                  'name' => 'cad_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 16,
-              ],
-              'spdcad_enabled' => [
-                  'name' => 'spdcad_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 17,
-              ],
-              'power_enabled' => [
-                  'name' => 'power_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 18,
-              ],
-              'crank_length' => [
-                  'name' => 'crank_length',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 19,
-                  'scale' => 2,
-                  'offset' => -110,
-                  'units' => 'mm',
-              ],
-              'enabled' => [
-                  'name' => 'enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 20,
-              ],
-              'bike_spd_ant_id_trans_type' => [
-                  'name' => 'bike_spd_ant_id_trans_type',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 21,
-              ],
-              'bike_cad_ant_id_trans_type' => [
-                  'name' => 'bike_cad_ant_id_trans_type',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 22,
-              ],
-              'bike_spdcad_ant_id_trans_type' => [
-                  'name' => 'bike_spdcad_ant_id_trans_type',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 23,
-              ],
-              'bike_power_ant_id_trans_type' => [
-                  'name' => 'bike_power_ant_id_trans_type',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 24,
-              ],
-              'odometer_rollover' => [  # Rollover counter that can be used to extend the odometer
-                  'name' => 'odometer_rollover',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 37,
-              ],
-              'front_gear_num' => [  # Number of front gears
-                  'name' => 'front_gear_num',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 38,
-              ],
-              'front_gear' => [  # Number of teeth on each gear 0 is innermost
-                  'name' => 'front_gear',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 39,
-              ],
-              'rear_gear_num' => [  # Number of rear gears
-                  'name' => 'rear_gear_num',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 40,
-              ],
-              'rear_gear' => [  # Number of teeth on each gear 0 is innermost
-                  'name' => 'rear_gear',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 41,
-              ],
-              'shimano_di2_enabled' => [
-                  'name' => 'shimano_di2_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 44,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'hr_zone' => [
-          'name' => 'hr_zone',
-          'global_message_number' => 8,
-          'fields' => [
-              'high_bpm' => [
-                  'name' => 'high_bpm',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 1,
-                  'units' => 'bpm',
-              ],
-              'name' => [
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 2,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'power_zone' => [
-          'name' => 'power_zone',
-          'global_message_number' => 9,
-          'fields' => [
-              'high_value' => [
-                  'name' => 'high_value',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-                  'units' => 'watts',
-              ],
-              'name' => [
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 2,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'met_zone' => [
-          'name' => 'met_zone',
-          'global_message_number' => 10,
-          'fields' => [
-              'high_bpm' => [
-                  'name' => 'high_bpm',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 1,
-              ],
-              'calories' => [
-                  'name' => 'calories',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-                  'scale' => 10,
-                  'units' => 'kcal/min',
-              ],
-              'fat_calories' => [
-                  'name' => 'fat_calories',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 3,
-                  'scale' => 10,
-                  'units' => 'kcal/min',
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'sport' => [
-          'name' => 'sport',
-          'global_message_number' => 12,
-          'fields' => [
-              'sport' => [
-                  'name' => 'sport',
-                  'type' =>  self::FIELD_TYPES['sport'],
-                  'def_num' => 0,
-              ],
-              'sub_sport' => [
-                  'name' => 'sub_sport',
-                  'type' =>  self::FIELD_TYPES['sub_sport'],
-                  'def_num' => 1,
-              ],
-              'name' => [
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 3,
-              ],
-          ],
-      ],
-      'session' => [
-          'name' => 'session',
-          'global_message_number' => 18,
-          'fields' => [
-              'event' => [  # session
-                  'name' => 'event',
-                  'type' =>  self::FIELD_TYPES['event'],
-                  'def_num' => 0,
-              ],
-              'event_type' => [  # stop
-                  'name' => 'event_type',
-                  'type' =>  self::FIELD_TYPES['event_type'],
-                  'def_num' => 1,
-              ],
-              'start_time' => [
-                  'name' => 'start_time',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 2,
-              ],
-              'start_position_lat' => [
-                  'name' => 'start_position_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 3,
-                  'units' => 'semicircles',
-              ],
-              'start_position_long' => [
-                  'name' => 'start_position_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 4,
-                  'units' => 'semicircles',
-              ],
-              'sport' => [
-                  'name' => 'sport',
-                  'type' =>  self::FIELD_TYPES['sport'],
-                  'def_num' => 5,
-              ],
-              'sub_sport' => [
-                  'name' => 'sub_sport',
-                  'type' =>  self::FIELD_TYPES['sub_sport'],
-                  'def_num' => 6,
-              ],
-              'total_elapsed_time' => [  # Time (includes pauses]
-                  'name' => 'total_elapsed_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 7,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'total_timer_time' => [  # Timer Time (excludes pauses]
-                  'name' => 'total_timer_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 8,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'total_distance' => [
-                  'name' => 'total_distance',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 9,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'total_cycles' => [
-                  'name' => 'total_cycles',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 10,
-                  'units' => 'cycles',
-                  'subfields' => [
-                      [
-                          'name' => 'total_strides',
-                          'def_num' => 10,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'units' => 'strides',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'sport',
-                                  'def_num' => 5,
-                                  'value' => 'running',
-                                  'raw_value' => 1,
-                              ],
-                              [
-                                  'name' => 'sport',
-                                  'def_num' => 5,
-                                  'value' => 'walking',
-                                  'raw_value' => 11,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'total_calories' => [
-                  'name' => 'total_calories',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 11,
-                  'units' => 'kcal',
-              ],
-              'total_fat_calories' => [
-                  'name' => 'total_fat_calories',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 13,
-                  'units' => 'kcal',
-              ],
-              'avg_speed' => [  # total_distance / total_timer_time
-                  'name' => 'avg_speed',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 14,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-                  'components' => [
-                      [
-                          'name' => 'enhanced_avg_speed',
-                          'def_num' => 124,
-                          'scale' => 1000,
-                          'units' => 'm/s',
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'max_speed' => [
-                  'name' => 'max_speed',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 15,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-                  'components' => [
-                      [
-                          'name' => 'enhanced_max_speed',
-                          'def_num' => 125,
-                          'scale' => 1000,
-                          'units' => 'm/s',
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'avg_heart_rate' => [  # average heart rate (excludes pause time]
-                  'name' => 'avg_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 16,
-                  'units' => 'bpm',
-              ],
-              'max_heart_rate' => [
-                  'name' => 'max_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 17,
-                  'units' => 'bpm',
-              ],
-              'avg_cadence' => [  # total_cycles / total_timer_time if non_zero_avg_cadence otherwise total_cycles / total_elapsed_time
-                  'name' => 'avg_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 18,
-                  'units' => 'rpm',
-                  'subfields' => [
-                      [
-                          'name' => 'avg_running_cadence',
-                          'def_num' => 18,
-                          'type' => self::BASE_TYPES[0x02],  # uint8
-                          'units' => 'strides/min',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'sport',
-                                  'def_num' => 5,
-                                  'value' => 'running',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'max_cadence' => [
-                  'name' => 'max_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 19,
-                  'units' => 'rpm',
-                  'subfields' => [
-                      [
-                          'name' => 'max_running_cadence',
-                          'def_num' => 19,
-                          'type' => self::BASE_TYPES[0x02],  # uint8
-                          'units' => 'strides/min',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'sport',
-                                  'def_num' => 5,
-                                  'value' => 'running',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'avg_power' => [  # total_power / total_timer_time if non_zero_avg_power otherwise total_power / total_elapsed_time
-                  'name' => 'avg_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 20,
-                  'units' => 'watts',
-              ],
-              'max_power' => [
-                  'name' => 'max_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 21,
-                  'units' => 'watts',
-              ],
-              'total_ascent' => [
-                  'name' => 'total_ascent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 22,
-                  'units' => 'm',
-              ],
-              'total_descent' => [
-                  'name' => 'total_descent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 23,
-                  'units' => 'm',
-              ],
-              'total_training_effect' => [
-                  'name' => 'total_training_effect',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 24,
-                  'scale' => 10,
-              ],
-              'first_lap_index' => [
-                  'name' => 'first_lap_index',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 25,
-              ],
-              'num_laps' => [
-                  'name' => 'num_laps',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 26,
-              ],
-              'event_group' => [
-                  'name' => 'event_group',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 27,
-              ],
-              'trigger' => [
-                  'name' => 'trigger',
-                  'type' =>  self::FIELD_TYPES['session_trigger'],
-                  'def_num' => 28,
-              ],
-              'nec_lat' => [
-                  'name' => 'nec_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 29,
-                  'units' => 'semicircles',
-              ],
-              'nec_long' => [
-                  'name' => 'nec_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 30,
-                  'units' => 'semicircles',
-              ],
-              'swc_lat' => [
-                  'name' => 'swc_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 31,
-                  'units' => 'semicircles',
-              ],
-              'swc_long' => [
-                  'name' => 'swc_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 32,
-                  'units' => 'semicircles',
-              ],
-              'normalized_power' => [
-                  'name' => 'normalized_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 34,
-                  'units' => 'watts',
-              ],
-              'training_stress_score' => [
-                  'name' => 'training_stress_score',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 35,
-                  'scale' => 10,
-                  'units' => 'tss',
-              ],
-              'intensity_factor' => [
-                  'name' => 'intensity_factor',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 36,
-                  'scale' => 1000,
-                  'units' => 'if',
-              ],
-              'left_right_balance' => [
-                  'name' => 'left_right_balance',
-                  'type' =>  self::FIELD_TYPES['left_right_balance_100'],
-                  'def_num' => 37,
-              ],
-              'avg_stroke_count' => [
-                  'name' => 'avg_stroke_count',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 41,
-                  'scale' => 10,
-                  'units' => 'strokes/lap',
-              ],
-              'avg_stroke_distance' => [
-                  'name' => 'avg_stroke_distance',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 42,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'swim_stroke' => [
-                  'name' => 'swim_stroke',
-                  'type' =>  self::FIELD_TYPES['swim_stroke'],
-                  'def_num' => 43,
-                  'units' => 'swim_stroke',
-              ],
-              'pool_length' => [
-                  'name' => 'pool_length',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 44,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'threshold_power' => [
-                  'name' => 'threshold_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 45,
-                  'units' => 'watts',
-              ],
-              'pool_length_unit' => [
-                  'name' => 'pool_length_unit',
-                  'type' =>  self::FIELD_TYPES['display_measure'],
-                  'def_num' => 46,
-              ],
-              'num_active_lengths' => [  # # of active lengths of swim pool
-                  'name' => 'num_active_lengths',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 47,
-                  'units' => 'lengths',
-              ],
-              'total_work' => [
-                  'name' => 'total_work',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 48,
-                  'units' => 'J',
-              ],
-              'avg_altitude' => [
-                  'name' => 'avg_altitude',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 49,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-                  'components' => [
-                      [
-                          'name' => 'enhanced_avg_altitude',
-                          'def_num' => 126,
-                          'scale' => 5,
-                          'offset' => 500,
-                          'units' => 'm',
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'max_altitude' => [
-                  'name' => 'max_altitude',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 50,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-                  'components' => [
-                      [
-                          'name' => 'enhanced_max_altitude',
-                          'def_num' => 128,
-                          'scale' => 5,
-                          'offset' => 500,
-                          'units' => 'm',
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'gps_accuracy' => [
-                  'name' => 'gps_accuracy',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 51,
-                  'units' => 'm',
-              ],
-              'avg_grade' => [
-                  'name' => 'avg_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 52,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'avg_pos_grade' => [
-                  'name' => 'avg_pos_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 53,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'avg_neg_grade' => [
-                  'name' => 'avg_neg_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 54,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'max_pos_grade' => [
-                  'name' => 'max_pos_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 55,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'max_neg_grade' => [
-                  'name' => 'max_neg_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 56,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'avg_temperature' => [
-                  'name' => 'avg_temperature',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 57,
-                  'units' => 'C',
-              ],
-              'max_temperature' => [
-                  'name' => 'max_temperature',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 58,
-                  'units' => 'C',
-              ],
-              'total_moving_time' => [
-                  'name' => 'total_moving_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 59,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'avg_pos_vertical_speed' => [
-                  'name' => 'avg_pos_vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 60,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'avg_neg_vertical_speed' => [
-                  'name' => 'avg_neg_vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 61,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'max_pos_vertical_speed' => [
-                  'name' => 'max_pos_vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 62,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'max_neg_vertical_speed' => [
-                  'name' => 'max_neg_vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 63,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'min_heart_rate' => [
-                  'name' => 'min_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 64,
-                  'units' => 'bpm',
-              ],
-              'time_in_hr_zone' => [
-                  'name' => 'time_in_hr_zone',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 65,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'time_in_speed_zone' => [
-                  'name' => 'time_in_speed_zone',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 66,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'time_in_cadence_zone' => [
-                  'name' => 'time_in_cadence_zone',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 67,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'time_in_power_zone' => [
-                  'name' => 'time_in_power_zone',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 68,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'avg_lap_time' => [
-                  'name' => 'avg_lap_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 69,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'best_lap_index' => [
-                  'name' => 'best_lap_index',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 70,
-              ],
-              'min_altitude' => [
-                  'name' => 'min_altitude',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 71,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-                  'components' => [
-                      [
-                          'name' => 'enhanced_min_altitude',
-                          'def_num' => 127,
-                          'scale' => 5,
-                          'offset' => 500,
-                          'units' => 'm',
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'player_score' => [
-                  'name' => 'player_score',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 82,
-              ],
-              'opponent_score' => [
-                  'name' => 'opponent_score',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 83,
-              ],
-              'opponent_name' => [
-                  'name' => 'opponent_name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 84,
-              ],
-              'stroke_count' => [  # stroke_type enum used as the index
-                  'name' => 'stroke_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 85,
-                  'units' => 'counts',
-              ],
-              'zone_count' => [  # zone number used as the index
-                  'name' => 'zone_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 86,
-                  'units' => 'counts',
-              ],
-              'max_ball_speed' => [
-                  'name' => 'max_ball_speed',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 87,
-                  'scale' => 100,
-                  'units' => 'm/s',
-              ],
-              'avg_ball_speed' => [
-                  'name' => 'avg_ball_speed',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 88,
-                  'scale' => 100,
-                  'units' => 'm/s',
-              ],
-              'avg_vertical_oscillation' => [
-                  'name' => 'avg_vertical_oscillation',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 89,
-                  'scale' => 10,
-                  'units' => 'mm',
-              ],
-              'avg_stance_time_percent' => [
-                  'name' => 'avg_stance_time_percent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 90,
-                  'scale' => 100,
-                  'units' => 'percent',
-              ],
-              'avg_stance_time' => [
-                  'name' => 'avg_stance_time',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 91,
-                  'scale' => 10,
-                  'units' => 'ms',
-              ],
-              'avg_fractional_cadence' => [  # fractional part of the avg_cadence
-                  'name' => 'avg_fractional_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 92,
-                  'scale' => 128,
-                  'units' => 'rpm',
-              ],
-              'max_fractional_cadence' => [  # fractional part of the max_cadence
-                  'name' => 'max_fractional_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 93,
-                  'scale' => 128,
-                  'units' => 'rpm',
-              ],
-              'total_fractional_cycles' => [  # fractional part of the total_cycles
-                  'name' => 'total_fractional_cycles',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 94,
-                  'scale' => 128,
-                  'units' => 'cycles',
-              ],
-              'avg_total_hemoglobin_conc' => [  # Avg saturated and unsaturated hemoglobin
-                  'name' => 'avg_total_hemoglobin_conc',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 95,
-                  'scale' => 100,
-                  'units' => 'g/dL',
-              ],
-              'min_total_hemoglobin_conc' => [  # Min saturated and unsaturated hemoglobin
-                  'name' => 'min_total_hemoglobin_conc',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 96,
-                  'scale' => 100,
-                  'units' => 'g/dL',
-              ],
-              'max_total_hemoglobin_conc' => [  # Max saturated and unsaturated hemoglobin
-                  'name' => 'max_total_hemoglobin_conc',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 97,
-                  'scale' => 100,
-                  'units' => 'g/dL',
-              ],
-              'avg_saturated_hemoglobin_percent' => [  # Avg percentage of hemoglobin saturated with oxygen
-                  'name' => 'avg_saturated_hemoglobin_percent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 98,
-                  'scale' => 10,
-                  'units' => '%',
-              ],
-              'min_saturated_hemoglobin_percent' => [  # Min percentage of hemoglobin saturated with oxygen
-                  'name' => 'min_saturated_hemoglobin_percent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 99,
-                  'scale' => 10,
-                  'units' => '%',
-              ],
-              'max_saturated_hemoglobin_percent' => [  # Max percentage of hemoglobin saturated with oxygen
-                  'name' => 'max_saturated_hemoglobin_percent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 100,
-                  'scale' => 10,
-                  'units' => '%',
-              ],
-              'avg_left_torque_effectiveness' => [
-                  'name' => 'avg_left_torque_effectiveness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 101,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_right_torque_effectiveness' => [
-                  'name' => 'avg_right_torque_effectiveness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 102,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_left_pedal_smoothness' => [
-                  'name' => 'avg_left_pedal_smoothness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 103,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_right_pedal_smoothness' => [
-                  'name' => 'avg_right_pedal_smoothness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 104,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_combined_pedal_smoothness' => [
-                  'name' => 'avg_combined_pedal_smoothness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 105,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'sport_index' => [
-                  'name' => 'sport_index',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 111,
-              ],
-              'time_standing' => [  # Total time spend in the standing position
-                  'name' => 'time_standing',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 112,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'stand_count' => [  # Number of transitions to the standing state
-                  'name' => 'stand_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 113,
-              ],
-              'avg_left_pco' => [  # Average platform center offset Left
-                  'name' => 'avg_left_pco',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 114,
-                  'units' => 'mm',
-              ],
-              'avg_right_pco' => [  # Average platform center offset Right
-                  'name' => 'avg_right_pco',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 115,
-                  'units' => 'mm',
-              ],
-              'avg_left_power_phase' => [  # Average left power phase angles. Indexes defined by power_phase_type.
-                  'name' => 'avg_left_power_phase',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 116,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'avg_left_power_phase_peak' => [  # Average left power phase peak angles. Data value indexes defined by power_phase_type.
-                  'name' => 'avg_left_power_phase_peak',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 117,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'avg_right_power_phase' => [  # Average right power phase angles. Data value indexes defined by power_phase_type.
-                  'name' => 'avg_right_power_phase',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 118,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'avg_right_power_phase_peak' => [  # Average right power phase peak angles data value indexes  defined by power_phase_type.
-                  'name' => 'avg_right_power_phase_peak',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 119,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'avg_power_position' => [  # Average power by position. Data value indexes defined by rider_position_type.
-                  'name' => 'avg_power_position',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 120,
-                  'units' => 'watts',
-              ],
-              'max_power_position' => [  # Maximum power by position. Data value indexes defined by rider_position_type.
-                  'name' => 'max_power_position',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 121,
-                  'units' => 'watts',
-              ],
-              'avg_cadence_position' => [  # Average cadence by position. Data value indexes defined by rider_position_type.
-                  'name' => 'avg_cadence_position',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 122,
-                  'units' => 'rpm',
-              ],
-              'max_cadence_position' => [  # Maximum cadence by position. Data value indexes defined by rider_position_type.
-                  'name' => 'max_cadence_position',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 123,
-                  'units' => 'rpm',
-              ],
-              'enhanced_avg_speed' => [  # total_distance / total_timer_time
-                  'name' => 'enhanced_avg_speed',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 124,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'enhanced_max_speed' => [
-                  'name' => 'enhanced_max_speed',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 125,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'enhanced_avg_altitude' => [
-                  'name' => 'enhanced_avg_altitude',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 126,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-              ],
-              'enhanced_min_altitude' => [
-                  'name' => 'enhanced_min_altitude',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 127,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-              ],
-              'enhanced_max_altitude' => [
-                  'name' => 'enhanced_max_altitude',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 128,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-              ],
-              'avg_lev_motor_power' => [  # lev average motor power during session
-                  'name' => 'avg_lev_motor_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 129,
-                  'units' => 'watts',
-              ],
-              'max_lev_motor_power' => [  # lev maximum motor power during session
-                  'name' => 'max_lev_motor_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 130,
-                  'units' => 'watts',
-              ],
-              'lev_battery_consumption' => [  # lev battery consumption during session
-                  'name' => 'lev_battery_consumption',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 131,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_vertical_ratio' => [
-                  'name' => 'avg_vertical_ratio',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 132,
-                  'scale' => 100,
-                  'units' => 'percent',
-              ],
-              'avg_stance_time_balance' => [
-                  'name' => 'avg_stance_time_balance',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 133,
-                  'scale' => 100,
-                  'units' => 'percent',
-              ],
-              'avg_step_length' => [
-                  'name' => 'avg_step_length',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 134,
-                  'scale' => 10,
-                  'units' => 'mm',
-              ],
-              'total_anaerobic_training_effect' => [
-                  'name' => 'total_anaerobic_training_effect',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 137,
-                  'scale' => 10,
-              ],
-              'avg_vam' => [
-                  'name' => 'avg_vam',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 139,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Sesson end time.
-              'message_index' => [  # Selected bit is set for the current session.
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'lap' => [
-          'name' => 'lap',
-          'global_message_number' => 19,
-          'fields' => [
-              'event' => [
-                  'name' => 'event',
-                  'type' =>  self::FIELD_TYPES['event'],
-                  'def_num' => 0,
-              ],
-              'event_type' => [
-                  'name' => 'event_type',
-                  'type' =>  self::FIELD_TYPES['event_type'],
-                  'def_num' => 1,
-              ],
-              'start_time' => [
-                  'name' => 'start_time',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 2,
-              ],
-              'start_position_lat' => [
-                  'name' => 'start_position_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 3,
-                  'units' => 'semicircles',
-              ],
-              'start_position_long' => [
-                  'name' => 'start_position_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 4,
-                  'units' => 'semicircles',
-              ],
-              'end_position_lat' => [
-                  'name' => 'end_position_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 5,
-                  'units' => 'semicircles',
-              ],
-              'end_position_long' => [
-                  'name' => 'end_position_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 6,
-                  'units' => 'semicircles',
-              ],
-              'total_elapsed_time' => [  # Time (includes pauses]
-                  'name' => 'total_elapsed_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 7,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'total_timer_time' => [  # Timer Time (excludes pauses]
-                  'name' => 'total_timer_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 8,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'total_distance' => [
-                  'name' => 'total_distance',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 9,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'total_cycles' => [
-                  'name' => 'total_cycles',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 10,
-                  'units' => 'cycles',
-                  'subfields' => [
-                      [
-                          'name' => 'total_strides',
-                          'def_num' => 10,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'units' => 'strides',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'sport',
-                                  'def_num' => 25,
-                                  'value' => 'running',
-                                  'raw_value' => 1,
-                              ],
-                              [
-                                  'name' => 'sport',
-                                  'def_num' => 25,
-                                  'value' => 'walking',
-                                  'raw_value' => 11,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'total_calories' => [
-                  'name' => 'total_calories',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 11,
-                  'units' => 'kcal',
-              ],
-              'total_fat_calories' => [  # If New Leaf
-                  'name' => 'total_fat_calories',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 12,
-                  'units' => 'kcal',
-              ],
-              'avg_speed' => [
-                  'name' => 'avg_speed',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 13,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-                  'components' => [
-                      [
-                          'name' => 'enhanced_avg_speed',
-                          'def_num' => 110,
-                          'scale' => 1000,
-                          'units' => 'm/s',
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'max_speed' => [
-                  'name' => 'max_speed',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 14,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-                  'components' => [
-                      [
-                          'name' => 'enhanced_max_speed',
-                          'def_num' => 111,
-                          'scale' => 1000,
-                          'units' => 'm/s',
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'avg_heart_rate' => [
-                  'name' => 'avg_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 15,
-                  'units' => 'bpm',
-              ],
-              'max_heart_rate' => [
-                  'name' => 'max_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 16,
-                  'units' => 'bpm',
-              ],
-              'avg_cadence' => [  # total_cycles / total_timer_time if non_zero_avg_cadence otherwise total_cycles / total_elapsed_time
-                  'name' => 'avg_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 17,
-                  'units' => 'rpm',
-                  'subfields' => [
-                      [
-                          'name' => 'avg_running_cadence',
-                          'def_num' => 17,
-                          'type' => self::BASE_TYPES[0x02],  # uint8
-                          'units' => 'strides/min',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'sport',
-                                  'def_num' => 25,
-                                  'value' => 'running',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'max_cadence' => [
-                  'name' => 'max_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 18,
-                  'units' => 'rpm',
-                  'subfields' => [
-                      [
-                          'name' => 'max_running_cadence',
-                          'def_num' => 18,
-                          'type' => self::BASE_TYPES[0x02],  # uint8
-                          'units' => 'strides/min',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'sport',
-                                  'def_num' => 25,
-                                  'value' => 'running',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'avg_power' => [  # total_power / total_timer_time if non_zero_avg_power otherwise total_power / total_elapsed_time
-                  'name' => 'avg_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 19,
-                  'units' => 'watts',
-              ],
-              'max_power' => [
-                  'name' => 'max_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 20,
-                  'units' => 'watts',
-              ],
-              'total_ascent' => [
-                  'name' => 'total_ascent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 21,
-                  'units' => 'm',
-              ],
-              'total_descent' => [
-                  'name' => 'total_descent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 22,
-                  'units' => 'm',
-              ],
-              'intensity' => [
-                  'name' => 'intensity',
-                  'type' =>  self::FIELD_TYPES['intensity'],
-                  'def_num' => 23,
-              ],
-              'lap_trigger' => [
-                  'name' => 'lap_trigger',
-                  'type' =>  self::FIELD_TYPES['lap_trigger'],
-                  'def_num' => 24,
-              ],
-              'sport' => [
-                  'name' => 'sport',
-                  'type' =>  self::FIELD_TYPES['sport'],
-                  'def_num' => 25,
-              ],
-              'event_group' => [
-                  'name' => 'event_group',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 26,
-              ],
-              'num_lengths' => [  # # of lengths of swim pool
-                  'name' => 'num_lengths',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 32,
-                  'units' => 'lengths',
-              ],
-              'normalized_power' => [
-                  'name' => 'normalized_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 33,
-                  'units' => 'watts',
-              ],
-              'left_right_balance' => [
-                  'name' => 'left_right_balance',
-                  'type' =>  self::FIELD_TYPES['left_right_balance_100'],
-                  'def_num' => 34,
-              ],
-              'first_length_index' => [
-                  'name' => 'first_length_index',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 35,
-              ],
-              'avg_stroke_distance' => [
-                  'name' => 'avg_stroke_distance',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 37,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'swim_stroke' => [
-                  'name' => 'swim_stroke',
-                  'type' =>  self::FIELD_TYPES['swim_stroke'],
-                  'def_num' => 38,
-              ],
-              'sub_sport' => [
-                  'name' => 'sub_sport',
-                  'type' =>  self::FIELD_TYPES['sub_sport'],
-                  'def_num' => 39,
-              ],
-              'num_active_lengths' => [  # # of active lengths of swim pool
-                  'name' => 'num_active_lengths',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 40,
-                  'units' => 'lengths',
-              ],
-              'total_work' => [
-                  'name' => 'total_work',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 41,
-                  'units' => 'J',
-              ],
-              'avg_altitude' => [
-                  'name' => 'avg_altitude',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 42,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-                  'components' => [
-                      [
-                          'name' => 'enhanced_avg_altitude',
-                          'def_num' => 112,
-                          'scale' => 5,
-                          'offset' => 500,
-                          'units' => 'm',
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'max_altitude' => [
-                  'name' => 'max_altitude',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 43,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-                  'components' => [
-                      [
-                          'name' => 'enhanced_max_altitude',
-                          'def_num' => 114,
-                          'scale' => 5,
-                          'offset' => 500,
-                          'units' => 'm',
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'gps_accuracy' => [
-                  'name' => 'gps_accuracy',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 44,
-                  'units' => 'm',
-              ],
-              'avg_grade' => [
-                  'name' => 'avg_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 45,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'avg_pos_grade' => [
-                  'name' => 'avg_pos_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 46,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'avg_neg_grade' => [
-                  'name' => 'avg_neg_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 47,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'max_pos_grade' => [
-                  'name' => 'max_pos_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 48,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'max_neg_grade' => [
-                  'name' => 'max_neg_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 49,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'avg_temperature' => [
-                  'name' => 'avg_temperature',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 50,
-                  'units' => 'C',
-              ],
-              'max_temperature' => [
-                  'name' => 'max_temperature',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 51,
-                  'units' => 'C',
-              ],
-              'total_moving_time' => [
-                  'name' => 'total_moving_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 52,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'avg_pos_vertical_speed' => [
-                  'name' => 'avg_pos_vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 53,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'avg_neg_vertical_speed' => [
-                  'name' => 'avg_neg_vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 54,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'max_pos_vertical_speed' => [
-                  'name' => 'max_pos_vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 55,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'max_neg_vertical_speed' => [
-                  'name' => 'max_neg_vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 56,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'time_in_hr_zone' => [
-                  'name' => 'time_in_hr_zone',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 57,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'time_in_speed_zone' => [
-                  'name' => 'time_in_speed_zone',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 58,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'time_in_cadence_zone' => [
-                  'name' => 'time_in_cadence_zone',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 59,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'time_in_power_zone' => [
-                  'name' => 'time_in_power_zone',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 60,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'repetition_num' => [
-                  'name' => 'repetition_num',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 61,
-              ],
-              'min_altitude' => [
-                  'name' => 'min_altitude',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 62,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-                  'components' => [
-                      [
-                          'name' => 'enhanced_min_altitude',
-                          'def_num' => 113,
-                          'scale' => 5,
-                          'offset' => 500,
-                          'units' => 'm',
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'min_heart_rate' => [
-                  'name' => 'min_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 63,
-                  'units' => 'bpm',
-              ],
-              'wkt_step_index' => [
-                  'name' => 'wkt_step_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 71,
-              ],
-              'opponent_score' => [
-                  'name' => 'opponent_score',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 74,
-              ],
-              'stroke_count' => [  # stroke_type enum used as the index
-                  'name' => 'stroke_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 75,
-                  'units' => 'counts',
-              ],
-              'zone_count' => [  # zone number used as the index
-                  'name' => 'zone_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 76,
-                  'units' => 'counts',
-              ],
-              'avg_vertical_oscillation' => [
-                  'name' => 'avg_vertical_oscillation',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 77,
-                  'scale' => 10,
-                  'units' => 'mm',
-              ],
-              'avg_stance_time_percent' => [
-                  'name' => 'avg_stance_time_percent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 78,
-                  'scale' => 100,
-                  'units' => 'percent',
-              ],
-              'avg_stance_time' => [
-                  'name' => 'avg_stance_time',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 79,
-                  'scale' => 10,
-                  'units' => 'ms',
-              ],
-              'avg_fractional_cadence' => [  # fractional part of the avg_cadence
-                  'name' => 'avg_fractional_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 80,
-                  'scale' => 128,
-                  'units' => 'rpm',
-              ],
-              'max_fractional_cadence' => [  # fractional part of the max_cadence
-                  'name' => 'max_fractional_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 81,
-                  'scale' => 128,
-                  'units' => 'rpm',
-              ],
-              'total_fractional_cycles' => [  # fractional part of the total_cycles
-                  'name' => 'total_fractional_cycles',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 82,
-                  'scale' => 128,
-                  'units' => 'cycles',
-              ],
-              'player_score' => [
-                  'name' => 'player_score',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 83,
-              ],
-              'avg_total_hemoglobin_conc' => [  # Avg saturated and unsaturated hemoglobin
-                  'name' => 'avg_total_hemoglobin_conc',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 84,
-                  'scale' => 100,
-                  'units' => 'g/dL',
-              ],
-              'min_total_hemoglobin_conc' => [  # Min saturated and unsaturated hemoglobin
-                  'name' => 'min_total_hemoglobin_conc',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 85,
-                  'scale' => 100,
-                  'units' => 'g/dL',
-              ],
-              'max_total_hemoglobin_conc' => [  # Max saturated and unsaturated hemoglobin
-                  'name' => 'max_total_hemoglobin_conc',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 86,
-                  'scale' => 100,
-                  'units' => 'g/dL',
-              ],
-              'avg_saturated_hemoglobin_percent' => [  # Avg percentage of hemoglobin saturated with oxygen
-                  'name' => 'avg_saturated_hemoglobin_percent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 87,
-                  'scale' => 10,
-                  'units' => '%',
-              ],
-              'min_saturated_hemoglobin_percent' => [  # Min percentage of hemoglobin saturated with oxygen
-                  'name' => 'min_saturated_hemoglobin_percent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 88,
-                  'scale' => 10,
-                  'units' => '%',
-              ],
-              'max_saturated_hemoglobin_percent' => [  # Max percentage of hemoglobin saturated with oxygen
-                  'name' => 'max_saturated_hemoglobin_percent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 89,
-                  'scale' => 10,
-                  'units' => '%',
-              ],
-              'avg_left_torque_effectiveness' => [
-                  'name' => 'avg_left_torque_effectiveness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 91,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_right_torque_effectiveness' => [
-                  'name' => 'avg_right_torque_effectiveness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 92,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_left_pedal_smoothness' => [
-                  'name' => 'avg_left_pedal_smoothness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 93,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_right_pedal_smoothness' => [
-                  'name' => 'avg_right_pedal_smoothness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 94,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_combined_pedal_smoothness' => [
-                  'name' => 'avg_combined_pedal_smoothness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 95,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'time_standing' => [  # Total time spent in the standing position
-                  'name' => 'time_standing',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 98,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'stand_count' => [  # Number of transitions to the standing state
-                  'name' => 'stand_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 99,
-              ],
-              'avg_left_pco' => [  # Average left platform center offset
-                  'name' => 'avg_left_pco',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 100,
-                  'units' => 'mm',
-              ],
-              'avg_right_pco' => [  # Average right platform center offset
-                  'name' => 'avg_right_pco',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 101,
-                  'units' => 'mm',
-              ],
-              'avg_left_power_phase' => [  # Average left power phase angles. Data value indexes defined by power_phase_type.
-                  'name' => 'avg_left_power_phase',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 102,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'avg_left_power_phase_peak' => [  # Average left power phase peak angles. Data value indexes  defined by power_phase_type.
-                  'name' => 'avg_left_power_phase_peak',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 103,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'avg_right_power_phase' => [  # Average right power phase angles. Data value indexes defined by power_phase_type.
-                  'name' => 'avg_right_power_phase',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 104,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'avg_right_power_phase_peak' => [  # Average right power phase peak angles. Data value indexes  defined by power_phase_type.
-                  'name' => 'avg_right_power_phase_peak',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 105,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'avg_power_position' => [  # Average power by position. Data value indexes defined by rider_position_type.
-                  'name' => 'avg_power_position',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 106,
-                  'units' => 'watts',
-              ],
-              'max_power_position' => [  # Maximum power by position. Data value indexes defined by rider_position_type.
-                  'name' => 'max_power_position',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 107,
-                  'units' => 'watts',
-              ],
-              'avg_cadence_position' => [  # Average cadence by position. Data value indexes defined by rider_position_type.
-                  'name' => 'avg_cadence_position',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 108,
-                  'units' => 'rpm',
-              ],
-              'max_cadence_position' => [  # Maximum cadence by position. Data value indexes defined by rider_position_type.
-                  'name' => 'max_cadence_position',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 109,
-                  'units' => 'rpm',
-              ],
-              'enhanced_avg_speed' => [
-                  'name' => 'enhanced_avg_speed',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 110,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'enhanced_max_speed' => [
-                  'name' => 'enhanced_max_speed',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 111,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'enhanced_avg_altitude' => [
-                  'name' => 'enhanced_avg_altitude',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 112,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-              ],
-              'enhanced_min_altitude' => [
-                  'name' => 'enhanced_min_altitude',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 113,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-              ],
-              'enhanced_max_altitude' => [
-                  'name' => 'enhanced_max_altitude',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 114,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-              ],
-              'avg_lev_motor_power' => [  # lev average motor power during lap
-                  'name' => 'avg_lev_motor_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 115,
-                  'units' => 'watts',
-              ],
-              'max_lev_motor_power' => [  # lev maximum motor power during lap
-                  'name' => 'max_lev_motor_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 116,
-                  'units' => 'watts',
-              ],
-              'lev_battery_consumption' => [  # lev battery consumption during lap
-                  'name' => 'lev_battery_consumption',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 117,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_vertical_ratio' => [
-                  'name' => 'avg_vertical_ratio',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 118,
-                  'scale' => 100,
-                  'units' => 'percent',
-              ],
-              'avg_stance_time_balance' => [
-                  'name' => 'avg_stance_time_balance',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 119,
-                  'scale' => 100,
-                  'units' => 'percent',
-              ],
-              'avg_step_length' => [
-                  'name' => 'avg_step_length',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 120,
-                  'scale' => 10,
-                  'units' => 'mm',
-              ],
-              'avg_vam' => [
-                  'name' => 'avg_vam',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 121,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Lap end time.
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'record' => [
-          'name' => 'record',
-          'global_message_number' => 20,
-          'fields' => [
-              'position_lat' => [
-                  'name' => 'position_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 0,
-                  'units' => 'semicircles',
-              ],
-              'position_long' => [
-                  'name' => 'position_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 1,
-                  'units' => 'semicircles',
-              ],
-              'altitude' => [
-                  'name' => 'altitude',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-                  'components' => [
-                      [
-                          'name' => 'enhanced_altitude',
-                          'def_num' => 78,
-                          'scale' => 5,
-                          'offset' => 500,
-                          'units' => 'm',
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'heart_rate' => [
-                  'name' => 'heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 3,
-                  'units' => 'bpm',
-              ],
-              'cadence' => [
-                  'name' => 'cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 4,
-                  'units' => 'rpm',
-              ],
-              'distance' => [
-                  'name' => 'distance',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 5,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'speed' => [
-                  'name' => 'speed',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 6,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-                  'components' => [
-                      [
-                          'name' => 'enhanced_speed',
-                          'def_num' => 73,
-                          'scale' => 1000,
-                          'units' => 'm/s',
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'power' => [
-                  'name' => 'power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 7,
-                  'units' => 'watts',
-              ],
-              'compressed_speed_distance' => [
-                  'name' => 'compressed_speed_distance',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 8,
-                  'components' => [
-                      [
-                          'name' => 'speed',
-                          'def_num' => 6,
-                          'scale' => 100,
-                          'units' => 'm/s',
-                          'accumulate' => False,
-                          'bits' => 12,
-                          'bit_offset' => 0,
-                      ],
-                      [
-                          'name' => 'distance',
-                          'def_num' => 5,
-                          'scale' => 16,
-                          'units' => 'm',
-                          'accumulate' => True,
-                          'bits' => 12,
-                          'bit_offset' => 12,
-                      ],
-                  ],
-              ],
-              'grade' => [
-                  'name' => 'grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 9,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'resistance' => [  # Relative. 0 is none  254 is Max.
-                  'name' => 'resistance',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 10,
-              ],
-              'time_from_course' => [
-                  'name' => 'time_from_course',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 11,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'cycle_length' => [
-                  'name' => 'cycle_length',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 12,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'temperature' => [
-                  'name' => 'temperature',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 13,
-                  'units' => 'C',
-              ],
-              'speed_1s' => [  # Speed at 1s intervals.  Timestamp field indicates time of last array element.
-                  'name' => 'speed_1s',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 17,
-                  'scale' => 16,
-                  'units' => 'm/s',
-              ],
-              'cycles' => [
-                  'name' => 'cycles',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 18,
-                  'components' => [
-                      [
-                          'name' => 'total_cycles',
-                          'def_num' => 19,
-                          'units' => 'cycles',
-                          'accumulate' => True,
-                          'bits' => 8,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'total_cycles' => [
-                  'name' => 'total_cycles',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 19,
-                  'units' => 'cycles',
-              ],
-              'compressed_accumulated_power' => [
-                  'name' => 'compressed_accumulated_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 28,
-                  'components' => [
-                      [
-                          'name' => 'accumulated_power',
-                          'def_num' => 29,
-                          'units' => 'watts',
-                          'accumulate' => True,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'accumulated_power' => [
-                  'name' => 'accumulated_power',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 29,
-                  'units' => 'watts',
-              ],
-              'left_right_balance' => [
-                  'name' => 'left_right_balance',
-                  'type' =>  self::FIELD_TYPES['left_right_balance'],
-                  'def_num' => 30,
-              ],
-              'gps_accuracy' => [
-                  'name' => 'gps_accuracy',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 31,
-                  'units' => 'm',
-              ],
-              'vertical_speed' => [
-                  'name' => 'vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 32,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'calories' => [
-                  'name' => 'calories',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 33,
-                  'units' => 'kcal',
-              ],
-              'vertical_oscillation' => [
-                  'name' => 'vertical_oscillation',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 39,
-                  'scale' => 10,
-                  'units' => 'mm',
-              ],
-              'stance_time_percent' => [
-                  'name' => 'stance_time_percent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 40,
-                  'scale' => 100,
-                  'units' => 'percent',
-              ],
-              'stance_time' => [
-                  'name' => 'stance_time',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 41,
-                  'scale' => 10,
-                  'units' => 'ms',
-              ],
-              'activity_type' => [
-                  'name' => 'activity_type',
-                  'type' =>  self::FIELD_TYPES['activity_type'],
-                  'def_num' => 42,
-              ],
-              'left_torque_effectiveness' => [
-                  'name' => 'left_torque_effectiveness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 43,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'right_torque_effectiveness' => [
-                  'name' => 'right_torque_effectiveness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 44,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'left_pedal_smoothness' => [
-                  'name' => 'left_pedal_smoothness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 45,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'right_pedal_smoothness' => [
-                  'name' => 'right_pedal_smoothness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 46,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'combined_pedal_smoothness' => [
-                  'name' => 'combined_pedal_smoothness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 47,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'time128' => [
-                  'name' => 'time128',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 48,
-                  'scale' => 128,
-                  'units' => 's',
-              ],
-              'stroke_type' => [
-                  'name' => 'stroke_type',
-                  'type' =>  self::FIELD_TYPES['stroke_type'],
-                  'def_num' => 49,
-              ],
-              'zone' => [
-                  'name' => 'zone',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 50,
-              ],
-              'ball_speed' => [
-                  'name' => 'ball_speed',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 51,
-                  'scale' => 100,
-                  'units' => 'm/s',
-              ],
-              'cadence256' => [  # Log cadence and fractional cadence for backwards compatability
-                  'name' => 'cadence256',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 52,
-                  'scale' => 256,
-                  'units' => 'rpm',
-              ],
-              'fractional_cadence' => [
-                  'name' => 'fractional_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 53,
-                  'scale' => 128,
-                  'units' => 'rpm',
-              ],
-              'total_hemoglobin_conc' => [  # Total saturated and unsaturated hemoglobin
-                  'name' => 'total_hemoglobin_conc',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 54,
-                  'scale' => 100,
-                  'units' => 'g/dL',
-              ],
-              'total_hemoglobin_conc_min' => [  # Min saturated and unsaturated hemoglobin
-                  'name' => 'total_hemoglobin_conc_min',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 55,
-                  'scale' => 100,
-                  'units' => 'g/dL',
-              ],
-              'total_hemoglobin_conc_max' => [  # Max saturated and unsaturated hemoglobin
-                  'name' => 'total_hemoglobin_conc_max',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 56,
-                  'scale' => 100,
-                  'units' => 'g/dL',
-              ],
-              'saturated_hemoglobin_percent' => [  # Percentage of hemoglobin saturated with oxygen
-                  'name' => 'saturated_hemoglobin_percent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 57,
-                  'scale' => 10,
-                  'units' => '%',
-              ],
-              'saturated_hemoglobin_percent_min' => [  # Min percentage of hemoglobin saturated with oxygen
-                  'name' => 'saturated_hemoglobin_percent_min',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 58,
-                  'scale' => 10,
-                  'units' => '%',
-              ],
-              'saturated_hemoglobin_percent_max' => [  # Max percentage of hemoglobin saturated with oxygen
-                  'name' => 'saturated_hemoglobin_percent_max',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 59,
-                  'scale' => 10,
-                  'units' => '%',
-              ],
-              'device_index' => [
-                  'name' => 'device_index',
-                  'type' =>  self::FIELD_TYPES['device_index'],
-                  'def_num' => 62,
-              ],
-              'left_pco' => [  # Left platform center offset
-                  'name' => 'left_pco',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 67,
-                  'units' => 'mm',
-              ],
-              'right_pco' => [  # Right platform center offset
-                  'name' => 'right_pco',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 68,
-                  'units' => 'mm',
-              ],
-              'left_power_phase' => [  # Left power phase angles. Data value indexes defined by power_phase_type.
-                  'name' => 'left_power_phase',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 69,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'left_power_phase_peak' => [  # Left power phase peak angles. Data value indexes defined by power_phase_type.
-                  'name' => 'left_power_phase_peak',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 70,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'right_power_phase' => [  # Right power phase angles. Data value indexes defined by power_phase_type.
-                  'name' => 'right_power_phase',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 71,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'right_power_phase_peak' => [  # Right power phase peak angles. Data value indexes defined by power_phase_type.
-                  'name' => 'right_power_phase_peak',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 72,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'enhanced_speed' => [
-                  'name' => 'enhanced_speed',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 73,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'enhanced_altitude' => [
-                  'name' => 'enhanced_altitude',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 78,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-              ],
-              'battery_soc' => [  # lev battery state of charge
-                  'name' => 'battery_soc',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 81,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'motor_power' => [  # lev motor power
-                  'name' => 'motor_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 82,
-                  'units' => 'watts',
-              ],
-              'vertical_ratio' => [
-                  'name' => 'vertical_ratio',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 83,
-                  'scale' => 100,
-                  'units' => 'percent',
-              ],
-              'stance_time_balance' => [
-                  'name' => 'stance_time_balance',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 84,
-                  'scale' => 100,
-                  'units' => 'percent',
-              ],
-              'step_length' => [
-                  'name' => 'step_length',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 85,
-                  'scale' => 10,
-                  'units' => 'mm',
-              ],
-              'absolute_pressure' => [  # Includes atmospheric pressure
-                  'name' => 'absolute_pressure',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 91,
-                  'units' => 'Pa',
-              ],
-              'depth' => [  # 0 if above water
-                  'name' => 'depth',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 92,
-                  'scale' => 1000,
-                  'units' => 'm',
-              ],
-              'next_stop_depth' => [  # 0 if above water
-                  'name' => 'next_stop_depth',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 93,
-                  'scale' => 1000,
-                  'units' => 'm',
-              ],
-              'next_stop_time' => [
-                  'name' => 'next_stop_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 94,
-                  'units' => 's',
-              ],
-              'time_to_surface' => [
-                  'name' => 'time_to_surface',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 95,
-                  'units' => 's',
-              ],
-              'ndl_time' => [
-                  'name' => 'ndl_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 96,
-                  'units' => 's',
-              ],
-              'cns_load' => [
-                  'name' => 'cns_load',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 97,
-                  'units' => 'percent',
-              ],
-              'n2_load' => [
-                  'name' => 'n2_load',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 98,
-                  'units' => 'percent',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
-      'event' => [
-          'name' => 'event',
-          'global_message_number' => 21,
-          'fields' => [
-              'event' => [
-                  'name' => 'event',
-                  'type' =>  self::FIELD_TYPES['event'],
-                  'def_num' => 0,
-              ],
-              'event_type' => [
-                  'name' => 'event_type',
-                  'type' =>  self::FIELD_TYPES['event_type'],
-                  'def_num' => 1,
-              ],
-              'data16' => [
-                  'name' => 'data16',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-                  'components' => [
-                      [
-                          'name' => 'data',
-                          'def_num' => 3,
-                          'accumulate' => False,
-                          'bits' => 16,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'data' => [
-                  'name' => 'data',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 3,
-                  'subfields' => [
-                      [
-                          'name' => 'battery_level',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x84],  # uint16
-                          'scale' => 1000,
-                          'units' => 'V',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'battery',
-                                  'raw_value' => 11,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'cad_high_alert',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x84],  # uint16
-                          'units' => 'rpm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'cad_high_alert',
-                                  'raw_value' => 17,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'cad_low_alert',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x84],  # uint16
-                          'units' => 'rpm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'cad_low_alert',
-                                  'raw_value' => 18,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'calorie_duration_alert',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'units' => 'calories',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'calorie_duration_alert',
-                                  'raw_value' => 25,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'comm_timeout',
-                          'def_num' => 3,
-                          'type' =>  self::FIELD_TYPES['comm_timeout_type'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'comm_timeout',
-                                  'raw_value' => 47,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'course_point_index',
-                          'def_num' => 3,
-                          'type' =>  self::FIELD_TYPES['message_index'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'course_point',
-                                  'raw_value' => 10,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'distance_duration_alert',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'scale' => 100,
-                          'units' => 'm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'distance_duration_alert',
-                                  'raw_value' => 24,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'fitness_equipment_state',
-                          'def_num' => 3,
-                          'type' =>  self::FIELD_TYPES['fitness_equipment_state'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'fitness_equipment',
-                                  'raw_value' => 27,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'gear_change_data',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'front_gear_change',
-                                  'raw_value' => 42,
-                              ],
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'rear_gear_change',
-                                  'raw_value' => 43,
-                              ],
-                          ],
-                          'components' => [
-                              [
-                                  'name' => 'rear_gear_num',
-                                  'def_num' => 11,
-                                  'accumulate' => False,
-                                  'bits' => 8,
-                                  'bit_offset' => 0,
-                              ],
-                              [
-                                  'name' => 'rear_gear',
-                                  'def_num' => 12,
-                                  'accumulate' => False,
-                                  'bits' => 8,
-                                  'bit_offset' => 8,
-                              ],
-                              [
-                                  'name' => 'front_gear_num',
-                                  'def_num' => 9,
-                                  'accumulate' => False,
-                                  'bits' => 8,
-                                  'bit_offset' => 16,
-                              ],
-                              [
-                                  'name' => 'front_gear',
-                                  'def_num' => 10,
-                                  'accumulate' => False,
-                                  'bits' => 8,
-                                  'bit_offset' => 24,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'hr_high_alert',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x02],  # uint8
-                          'units' => 'bpm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'hr_high_alert',
-                                  'raw_value' => 13,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'hr_low_alert',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x02],  # uint8
-                          'units' => 'bpm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'hr_low_alert',
-                                  'raw_value' => 14,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'power_high_alert',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x84],  # uint16
-                          'units' => 'watts',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'power_high_alert',
-                                  'raw_value' => 19,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'power_low_alert',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x84],  # uint16
-                          'units' => 'watts',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'power_low_alert',
-                                  'raw_value' => 20,
-                              ],
-                          ],
-                      ],
-                      [  # Indicates the rider position value.
-                          'name' => 'rider_position',
-                          'def_num' => 3,
-                          'type' =>  self::FIELD_TYPES['rider_position_type'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'rider_position_change',
-                                  'raw_value' => 44,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'speed_high_alert',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'scale' => 1000,
-                          'units' => 'm/s',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'speed_high_alert',
-                                  'raw_value' => 15,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'speed_low_alert',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'scale' => 1000,
-                          'units' => 'm/s',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'speed_low_alert',
-                                  'raw_value' => 16,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'sport_point',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'sport_point',
-                                  'raw_value' => 33,
-                              ],
-                          ],
-                          'components' => [
-                              [
-                                  'name' => 'score',
-                                  'def_num' => 7,
-                                  'accumulate' => False,
-                                  'bits' => 16,
-                                  'bit_offset' => 0,
-                              ],
-                              [
-                                  'name' => 'opponent_score',
-                                  'def_num' => 8,
-                                  'accumulate' => False,
-                                  'bits' => 16,
-                                  'bit_offset' => 16,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'time_duration_alert',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'scale' => 1000,
-                          'units' => 's',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'time_duration_alert',
-                                  'raw_value' => 23,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'timer_trigger',
-                          'def_num' => 3,
-                          'type' =>  self::FIELD_TYPES['timer_trigger'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'timer',
-                                  'raw_value' => 0,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'virtual_partner_speed',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x84],  # uint16
-                          'scale' => 1000,
-                          'units' => 'm/s',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'event',
-                                  'def_num' => 0,
-                                  'value' => 'virtual_partner_pace',
-                                  'raw_value' => 12,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'event_group' => [
-                  'name' => 'event_group',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 4,
-              ],
-              'score' => [  # Do not populate directly.  Autogenerated by decoder for sport_point subfield components
-                  'name' => 'score',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 7,
-              ],
-              'opponent_score' => [  # Do not populate directly.  Autogenerated by decoder for sport_point subfield components
-                  'name' => 'opponent_score',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 8,
-              ],
-              'front_gear_num' => [  # Do not populate directly.  Autogenerated by decoder for gear_change subfield components.  Front gear number. 1 is innermost.
-                  'name' => 'front_gear_num',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 9,
-              ],
-              'front_gear' => [  # Do not populate directly.  Autogenerated by decoder for gear_change subfield components.  Number of front teeth.
-                  'name' => 'front_gear',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 10,
-              ],
-              'rear_gear_num' => [  # Do not populate directly.  Autogenerated by decoder for gear_change subfield components.  Rear gear number. 1 is innermost.
-                  'name' => 'rear_gear_num',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 11,
-              ],
-              'rear_gear' => [  # Do not populate directly.  Autogenerated by decoder for gear_change subfield components.  Number of rear teeth.
-                  'name' => 'rear_gear',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 12,
-              ],
-              'device_index' => [
-                  'name' => 'device_index',
-                  'type' =>  self::FIELD_TYPES['device_index'],
-                  'def_num' => 13,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
-      'device_info' => [
-          'name' => 'device_info',
-          'global_message_number' => 23,
-          'fields' => [
-              'device_index' => [
-                  'name' => 'device_index',
-                  'type' =>  self::FIELD_TYPES['device_index'],
-                  'def_num' => 0,
-              ],
-              'device_type' => [
-                  'name' => 'device_type',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 1,
-                  'subfields' => [
-                      [
-                          'name' => 'ant_device_type',
-                          'def_num' => 1,
-                          'type' => self::BASE_TYPES[0x02],  # uint8
-                          'ref_fields' => [
-                              [
-                                  'name' => 'source_type',
-                                  'def_num' => 25,
-                                  'value' => 'ant',
-                                  'raw_value' => 0,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'antplus_device_type',
-                          'def_num' => 1,
-                          'type' =>  self::FIELD_TYPES['antplus_device_type'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'source_type',
-                                  'def_num' => 25,
-                                  'value' => 'antplus',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'manufacturer' => [
-                  'name' => 'manufacturer',
-                  'type' =>  self::FIELD_TYPES['manufacturer'],
-                  'def_num' => 2,
-              ],
-              'serial_number' => [
-                  'name' => 'serial_number',
-                  'type' => self::BASE_TYPES[0x8C],  # uint32z
-                  'def_num' => 3,
-              ],
-              'product' => [
-                  'name' => 'product',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'subfields' => [
-                      [
-                          'name' => 'garmin_product',
-                          'def_num' => 4,
-                          'type' =>  self::FIELD_TYPES['garmin_product'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 2,
-                                  'value' => 'garmin',
-                                  'raw_value' => 1,
-                              ],
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 2,
-                                  'value' => 'dynastream',
-                                  'raw_value' => 15,
-                              ],
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 2,
-                                  'value' => 'dynastream_oem',
-                                  'raw_value' => 13,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'software_version' => [
-                  'name' => 'software_version',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 5,
-                  'scale' => 100,
-              ],
-              'hardware_version' => [
-                  'name' => 'hardware_version',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 6,
-              ],
-              'cum_operating_time' => [  # Reset by new battery or charge.
-                  'name' => 'cum_operating_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 7,
-                  'units' => 's',
-              ],
-              'battery_voltage' => [
-                  'name' => 'battery_voltage',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 10,
-                  'scale' => 256,
-                  'units' => 'V',
-              ],
-              'battery_status' => [
-                  'name' => 'battery_status',
-                  'type' =>  self::FIELD_TYPES['battery_status'],
-                  'def_num' => 11,
-              ],
-              'sensor_position' => [  # Indicates the location of the sensor
-                  'name' => 'sensor_position',
-                  'type' =>  self::FIELD_TYPES['body_location'],
-                  'def_num' => 18,
-              ],
-              'descriptor' => [  # Used to describe the sensor or location
-                  'name' => 'descriptor',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 19,
-              ],
-              'ant_transmission_type' => [
-                  'name' => 'ant_transmission_type',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 20,
-              ],
-              'ant_device_number' => [
-                  'name' => 'ant_device_number',
-                  'type' => self::BASE_TYPES[0x8B],  # uint16z
-                  'def_num' => 21,
-              ],
-              'ant_network' => [
-                  'name' => 'ant_network',
-                  'type' =>  self::FIELD_TYPES['ant_network'],
-                  'def_num' => 22,
-              ],
-              'source_type' => [
-                  'name' => 'source_type',
-                  'type' =>  self::FIELD_TYPES['source_type'],
-                  'def_num' => 25,
-              ],
-              'product_name' => [  # Optional free form string to indicate the devices name or model
-                  'name' => 'product_name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 27,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
-      'workout_step' => [
-          'name' => 'workout_step',
-          'global_message_number' => 27,
-          'fields' => [
-              'wkt_step_name' => [
-                  'name' => 'wkt_step_name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 0,
-              ],
-              'duration_type' => [
-                  'name' => 'duration_type',
-                  'type' =>  self::FIELD_TYPES['wkt_step_duration'],
-                  'def_num' => 1,
-              ],
-              'duration_value' => [
-                  'name' => 'duration_value',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 2,
-                  'subfields' => [
-                      [
-                          'name' => 'duration_calories',
-                          'def_num' => 2,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'units' => 'calories',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'calories',
-                                  'raw_value' => 4,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'duration_distance',
-                          'def_num' => 2,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'scale' => 100,
-                          'units' => 'm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'distance',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'duration_hr',
-                          'def_num' => 2,
-                          'type' =>  self::FIELD_TYPES['workout_hr'],
-                          'units' => '% or bpm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'hr_less_than',
-                                  'raw_value' => 2,
-                              ],
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'hr_greater_than',
-                                  'raw_value' => 3,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'duration_power',
-                          'def_num' => 2,
-                          'type' =>  self::FIELD_TYPES['workout_power'],
-                          'units' => '% or watts',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'power_less_than',
-                                  'raw_value' => 14,
-                              ],
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'power_greater_than',
-                                  'raw_value' => 15,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'duration_reps',
-                          'def_num' => 2,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'reps',
-                                  'raw_value' => 29,
-                              ],
-                          ],
-                      ],
-                      [  # message_index of step to loop back to. Steps are assumed to be in the order by message_index. custom_name and intensity members are undefined for this duration type.
-                          'name' => 'duration_step',
-                          'def_num' => 2,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_steps_cmplt',
-                                  'raw_value' => 6,
-                              ],
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_time',
-                                  'raw_value' => 7,
-                              ],
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_distance',
-                                  'raw_value' => 8,
-                              ],
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_calories',
-                                  'raw_value' => 9,
-                              ],
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_hr_less_than',
-                                  'raw_value' => 10,
-                              ],
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_hr_greater_than',
-                                  'raw_value' => 11,
-                              ],
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_power_less_than',
-                                  'raw_value' => 12,
-                              ],
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_power_greater_than',
-                                  'raw_value' => 13,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'duration_time',
-                          'def_num' => 2,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'scale' => 1000,
-                          'units' => 's',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'time',
-                                  'raw_value' => 0,
-                              ],
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repetition_time',
-                                  'raw_value' => 28,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'target_type' => [
-                  'name' => 'target_type',
-                  'type' =>  self::FIELD_TYPES['wkt_step_target'],
-                  'def_num' => 3,
-              ],
-              'target_value' => [
-                  'name' => 'target_value',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 4,
-                  'subfields' => [
-                      [
-                          'name' => 'repeat_calories',
-                          'def_num' => 4,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'units' => 'calories',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_calories',
-                                  'raw_value' => 9,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'repeat_distance',
-                          'def_num' => 4,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'scale' => 100,
-                          'units' => 'm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_distance',
-                                  'raw_value' => 8,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'repeat_hr',
-                          'def_num' => 4,
-                          'type' =>  self::FIELD_TYPES['workout_hr'],
-                          'units' => '% or bpm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_hr_less_than',
-                                  'raw_value' => 10,
-                              ],
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_hr_greater_than',
-                                  'raw_value' => 11,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'repeat_power',
-                          'def_num' => 4,
-                          'type' =>  self::FIELD_TYPES['workout_power'],
-                          'units' => '% or watts',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_power_less_than',
-                                  'raw_value' => 12,
-                              ],
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_power_greater_than',
-                                  'raw_value' => 13,
-                              ],
-                          ],
-                      ],
-                      [  # # of repetitions
-                          'name' => 'repeat_steps',
-                          'def_num' => 4,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_steps_cmplt',
-                                  'raw_value' => 6,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'repeat_time',
-                          'def_num' => 4,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'scale' => 1000,
-                          'units' => 's',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'duration_type',
-                                  'def_num' => 1,
-                                  'value' => 'repeat_until_time',
-                                  'raw_value' => 7,
-                              ],
-                          ],
-                      ],
-                      [  # Zone (1-?]; Custom = 0;
-                          'name' => 'target_cadence_zone',
-                          'def_num' => 4,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'cadence',
-                                  'raw_value' => 3,
-                              ],
-                          ],
-                      ],
-                      [  # hr zone (1-5];Custom =0;
-                          'name' => 'target_hr_zone',
-                          'def_num' => 4,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'heart_rate',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                      [  # Power Zone ( 1-7]; Custom = 0;
-                          'name' => 'target_power_zone',
-                          'def_num' => 4,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'power',
-                                  'raw_value' => 4,
-                              ],
-                          ],
-                      ],
-                      [  # speed zone (1-10];Custom =0;
-                          'name' => 'target_speed_zone',
-                          'def_num' => 4,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'speed',
-                                  'raw_value' => 0,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'target_stroke_type',
-                          'def_num' => 4,
-                          'type' =>  self::FIELD_TYPES['swim_stroke'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'swim_stroke',
-                                  'raw_value' => 11,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'custom_target_value_low' => [
-                  'name' => 'custom_target_value_low',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 5,
-                  'subfields' => [
-                      [
-                          'name' => 'custom_target_cadence_low',
-                          'def_num' => 5,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'units' => 'rpm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'cadence',
-                                  'raw_value' => 3,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'custom_target_heart_rate_low',
-                          'def_num' => 5,
-                          'type' =>  self::FIELD_TYPES['workout_hr'],
-                          'units' => '% or bpm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'heart_rate',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'custom_target_power_low',
-                          'def_num' => 5,
-                          'type' =>  self::FIELD_TYPES['workout_power'],
-                          'units' => '% or watts',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'power',
-                                  'raw_value' => 4,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'custom_target_speed_low',
-                          'def_num' => 5,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'scale' => 1000,
-                          'units' => 'm/s',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'speed',
-                                  'raw_value' => 0,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'custom_target_value_high' => [
-                  'name' => 'custom_target_value_high',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 6,
-                  'subfields' => [
-                      [
-                          'name' => 'custom_target_cadence_high',
-                          'def_num' => 6,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'units' => 'rpm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'cadence',
-                                  'raw_value' => 3,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'custom_target_heart_rate_high',
-                          'def_num' => 6,
-                          'type' =>  self::FIELD_TYPES['workout_hr'],
-                          'units' => '% or bpm',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'heart_rate',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'custom_target_power_high',
-                          'def_num' => 6,
-                          'type' =>  self::FIELD_TYPES['workout_power'],
-                          'units' => '% or watts',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'power',
-                                  'raw_value' => 4,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'custom_target_speed_high',
-                          'def_num' => 6,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'scale' => 1000,
-                          'units' => 'm/s',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'target_type',
-                                  'def_num' => 3,
-                                  'value' => 'speed',
-                                  'raw_value' => 0,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'intensity' => [
-                  'name' => 'intensity',
-                  'type' =>  self::FIELD_TYPES['intensity'],
-                  'def_num' => 7,
-              ],
-              'notes' => [
-                  'name' => 'notes',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 8,
-              ],
-              'equipment' => [
-                  'name' => 'equipment',
-                  'type' =>  self::FIELD_TYPES['workout_equipment'],
-                  'def_num' => 9,
-              ],
-              'exercise_category' => [
-                  'name' => 'exercise_category',
-                  'type' =>  self::FIELD_TYPES['exercise_category'],
-                  'def_num' => 10,
-              ],
-              'exercise_name' => [
-                  'name' => 'exercise_name',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 11,
-              ],
-              'exercise_weight' => [
-                  'name' => 'exercise_weight',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 12,
-                  'scale' => 100,
-                  'units' => 'kg',
-              ],
-              'weight_display_unit' => [
-                  'name' => 'weight_display_unit',
-                  'type' =>  self::FIELD_TYPES['fit_base_unit'],
-                  'def_num' => 13,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'course_point' => [
-          'name' => 'course_point',
-          'global_message_number' => 32,
-          'fields' => [
-              'timestamp' => [
-                  'name' => 'timestamp',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 1,
-              ],
-              'position_lat' => [
-                  'name' => 'position_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 2,
-                  'units' => 'semicircles',
-              ],
-              'position_long' => [
-                  'name' => 'position_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 3,
-                  'units' => 'semicircles',
-              ],
-              'distance' => [
-                  'name' => 'distance',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 4,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'type' => [
-                  'name' => 'type',
-                  'type' =>  self::FIELD_TYPES['course_point'],
-                  'def_num' => 5,
-              ],
-              'name' => [
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 6,
-              ],
-              'favorite' => [
-                  'name' => 'favorite',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 8,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'file_capabilities' => [
-          'name' => 'file_capabilities',
-          'global_message_number' => 37,
-          'fields' => [
-              'type' => [
-                  'name' => 'type',
-                  'type' =>  self::FIELD_TYPES['file'],
-                  'def_num' => 0,
-              ],
-              'flags' => [
-                  'name' => 'flags',
-                  'type' =>  self::FIELD_TYPES['file_flags'],
-                  'def_num' => 1,
-              ],
-              'directory' => [
-                  'name' => 'directory',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 2,
-              ],
-              'max_count' => [
-                  'name' => 'max_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-              ],
-              'max_size' => [
-                  'name' => 'max_size',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 4,
-                  'units' => 'bytes',
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'mesg_capabilities' => [
-          'name' => 'mesg_capabilities',
-          'global_message_number' => 38,
-          'fields' => [
-              'file' => [
-                  'name' => 'file',
-                  'type' =>  self::FIELD_TYPES['file'],
-                  'def_num' => 0,
-              ],
-              'global_message_number' => [
-                  'name' => 'global_message_number',
-                  'type' =>  self::FIELD_TYPES['global_message_number'],
-                  'def_num' => 1,
-              ],
-              'count_type' => [
-                  'name' => 'count_type',
-                  'type' =>  self::FIELD_TYPES['mesg_count'],
-                  'def_num' => 2,
-              ],
-              'count' => [
-                  'name' => 'count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-                  'subfields' => [
-                      [
-                          'name' => 'max_per_file',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x84],  # uint16
-                          'ref_fields' => [
-                              [
-                                  'name' => 'count_type',
-                                  'def_num' => 2,
-                                  'value' => 'max_per_file',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'max_per_file_type',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x84],  # uint16
-                          'ref_fields' => [
-                              [
-                                  'name' => 'count_type',
-                                  'def_num' => 2,
-                                  'value' => 'max_per_file_type',
-                                  'raw_value' => 2,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'num_per_file',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x84],  # uint16
-                          'ref_fields' => [
-                              [
-                                  'name' => 'count_type',
-                                  'def_num' => 2,
-                                  'value' => 'num_per_file',
-                                  'raw_value' => 0,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'field_capabilities' => [
-          'name' => 'field_capabilities',
-          'global_message_number' => 39,
-          'fields' => [
-              'file' => [
-                  'name' => 'file',
-                  'type' =>  self::FIELD_TYPES['file'],
-                  'def_num' => 0,
-              ],
-              'global_message_number' => [
-                  'name' => 'global_message_number',
-                  'type' =>  self::FIELD_TYPES['global_message_number'],
-                  'def_num' => 1,
-              ],
-              'field_num' => [
-                  'name' => 'field_num',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 2,
-              ],
-              'count' => [
-                  'name' => 'count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'file_creator' => [
-          'name' => 'file_creator',
-          'global_message_number' => 49,
-          'fields' => [
-              'software_version' => [
-                  'name' => 'software_version',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-              ],
-              'hardware_version' => [
-                  'name' => 'hardware_version',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 1,
-              ],
-          ],
-      ],
-      'speed_zone' => [
-          'name' => 'speed_zone',
-          'global_message_number' => 53,
-          'fields' => [
-              'high_value' => [
-                  'name' => 'high_value',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'name' => [
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 1,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'monitoring' => [
-          'name' => 'monitoring',
-          'global_message_number' => 55,
-          'fields' => [
-              'device_index' => [  # Associates this data to device_info message.  Not required for file with single device (sensor].
-                  'name' => 'device_index',
-                  'type' =>  self::FIELD_TYPES['device_index'],
-                  'def_num' => 0,
-              ],
-              'calories' => [  # Accumulated total calories.  Maintained by MonitoringReader for each activity_type.  See SDK documentation
-                  'name' => 'calories',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-                  'units' => 'kcal',
-              ],
-              'distance' => [  # Accumulated distance.  Maintained by MonitoringReader for each activity_type.  See SDK documentation.
-                  'name' => 'distance',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 2,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'cycles' => [  # Accumulated cycles.  Maintained by MonitoringReader for each activity_type.  See SDK documentation.
-                  'name' => 'cycles',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 3,
-                  'scale' => 2,
-                  'units' => 'cycles',
-                  'subfields' => [
-                      [
-                          'name' => 'steps',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'units' => 'steps',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'activity_type',
-                                  'def_num' => 5,
-                                  'value' => 'walking',
-                                  'raw_value' => 6,
-                              ],
-                              [
-                                  'name' => 'activity_type',
-                                  'def_num' => 5,
-                                  'value' => 'running',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'strokes',
-                          'def_num' => 3,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'scale' => 2,
-                          'units' => 'strokes',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'activity_type',
-                                  'def_num' => 5,
-                                  'value' => 'cycling',
-                                  'raw_value' => 2,
-                              ],
-                              [
-                                  'name' => 'activity_type',
-                                  'def_num' => 5,
-                                  'value' => 'swimming',
-                                  'raw_value' => 5,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'active_time' => [
-                  'name' => 'active_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 4,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'activity_type' => [
-                  'name' => 'activity_type',
-                  'type' =>  self::FIELD_TYPES['activity_type'],
-                  'def_num' => 5,
-              ],
-              'activity_subtype' => [
-                  'name' => 'activity_subtype',
-                  'type' =>  self::FIELD_TYPES['activity_subtype'],
-                  'def_num' => 6,
-              ],
-              'activity_level' => [
-                  'name' => 'activity_level',
-                  'type' =>  self::FIELD_TYPES['activity_level'],
-                  'def_num' => 7,
-              ],
-              'distance_16' => [
-                  'name' => 'distance_16',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 8,
-                  'units' => '100*m',
-              ],
-              'cycles_16' => [
-                  'name' => 'cycles_16',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 9,
-                  'units' => '2*cycles or steps',
-              ],
-              'active_time_16' => [
-                  'name' => 'active_time_16',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 10,
-                  'units' => 's',
-              ],
-              'local_timestamp' => [  # Must align to logging interval, for example, time must be 00 =>00 =>00 for daily log.
-                  'name' => 'local_timestamp',
-                  'type' =>  self::FIELD_TYPES['local_date_time'],
-                  'def_num' => 11,
-              ],
-              'temperature' => [  # Avg temperature during the logging interval ended at timestamp
-                  'name' => 'temperature',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 12,
-                  'scale' => 100,
-                  'units' => 'C',
-              ],
-              'temperature_min' => [  # Min temperature during the logging interval ended at timestamp
-                  'name' => 'temperature_min',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 14,
-                  'scale' => 100,
-                  'units' => 'C',
-              ],
-              'temperature_max' => [  # Max temperature during the logging interval ended at timestamp
-                  'name' => 'temperature_max',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 15,
-                  'scale' => 100,
-                  'units' => 'C',
-              ],
-              'activity_time' => [  # Indexed using minute_activity_level enum
-                  'name' => 'activity_time',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 16,
-                  'units' => 'minutes',
-              ],
-              'active_calories' => [
-                  'name' => 'active_calories',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 19,
-                  'units' => 'kcal',
-              ],
-              'current_activity_type_intensity' => [  # Indicates single type / intensity for duration since last monitoring message.
-                  'name' => 'current_activity_type_intensity',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 24,
-                  'components' => [
-                      [
-                          'name' => 'activity_type',
-                          'def_num' => 5,
-                          'accumulate' => False,
-                          'bits' => 5,
-                          'bit_offset' => 0,
-                      ],
-                      [
-                          'name' => 'intensity',
-                          'def_num' => 28,
-                          'accumulate' => False,
-                          'bits' => 3,
-                          'bit_offset' => 5,
-                      ],
-                  ],
-              ],
-              'timestamp_min_8' => [
-                  'name' => 'timestamp_min_8',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 25,
-                  'units' => 'min',
-              ],
-              'timestamp_16' => [
-                  'name' => 'timestamp_16',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 26,
-                  'units' => 's',
-              ],
-              'heart_rate' => [
-                  'name' => 'heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 27,
-                  'units' => 'bpm',
-              ],
-              'intensity' => [
-                  'name' => 'intensity',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 28,
-                  'scale' => 10,
-              ],
-              'duration_min' => [
-                  'name' => 'duration_min',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 29,
-                  'units' => 'min',
-              ],
-              'duration' => [
-                  'name' => 'duration',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 30,
-                  'units' => 's',
-              ],
-              'ascent' => [
-                  'name' => 'ascent',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 31,
-                  'scale' => 1000,
-                  'units' => 'm',
-              ],
-              'descent' => [
-                  'name' => 'descent',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 32,
-                  'scale' => 1000,
-                  'units' => 'm',
-              ],
-              'moderate_activity_minutes' => [
-                  'name' => 'moderate_activity_minutes',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 33,
-                  'units' => 'minutes',
-              ],
-              'vigorous_activity_minutes' => [
-                  'name' => 'vigorous_activity_minutes',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 34,
-                  'units' => 'minutes',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Must align to logging interval, for example, time must be 00 =>00 =>00 for daily log.
-          ],
-      ],
-      'training_file' => [  # Corresponds to file_id of workout or course.
-          'name' => 'training_file',
-          'global_message_number' => 72,
-          'fields' => [
-              'type' => [
-                  'name' => 'type',
-                  'type' =>  self::FIELD_TYPES['file'],
-                  'def_num' => 0,
-              ],
-              'manufacturer' => [
-                  'name' => 'manufacturer',
-                  'type' =>  self::FIELD_TYPES['manufacturer'],
-                  'def_num' => 1,
-              ],
-              'product' => [
-                  'name' => 'product',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-                  'subfields' => [
-                      [
-                          'name' => 'garmin_product',
-                          'def_num' => 2,
-                          'type' =>  self::FIELD_TYPES['garmin_product'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 1,
-                                  'value' => 'garmin',
-                                  'raw_value' => 1,
-                              ],
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 1,
-                                  'value' => 'dynastream',
-                                  'raw_value' => 15,
-                              ],
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 1,
-                                  'value' => 'dynastream_oem',
-                                  'raw_value' => 13,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'serial_number' => [
-                  'name' => 'serial_number',
-                  'type' => self::BASE_TYPES[0x8C],  # uint32z
-                  'def_num' => 3,
-              ],
-              'time_created' => [
-                  'name' => 'time_created',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 4,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
-      'hrv' => [  # Heart rate variability
-          'name' => 'hrv',
-          'global_message_number' => 78,
-          'fields' => [
-              'time' => [  # Time between beats
-                  'name' => 'time',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-          ],
-      ],
-      'ant_rx' => [
-          'name' => 'ant_rx',
-          'global_message_number' => 80,
-          'fields' => [
-              'fractional_timestamp' => [
-                  'name' => 'fractional_timestamp',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'scale' => 32768,
-                  'units' => 's',
-              ],
-              'mesg_id' => [
-                  'name' => 'mesg_id',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 1,
-              ],
-              'mesg_data' => [
-                  'name' => 'mesg_data',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 2,
-                  'components' => [
-                      [
-                          'name' => 'channel_number',
-                          'def_num' => 3,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 0,
-                      ],
-                      [
-                          'name' => 'data___1',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 8,
-                      ],
-                      [
-                          'name' => 'data___2',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 16,
-                      ],
-                      [
-                          'name' => 'data___3',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 24,
-                      ],
-                      [
-                          'name' => 'data___4',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 32,
-                      ],
-                      [
-                          'name' => 'data___5',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 40,
-                      ],
-                      [
-                          'name' => 'data___6',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 48,
-                      ],
-                      [
-                          'name' => 'data___7',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 56,
-                      ],
-                      [
-                          'name' => 'data___8',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 64,
-                      ],
-                  ],
-              ],
-              'channel_number' => [
-                  'name' => 'channel_number',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 3,
-              ],
-              'data' => [
-                  'name' => 'data',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 4,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
-      'ant_tx' => [
-          'name' => 'ant_tx',
-          'global_message_number' => 81,
-          'fields' => [
-              'fractional_timestamp' => [
-                  'name' => 'fractional_timestamp',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'scale' => 32768,
-                  'units' => 's',
-              ],
-              'mesg_id' => [
-                  'name' => 'mesg_id',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 1,
-              ],
-              'mesg_data' => [
-                  'name' => 'mesg_data',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 2,
-                  'components' => [
-                      [
-                          'name' => 'channel_number',
-                          'def_num' => 3,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 0,
-                      ],
-                      [
-                          'name' => 'data___1',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 8,
-                      ],
-                      [
-                          'name' => 'data___2',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 16,
-                      ],
-                      [
-                          'name' => 'data___3',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 24,
-                      ],
-                      [
-                          'name' => 'data___4',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 32,
-                      ],
-                      [
-                          'name' => 'data___5',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 40,
-                      ],
-                      [
-                          'name' => 'data___6',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 48,
-                      ],
-                      [
-                          'name' => 'data___7',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 56,
-                      ],
-                      [
-                          'name' => 'data___8',
-                          'def_num' => 4,
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 64,
-                      ],
-                  ],
-              ],
-              'channel_number' => [
-                  'name' => 'channel_number',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 3,
-              ],
-              'data' => [
-                  'name' => 'data',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 4,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
-      'ant_channel_id' => [
-          'name' => 'ant_channel_id',
-          'global_message_number' => 82,
-          'fields' => [
-              'channel_number' => [
-                  'name' => 'channel_number',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 0,
-              ],
-              'device_type' => [
-                  'name' => 'device_type',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 1,
-              ],
-              'device_number' => [
-                  'name' => 'device_number',
-                  'type' => self::BASE_TYPES[0x8B],  # uint16z
-                  'def_num' => 2,
-              ],
-              'transmission_type' => [
-                  'name' => 'transmission_type',
-                  'type' => self::BASE_TYPES[0x0A],  # uint8z
-                  'def_num' => 3,
-              ],
-              'device_index' => [
-                  'name' => 'device_index',
-                  'type' =>  self::FIELD_TYPES['device_index'],
-                  'def_num' => 4,
-              ],
-          ],
-      ],
-      'length' => [
-          'name' => 'length',
-          'global_message_number' => 101,
-          'fields' => [
-              'event' => [
-                  'name' => 'event',
-                  'type' =>  self::FIELD_TYPES['event'],
-                  'def_num' => 0,
-              ],
-              'event_type' => [
-                  'name' => 'event_type',
-                  'type' =>  self::FIELD_TYPES['event_type'],
-                  'def_num' => 1,
-              ],
-              'start_time' => [
-                  'name' => 'start_time',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 2,
-              ],
-              'total_elapsed_time' => [
-                  'name' => 'total_elapsed_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 3,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'total_timer_time' => [
-                  'name' => 'total_timer_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 4,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'total_strokes' => [
-                  'name' => 'total_strokes',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 5,
-                  'units' => 'strokes',
-              ],
-              'avg_speed' => [
-                  'name' => 'avg_speed',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 6,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'swim_stroke' => [
-                  'name' => 'swim_stroke',
-                  'type' =>  self::FIELD_TYPES['swim_stroke'],
-                  'def_num' => 7,
-                  'units' => 'swim_stroke',
-              ],
-              'avg_swimming_cadence' => [
-                  'name' => 'avg_swimming_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 9,
-                  'units' => 'strokes/min',
-              ],
-              'event_group' => [
-                  'name' => 'event_group',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 10,
-              ],
-              'total_calories' => [
-                  'name' => 'total_calories',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 11,
-                  'units' => 'kcal',
-              ],
-              'length_type' => [
-                  'name' => 'length_type',
-                  'type' =>  self::FIELD_TYPES['length_type'],
-                  'def_num' => 12,
-              ],
-              'player_score' => [
-                  'name' => 'player_score',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 18,
-              ],
-              'opponent_score' => [
-                  'name' => 'opponent_score',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 19,
-              ],
-              'stroke_count' => [  # stroke_type enum used as the index
-                  'name' => 'stroke_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 20,
-                  'units' => 'counts',
-              ],
-              'zone_count' => [  # zone number used as the index
-                  'name' => 'zone_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 21,
-                  'units' => 'counts',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'slave_device' => [
-          'name' => 'slave_device',
-          'global_message_number' => 106,
-          'fields' => [
-              'manufacturer' => [
-                  'name' => 'manufacturer',
-                  'type' =>  self::FIELD_TYPES['manufacturer'],
-                  'def_num' => 0,
-              ],
-              'product' => [
-                  'name' => 'product',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-                  'subfields' => [
-                      [
-                          'name' => 'garmin_product',
-                          'def_num' => 1,
-                          'type' =>  self::FIELD_TYPES['garmin_product'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 0,
-                                  'value' => 'garmin',
-                                  'raw_value' => 1,
-                              ],
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 0,
-                                  'value' => 'dynastream',
-                                  'raw_value' => 15,
-                              ],
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 0,
-                                  'value' => 'dynastream_oem',
-                                  'raw_value' => 13,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-          ],
-      ],
-      'connectivity' => [
-          'name' => 'connectivity',
-          'global_message_number' => 127,
-          'fields' => [
-              'bluetooth_enabled' => [  # Use Bluetooth for connectivity features
-                  'name' => 'bluetooth_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 0,
-              ],
-              'bluetooth_le_enabled' => [  # Use Bluetooth Low Energy for connectivity features
-                  'name' => 'bluetooth_le_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 1,
-              ],
-              'ant_enabled' => [  # Use ANT for connectivity features
-                  'name' => 'ant_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 2,
-              ],
-              'name' => [
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 3,
-              ],
-              'live_tracking_enabled' => [
-                  'name' => 'live_tracking_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 4,
-              ],
-              'weather_conditions_enabled' => [
-                  'name' => 'weather_conditions_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 5,
-              ],
-              'weather_alerts_enabled' => [
-                  'name' => 'weather_alerts_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 6,
-              ],
-              'auto_activity_upload_enabled' => [
-                  'name' => 'auto_activity_upload_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 7,
-              ],
-              'course_download_enabled' => [
-                  'name' => 'course_download_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 8,
-              ],
-              'workout_download_enabled' => [
-                  'name' => 'workout_download_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 9,
-              ],
-              'gps_ephemeris_download_enabled' => [
-                  'name' => 'gps_ephemeris_download_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 10,
-              ],
-              'incident_detection_enabled' => [
-                  'name' => 'incident_detection_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 11,
-              ],
-              'grouptrack_enabled' => [
-                  'name' => 'grouptrack_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 12,
-              ],
-          ],
-      ],
-      'weather_conditions' => [
-          'name' => 'weather_conditions',
-          'global_message_number' => 128,
-          'fields' => [
-              'weather_report' => [  # Current or forecast
-                  'name' => 'weather_report',
-                  'type' =>  self::FIELD_TYPES['weather_report'],
-                  'def_num' => 0,
-              ],
-              'temperature' => [
-                  'name' => 'temperature',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 1,
-                  'units' => 'C',
-              ],
-              'condition' => [  # Corresponds to GSC Response weatherIcon field
-                  'name' => 'condition',
-                  'type' =>  self::FIELD_TYPES['weather_status'],
-                  'def_num' => 2,
-              ],
-              'wind_direction' => [
-                  'name' => 'wind_direction',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-                  'units' => 'degrees',
-              ],
-              'wind_speed' => [
-                  'name' => 'wind_speed',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'precipitation_probability' => [  # range 0-100
-                  'name' => 'precipitation_probability',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 5,
-              ],
-              'temperature_feels_like' => [  # Heat Index if  GCS heatIdx above or equal to 90F or wind chill if GCS windChill below or equal to 32F
-                  'name' => 'temperature_feels_like',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 6,
-                  'units' => 'C',
-              ],
-              'relative_humidity' => [
-                  'name' => 'relative_humidity',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 7,
-              ],
-              'location' => [  # string corresponding to GCS response location string
-                  'name' => 'location',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 8,
-              ],
-              'observed_at_time' => [
-                  'name' => 'observed_at_time',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 9,
-              ],
-              'observed_location_lat' => [
-                  'name' => 'observed_location_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 10,
-                  'units' => 'semicircles',
-              ],
-              'observed_location_long' => [
-                  'name' => 'observed_location_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 11,
-                  'units' => 'semicircles',
-              ],
-              'day_of_week' => [
-                  'name' => 'day_of_week',
-                  'type' =>  self::FIELD_TYPES['day_of_week'],
-                  'def_num' => 12,
-              ],
-              'high_temperature' => [
-                  'name' => 'high_temperature',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 13,
-                  'units' => 'C',
-              ],
-              'low_temperature' => [
-                  'name' => 'low_temperature',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 14,
-                  'units' => 'C',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # time of update for current conditions, else forecast time
-          ],
-      ],
-      'weather_alert' => [
-          'name' => 'weather_alert',
-          'global_message_number' => 129,
-          'fields' => [
-              'report_id' => [  # Unique identifier from GCS report ID string, length is 12
-                  'name' => 'report_id',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 0,
-              ],
-              'issue_time' => [  # Time alert was issued
-                  'name' => 'issue_time',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 1,
-              ],
-              'expire_time' => [  # Time alert expires
-                  'name' => 'expire_time',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 2,
-              ],
-              'severity' => [  # Warning, Watch, Advisory, Statement
-                  'name' => 'severity',
-                  'type' =>  self::FIELD_TYPES['weather_severity'],
-                  'def_num' => 3,
-              ],
-              'type' => [  # Tornado, Severe Thunderstorm, etc.
-                  'name' => 'type',
-                  'type' =>  self::FIELD_TYPES['weather_severe_type'],
-                  'def_num' => 4,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
-      'cadence_zone' => [
-          'name' => 'cadence_zone',
-          'global_message_number' => 131,
-          'fields' => [
-              'high_value' => [
-                  'name' => 'high_value',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 0,
-                  'units' => 'rpm',
-              ],
-              'name' => [
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 1,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'hr' => [
-          'name' => 'hr',
-          'global_message_number' => 132,
-          'fields' => [
-              'fractional_timestamp' => [
-                  'name' => 'fractional_timestamp',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'scale' => 32768,
-                  'units' => 's',
-              ],
-              'time256' => [
-                  'name' => 'time256',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 1,
-                  'scale' => 256,
-                  'units' => 's',
-                  'components' => [
-                      [
-                          'name' => 'fractional_timestamp',
-                          'def_num' => 0,
-                          'scale' => 256,
-                          'units' => 's',
-                          'accumulate' => False,
-                          'bits' => 8,
-                          'bit_offset' => 0,
-                      ],
-                  ],
-              ],
-              'filtered_bpm' => [
-                  'name' => 'filtered_bpm',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 6,
-                  'units' => 'bpm',
-              ],
-              'event_timestamp' => [
-                  'name' => 'event_timestamp',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 9,
-                  'scale' => 1024,
-                  'units' => 's',
-              ],
-              'event_timestamp_12' => [
-                  'name' => 'event_timestamp_12',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 10,
-                  'components' => [
-                      [
-                          'name' => 'event_timestamp___1',
-                          'def_num' => 9,
-                          'scale' => 1024,
-                          'units' => 's',
-                          'accumulate' => True,
-                          'bits' => 12,
-                          'bit_offset' => 0,
-                      ],
-                      [
-                          'name' => 'event_timestamp___2',
-                          'def_num' => 9,
-                          'scale' => 1024,
-                          'units' => 's',
-                          'accumulate' => True,
-                          'bits' => 12,
-                          'bit_offset' => 12,
-                      ],
-                      [
-                          'name' => 'event_timestamp___3',
-                          'def_num' => 9,
-                          'scale' => 1024,
-                          'units' => 's',
-                          'accumulate' => True,
-                          'bits' => 12,
-                          'bit_offset' => 24,
-                      ],
-                      [
-                          'name' => 'event_timestamp___4',
-                          'def_num' => 9,
-                          'scale' => 1024,
-                          'units' => 's',
-                          'accumulate' => True,
-                          'bits' => 12,
-                          'bit_offset' => 36,
-                      ],
-                      [
-                          'name' => 'event_timestamp___5',
-                          'def_num' => 9,
-                          'scale' => 1024,
-                          'units' => 's',
-                          'accumulate' => True,
-                          'bits' => 12,
-                          'bit_offset' => 48,
-                      ],
-                      [
-                          'name' => 'event_timestamp___6',
-                          'def_num' => 9,
-                          'scale' => 1024,
-                          'units' => 's',
-                          'accumulate' => True,
-                          'bits' => 12,
-                          'bit_offset' => 60,
-                      ],
-                      [
-                          'name' => 'event_timestamp___7',
-                          'def_num' => 9,
-                          'scale' => 1024,
-                          'units' => 's',
-                          'accumulate' => True,
-                          'bits' => 12,
-                          'bit_offset' => 72,
-                      ],
-                      [
-                          'name' => 'event_timestamp___8',
-                          'def_num' => 9,
-                          'scale' => 1024,
-                          'units' => 's',
-                          'accumulate' => True,
-                          'bits' => 12,
-                          'bit_offset' => 84,
-                      ],
-                      [
-                          'name' => 'event_timestamp___9',
-                          'def_num' => 9,
-                          'scale' => 1024,
-                          'units' => 's',
-                          'accumulate' => True,
-                          'bits' => 12,
-                          'bit_offset' => 96,
-                      ],
-                      [
-                          'name' => 'event_timestamp___10',
-                          'def_num' => 9,
-                          'scale' => 1024,
-                          'units' => 's',
-                          'accumulate' => True,
-                          'bits' => 12,
-                          'bit_offset' => 108,
-                      ],
-                  ],
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
-      'segment_lap' => [
-          'name' => 'segment_lap',
-          'global_message_number' => 142,
-          'fields' => [
-              'event' => [
-                  'name' => 'event',
-                  'type' =>  self::FIELD_TYPES['event'],
-                  'def_num' => 0,
-              ],
-              'event_type' => [
-                  'name' => 'event_type',
-                  'type' =>  self::FIELD_TYPES['event_type'],
-                  'def_num' => 1,
-              ],
-              'start_time' => [
-                  'name' => 'start_time',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 2,
-              ],
-              'start_position_lat' => [
-                  'name' => 'start_position_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 3,
-                  'units' => 'semicircles',
-              ],
-              'start_position_long' => [
-                  'name' => 'start_position_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 4,
-                  'units' => 'semicircles',
-              ],
-              'end_position_lat' => [
-                  'name' => 'end_position_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 5,
-                  'units' => 'semicircles',
-              ],
-              'end_position_long' => [
-                  'name' => 'end_position_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 6,
-                  'units' => 'semicircles',
-              ],
-              'total_elapsed_time' => [  # Time (includes pauses]
-                  'name' => 'total_elapsed_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 7,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'total_timer_time' => [  # Timer Time (excludes pauses]
-                  'name' => 'total_timer_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 8,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'total_distance' => [
-                  'name' => 'total_distance',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 9,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'total_cycles' => [
-                  'name' => 'total_cycles',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 10,
-                  'units' => 'cycles',
-                  'subfields' => [
-                      [
-                          'name' => 'total_strokes',
-                          'def_num' => 10,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'units' => 'strokes',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'sport',
-                                  'def_num' => 23,
-                                  'value' => 'cycling',
-                                  'raw_value' => 2,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'total_calories' => [
-                  'name' => 'total_calories',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 11,
-                  'units' => 'kcal',
-              ],
-              'total_fat_calories' => [  # If New Leaf
-                  'name' => 'total_fat_calories',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 12,
-                  'units' => 'kcal',
-              ],
-              'avg_speed' => [
-                  'name' => 'avg_speed',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 13,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'max_speed' => [
-                  'name' => 'max_speed',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 14,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'avg_heart_rate' => [
-                  'name' => 'avg_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 15,
-                  'units' => 'bpm',
-              ],
-              'max_heart_rate' => [
-                  'name' => 'max_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 16,
-                  'units' => 'bpm',
-              ],
-              'avg_cadence' => [  # total_cycles / total_timer_time if non_zero_avg_cadence otherwise total_cycles / total_elapsed_time
-                  'name' => 'avg_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 17,
-                  'units' => 'rpm',
-              ],
-              'max_cadence' => [
-                  'name' => 'max_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 18,
-                  'units' => 'rpm',
-              ],
-              'avg_power' => [  # total_power / total_timer_time if non_zero_avg_power otherwise total_power / total_elapsed_time
-                  'name' => 'avg_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 19,
-                  'units' => 'watts',
-              ],
-              'max_power' => [
-                  'name' => 'max_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 20,
-                  'units' => 'watts',
-              ],
-              'total_ascent' => [
-                  'name' => 'total_ascent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 21,
-                  'units' => 'm',
-              ],
-              'total_descent' => [
-                  'name' => 'total_descent',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 22,
-                  'units' => 'm',
-              ],
-              'sport' => [
-                  'name' => 'sport',
-                  'type' =>  self::FIELD_TYPES['sport'],
-                  'def_num' => 23,
-              ],
-              'event_group' => [
-                  'name' => 'event_group',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 24,
-              ],
-              'nec_lat' => [  # North east corner latitude.
-                  'name' => 'nec_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 25,
-                  'units' => 'semicircles',
-              ],
-              'nec_long' => [  # North east corner longitude.
-                  'name' => 'nec_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 26,
-                  'units' => 'semicircles',
-              ],
-              'swc_lat' => [  # South west corner latitude.
-                  'name' => 'swc_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 27,
-                  'units' => 'semicircles',
-              ],
-              'swc_long' => [  # South west corner latitude.
-                  'name' => 'swc_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 28,
-                  'units' => 'semicircles',
-              ],
-              'name' => [
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 29,
-              ],
-              'normalized_power' => [
-                  'name' => 'normalized_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 30,
-                  'units' => 'watts',
-              ],
-              'left_right_balance' => [
-                  'name' => 'left_right_balance',
-                  'type' =>  self::FIELD_TYPES['left_right_balance_100'],
-                  'def_num' => 31,
-              ],
-              'sub_sport' => [
-                  'name' => 'sub_sport',
-                  'type' =>  self::FIELD_TYPES['sub_sport'],
-                  'def_num' => 32,
-              ],
-              'total_work' => [
-                  'name' => 'total_work',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 33,
-                  'units' => 'J',
-              ],
-              'avg_altitude' => [
-                  'name' => 'avg_altitude',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 34,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-              ],
-              'max_altitude' => [
-                  'name' => 'max_altitude',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 35,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-              ],
-              'gps_accuracy' => [
-                  'name' => 'gps_accuracy',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 36,
-                  'units' => 'm',
-              ],
-              'avg_grade' => [
-                  'name' => 'avg_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 37,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'avg_pos_grade' => [
-                  'name' => 'avg_pos_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 38,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'avg_neg_grade' => [
-                  'name' => 'avg_neg_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 39,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'max_pos_grade' => [
-                  'name' => 'max_pos_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 40,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'max_neg_grade' => [
-                  'name' => 'max_neg_grade',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 41,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'avg_temperature' => [
-                  'name' => 'avg_temperature',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 42,
-                  'units' => 'C',
-              ],
-              'max_temperature' => [
-                  'name' => 'max_temperature',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 43,
-                  'units' => 'C',
-              ],
-              'total_moving_time' => [
-                  'name' => 'total_moving_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 44,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'avg_pos_vertical_speed' => [
-                  'name' => 'avg_pos_vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 45,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'avg_neg_vertical_speed' => [
-                  'name' => 'avg_neg_vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 46,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'max_pos_vertical_speed' => [
-                  'name' => 'max_pos_vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 47,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'max_neg_vertical_speed' => [
-                  'name' => 'max_neg_vertical_speed',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 48,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'time_in_hr_zone' => [
-                  'name' => 'time_in_hr_zone',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 49,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'time_in_speed_zone' => [
-                  'name' => 'time_in_speed_zone',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 50,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'time_in_cadence_zone' => [
-                  'name' => 'time_in_cadence_zone',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 51,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'time_in_power_zone' => [
-                  'name' => 'time_in_power_zone',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 52,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'repetition_num' => [
-                  'name' => 'repetition_num',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 53,
-              ],
-              'min_altitude' => [
-                  'name' => 'min_altitude',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 54,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-              ],
-              'min_heart_rate' => [
-                  'name' => 'min_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 55,
-                  'units' => 'bpm',
-              ],
-              'active_time' => [
-                  'name' => 'active_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 56,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'wkt_step_index' => [
-                  'name' => 'wkt_step_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 57,
-              ],
-              'sport_event' => [
-                  'name' => 'sport_event',
-                  'type' =>  self::FIELD_TYPES['sport_event'],
-                  'def_num' => 58,
-              ],
-              'avg_left_torque_effectiveness' => [
-                  'name' => 'avg_left_torque_effectiveness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 59,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_right_torque_effectiveness' => [
-                  'name' => 'avg_right_torque_effectiveness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 60,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_left_pedal_smoothness' => [
-                  'name' => 'avg_left_pedal_smoothness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 61,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_right_pedal_smoothness' => [
-                  'name' => 'avg_right_pedal_smoothness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 62,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'avg_combined_pedal_smoothness' => [
-                  'name' => 'avg_combined_pedal_smoothness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 63,
-                  'scale' => 2,
-                  'units' => 'percent',
-              ],
-              'status' => [
-                  'name' => 'status',
-                  'type' =>  self::FIELD_TYPES['segment_lap_status'],
-                  'def_num' => 64,
-              ],
-              'uuid' => [
-                  'name' => 'uuid',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 65,
-              ],
-              'avg_fractional_cadence' => [  # fractional part of the avg_cadence
-                  'name' => 'avg_fractional_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 66,
-                  'scale' => 128,
-                  'units' => 'rpm',
-              ],
-              'max_fractional_cadence' => [  # fractional part of the max_cadence
-                  'name' => 'max_fractional_cadence',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 67,
-                  'scale' => 128,
-                  'units' => 'rpm',
-              ],
-              'total_fractional_cycles' => [  # fractional part of the total_cycles
-                  'name' => 'total_fractional_cycles',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 68,
-                  'scale' => 128,
-                  'units' => 'cycles',
-              ],
-              'front_gear_shift_count' => [
-                  'name' => 'front_gear_shift_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 69,
-              ],
-              'rear_gear_shift_count' => [
-                  'name' => 'rear_gear_shift_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 70,
-              ],
-              'time_standing' => [  # Total time spent in the standing position
-                  'name' => 'time_standing',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 71,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'stand_count' => [  # Number of transitions to the standing state
-                  'name' => 'stand_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 72,
-              ],
-              'avg_left_pco' => [  # Average left platform center offset
-                  'name' => 'avg_left_pco',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 73,
-                  'units' => 'mm',
-              ],
-              'avg_right_pco' => [  # Average right platform center offset
-                  'name' => 'avg_right_pco',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 74,
-                  'units' => 'mm',
-              ],
-              'avg_left_power_phase' => [  # Average left power phase angles. Data value indexes defined by power_phase_type.
-                  'name' => 'avg_left_power_phase',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 75,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'avg_left_power_phase_peak' => [  # Average left power phase peak angles. Data value indexes defined by power_phase_type.
-                  'name' => 'avg_left_power_phase_peak',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 76,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'avg_right_power_phase' => [  # Average right power phase angles. Data value indexes defined by power_phase_type.
-                  'name' => 'avg_right_power_phase',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 77,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'avg_right_power_phase_peak' => [  # Average right power phase peak angles. Data value indexes defined by power_phase_type.
-                  'name' => 'avg_right_power_phase_peak',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 78,
-                  'scale' => 0.7111111,
-                  'units' => 'degrees',
-              ],
-              'avg_power_position' => [  # Average power by position. Data value indexes defined by rider_position_type.
-                  'name' => 'avg_power_position',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 79,
-                  'units' => 'watts',
-              ],
-              'max_power_position' => [  # Maximum power by position. Data value indexes defined by rider_position_type.
-                  'name' => 'max_power_position',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 80,
-                  'units' => 'watts',
-              ],
-              'avg_cadence_position' => [  # Average cadence by position. Data value indexes defined by rider_position_type.
-                  'name' => 'avg_cadence_position',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 81,
-                  'units' => 'rpm',
-              ],
-              'max_cadence_position' => [  # Maximum cadence by position. Data value indexes defined by rider_position_type.
-                  'name' => 'max_cadence_position',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 82,
-                  'units' => 'rpm',
-              ],
-              'manufacturer' => [  # Manufacturer that produced the segment
-                  'name' => 'manufacturer',
-                  'type' =>  self::FIELD_TYPES['manufacturer'],
-                  'def_num' => 83,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Lap end time.
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'segment_leaderboard_entry' => [  # Unique Identification data for an individual segment leader within a segment file
-          'name' => 'segment_leaderboard_entry',
-          'global_message_number' => 149,
-          'fields' => [
-              'name' => [  # Friendly name assigned to leader
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 0,
-              ],
-              'type' => [  # Leader classification
-                  'name' => 'type',
-                  'type' =>  self::FIELD_TYPES['segment_leaderboard_type'],
-                  'def_num' => 1,
-              ],
-              'group_primary_key' => [  # Primary user ID of this leader
-                  'name' => 'group_primary_key',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 2,
-              ],
-              'activity_id' => [  # ID of the activity associated with this leader time
-                  'name' => 'activity_id',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 3,
-              ],
-              'segment_time' => [  # Segment Time (includes pauses]
-                  'name' => 'segment_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 4,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'activity_id_string' => [  # String version of the activity_id. 21 characters long, express in decimal
-                  'name' => 'activity_id_string',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 5,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'segment_point' => [  # Navigation and race evaluation point for a segment decribing a point along the segment path and time it took each segment leader to reach that point
-          'name' => 'segment_point',
-          'global_message_number' => 150,
-          'fields' => [
-              'position_lat' => [
-                  'name' => 'position_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 1,
-                  'units' => 'semicircles',
-              ],
-              'position_long' => [
-                  'name' => 'position_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 2,
-                  'units' => 'semicircles',
-              ],
-              'distance' => [  # Accumulated distance along the segment at the described point
-                  'name' => 'distance',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 3,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'altitude' => [  # Accumulated altitude along the segment at the described point
-                  'name' => 'altitude',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-              ],
-              'leader_time' => [  # Accumualted time each leader board member required to reach the described point. This value is zero for all leader board members at the starting point of the segment.
-                  'name' => 'leader_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 5,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'workout_session' => [
-          'name' => 'workout_session',
-          'global_message_number' => 158,
-          'fields' => [
-              'sport' => [
-                  'name' => 'sport',
-                  'type' =>  self::FIELD_TYPES['sport'],
-                  'def_num' => 0,
-              ],
-              'sub_sport' => [
-                  'name' => 'sub_sport',
-                  'type' =>  self::FIELD_TYPES['sub_sport'],
-                  'def_num' => 1,
-              ],
-              'num_valid_steps' => [
-                  'name' => 'num_valid_steps',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-              ],
-              'first_step_index' => [
-                  'name' => 'first_step_index',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-              ],
-              'pool_length' => [
-                  'name' => 'pool_length',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'pool_length_unit' => [
-                  'name' => 'pool_length_unit',
-                  'type' =>  self::FIELD_TYPES['display_measure'],
-                  'def_num' => 5,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'watchface_settings' => [
-          'name' => 'watchface_settings',
-          'global_message_number' => 159,
-          'fields' => [
-              'mode' => [
-                  'name' => 'mode',
-                  'type' =>  self::FIELD_TYPES['watchface_mode'],
-                  'def_num' => 0,
-              ],
-              'layout' => [
-                  'name' => 'layout',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 1,
-                  'subfields' => [
-                      [
-                          'name' => 'analog_layout',
-                          'def_num' => 1,
-                          'type' =>  self::FIELD_TYPES['analog_watchface_layout'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'mode',
-                                  'def_num' => 0,
-                                  'value' => 'analog',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'digital_layout',
-                          'def_num' => 1,
-                          'type' =>  self::FIELD_TYPES['digital_watchface_layout'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'mode',
-                                  'def_num' => 0,
-                                  'value' => 'digital',
-                                  'raw_value' => 0,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'gps_metadata' => [
-          'name' => 'gps_metadata',
-          'global_message_number' => 160,
-          'fields' => [
-              'timestamp_ms' => [  # Millisecond part of the timestamp.
-                  'name' => 'timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'units' => 'ms',
-              ],
-              'position_lat' => [
-                  'name' => 'position_lat',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 1,
-                  'units' => 'semicircles',
-              ],
-              'position_long' => [
-                  'name' => 'position_long',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 2,
-                  'units' => 'semicircles',
-              ],
-              'enhanced_altitude' => [
-                  'name' => 'enhanced_altitude',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 3,
-                  'scale' => 5,
-                  'offset' => 500,
-                  'units' => 'm',
-              ],
-              'enhanced_speed' => [
-                  'name' => 'enhanced_speed',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 4,
-                  'scale' => 1000,
-                  'units' => 'm/s',
-              ],
-              'heading' => [
-                  'name' => 'heading',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 5,
-                  'scale' => 100,
-                  'units' => 'degrees',
-              ],
-              'utc_timestamp' => [  # Used to correlate UTC to system time if the timestamp of the message is in system time.  This UTC time is derived from the GPS data.
-                  'name' => 'utc_timestamp',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 6,
-                  'units' => 's',
-              ],
-              'velocity' => [  # velocity[0] is lon velocity.  Velocity[1] is lat velocity.  Velocity[2] is altitude velocity.
-                  'name' => 'velocity',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 7,
-                  'scale' => 100,
-                  'units' => 'm/s',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp.
-          ],
-      ],
-      'camera_event' => [
-          'name' => 'camera_event',
-          'global_message_number' => 161,
-          'fields' => [
-              'timestamp_ms' => [  # Millisecond part of the timestamp.
-                  'name' => 'timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'units' => 'ms',
-              ],
-              'camera_event_type' => [
-                  'name' => 'camera_event_type',
-                  'type' =>  self::FIELD_TYPES['camera_event_type'],
-                  'def_num' => 1,
-              ],
-              'camera_file_uuid' => [
-                  'name' => 'camera_file_uuid',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 2,
-              ],
-              'camera_orientation' => [
-                  'name' => 'camera_orientation',
-                  'type' =>  self::FIELD_TYPES['camera_orientation_type'],
-                  'def_num' => 3,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp.
-          ],
-      ],
-      'timestamp_correlation' => [
-          'name' => 'timestamp_correlation',
-          'global_message_number' => 162,
-          'fields' => [
-              'fractional_timestamp' => [  # Fractional part of the UTC timestamp at the time the system timestamp was recorded.
-                  'name' => 'fractional_timestamp',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'scale' => 32768,
-                  'units' => 's',
-              ],
-              'system_timestamp' => [  # Whole second part of the system timestamp
-                  'name' => 'system_timestamp',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 1,
-                  'units' => 's',
-              ],
-              'fractional_system_timestamp' => [  # Fractional part of the system timestamp
-                  'name' => 'fractional_system_timestamp',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-                  'scale' => 32768,
-                  'units' => 's',
-              ],
-              'local_timestamp' => [  # timestamp epoch expressed in local time used to convert timestamps to local time
-                  'name' => 'local_timestamp',
-                  'type' =>  self::FIELD_TYPES['local_date_time'],
-                  'def_num' => 3,
-                  'units' => 's',
-              ],
-              'timestamp_ms' => [  # Millisecond part of the UTC timestamp at the time the system timestamp was recorded.
-                  'name' => 'timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'units' => 'ms',
-              ],
-              'system_timestamp_ms' => [  # Millisecond part of the system timestamp
-                  'name' => 'system_timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 5,
-                  'units' => 'ms',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of UTC timestamp at the time the system timestamp was recorded.
-          ],
-      ],
-      'gyroscope_data' => [
-          'name' => 'gyroscope_data',
-          'global_message_number' => 164,
-          'fields' => [
-              'timestamp_ms' => [  # Millisecond part of the timestamp.
-                  'name' => 'timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'units' => 'ms',
-              ],
-              'sample_time_offset' => [  # Each time in the array describes the time at which the gyro sample with the corrosponding index was taken. Limited to 30 samples in each message. The samples may span across seconds. Array size must match the number of samples in gyro_x and gyro_y and gyro_z
-                  'name' => 'sample_time_offset',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-                  'units' => 'ms',
-              ],
-              'gyro_x' => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
-                  'name' => 'gyro_x',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-                  'units' => 'counts',
-              ],
-              'gyro_y' => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
-                  'name' => 'gyro_y',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-                  'units' => 'counts',
-              ],
-              'gyro_z' => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
-                  'name' => 'gyro_z',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'units' => 'counts',
-              ],
-              'calibrated_gyro_x' => [  # Calibrated gyro reading
-                  'name' => 'calibrated_gyro_x',
-                  'type' => self::BASE_TYPES[0x88],  # float32
-                  'def_num' => 5,
-                  'units' => 'deg/s',
-              ],
-              'calibrated_gyro_y' => [  # Calibrated gyro reading
-                  'name' => 'calibrated_gyro_y',
-                  'type' => self::BASE_TYPES[0x88],  # float32
-                  'def_num' => 6,
-                  'units' => 'deg/s',
-              ],
-              'calibrated_gyro_z' => [  # Calibrated gyro reading
-                  'name' => 'calibrated_gyro_z',
-                  'type' => self::BASE_TYPES[0x88],  # float32
-                  'def_num' => 7,
-                  'units' => 'deg/s',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
-          ],
-      ],
-      'accelerometer_data' => [
-          'name' => 'accelerometer_data',
-          'global_message_number' => 165,
-          'fields' => [
-              'timestamp_ms' => [  # Millisecond part of the timestamp.
-                  'name' => 'timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'units' => 'ms',
-              ],
-              'sample_time_offset' => [  # Each time in the array describes the time at which the accelerometer sample with the corrosponding index was taken. Limited to 30 samples in each message. The samples may span across seconds. Array size must match the number of samples in accel_x and accel_y and accel_z
-                  'name' => 'sample_time_offset',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-                  'units' => 'ms',
-              ],
-              'accel_x' => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
-                  'name' => 'accel_x',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-                  'units' => 'counts',
-              ],
-              'accel_y' => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
-                  'name' => 'accel_y',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-                  'units' => 'counts',
-              ],
-              'accel_z' => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
-                  'name' => 'accel_z',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'units' => 'counts',
-              ],
-              'calibrated_accel_x' => [  # Calibrated accel reading
-                  'name' => 'calibrated_accel_x',
-                  'type' => self::BASE_TYPES[0x88],  # float32
-                  'def_num' => 5,
-                  'units' => 'g',
-              ],
-              'calibrated_accel_y' => [  # Calibrated accel reading
-                  'name' => 'calibrated_accel_y',
-                  'type' => self::BASE_TYPES[0x88],  # float32
-                  'def_num' => 6,
-                  'units' => 'g',
-              ],
-              'calibrated_accel_z' => [  # Calibrated accel reading
-                  'name' => 'calibrated_accel_z',
-                  'type' => self::BASE_TYPES[0x88],  # float32
-                  'def_num' => 7,
-                  'units' => 'g',
-              ],
-              'compressed_calibrated_accel_x' => [  # Calibrated accel reading
-                  'name' => 'compressed_calibrated_accel_x',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 8,
-                  'units' => 'mG',
-              ],
-              'compressed_calibrated_accel_y' => [  # Calibrated accel reading
-                  'name' => 'compressed_calibrated_accel_y',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 9,
-                  'units' => 'mG',
-              ],
-              'compressed_calibrated_accel_z' => [  # Calibrated accel reading
-                  'name' => 'compressed_calibrated_accel_z',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 10,
-                  'units' => 'mG',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
-          ],
-      ],
-      'three_d_sensor_calibration' => [
-          'name' => 'three_d_sensor_calibration',
-          'global_message_number' => 167,
-          'fields' => [
-              'sensor_type' => [  # Indicates which sensor the calibration is for
-                  'name' => 'sensor_type',
-                  'type' =>  self::FIELD_TYPES['sensor_type'],
-                  'def_num' => 0,
-              ],
-              'calibration_factor' => [  # Calibration factor used to convert from raw ADC value to degrees, g,  etc.
-                  'name' => 'calibration_factor',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 1,
-                  'subfields' => [
-                      [  # Accelerometer calibration factor
-                          'name' => 'accel_cal_factor',
-                          'def_num' => 1,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'units' => 'g',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'sensor_type',
-                                  'def_num' => 0,
-                                  'value' => 'accelerometer',
-                                  'raw_value' => 0,
-                              ],
-                          ],
-                      ],
-                      [  # Gyro calibration factor
-                          'name' => 'gyro_cal_factor',
-                          'def_num' => 1,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'units' => 'deg/s',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'sensor_type',
-                                  'def_num' => 0,
-                                  'value' => 'gyroscope',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'calibration_divisor' => [  # Calibration factor divisor
-                  'name' => 'calibration_divisor',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 2,
-                  'units' => 'counts',
-              ],
-              'level_shift' => [  # Level shift value used to shift the ADC value back into range
-                  'name' => 'level_shift',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 3,
-              ],
-              'offset_cal' => [  # Internal calibration factors, one for each => xy, yx, zx
-                  'name' => 'offset_cal',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 4,
-              ],
-              'orientation_matrix' => [  # 3 x 3 rotation matrix (row major]
-                  'name' => 'orientation_matrix',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 5,
-                  'scale' => 65535,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
-          ],
-      ],
-      'video_frame' => [
-          'name' => 'video_frame',
-          'global_message_number' => 169,
-          'fields' => [
-              'timestamp_ms' => [  # Millisecond part of the timestamp.
-                  'name' => 'timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'units' => 'ms',
-              ],
-              'frame_number' => [  # Number of the frame that the timestamp and timestamp_ms correlate to
-                  'name' => 'frame_number',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 1,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
-          ],
-      ],
-      'obdii_data' => [
-          'name' => 'obdii_data',
-          'global_message_number' => 174,
-          'fields' => [
-              'timestamp_ms' => [  # Fractional part of timestamp, added to timestamp
-                  'name' => 'timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'units' => 'ms',
-              ],
-              'time_offset' => [  # Offset of PID reading [i] from start_timestamp+start_timestamp_ms. Readings may span accross seconds.
-                  'name' => 'time_offset',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-                  'units' => 'ms',
-              ],
-              'pid' => [  # Parameter ID
-                  'name' => 'pid',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 2,
-              ],
-              'raw_data' => [  # Raw parameter data
-                  'name' => 'raw_data',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 3,
-              ],
-              'pid_data_size' => [  # Optional, data size of PID[i].  If not specified refer to SAE J1979.
-                  'name' => 'pid_data_size',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 4,
-              ],
-              'system_time' => [  # System time associated with sample expressed in ms, can be used instead of time_offset.  There will be a system_time value for each raw_data element.  For multibyte pids the system_time is repeated.
-                  'name' => 'system_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 5,
-              ],
-              'start_timestamp' => [  # Timestamp of first sample recorded in the message.  Used with time_offset to generate time of each sample
-                  'name' => 'start_timestamp',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 6,
-              ],
-              'start_timestamp_ms' => [  # Fractional part of start_timestamp
-                  'name' => 'start_timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 7,
-                  'units' => 'ms',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Timestamp message was output
-          ],
-      ],
-      'nmea_sentence' => [
-          'name' => 'nmea_sentence',
-          'global_message_number' => 177,
-          'fields' => [
-              'timestamp_ms' => [  # Fractional part of timestamp, added to timestamp
-                  'name' => 'timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'units' => 'ms',
-              ],
-              'sentence' => [  # NMEA sentence
-                  'name' => 'sentence',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 1,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Timestamp message was output
-          ],
-      ],
-      'aviation_attitude' => [
-          'name' => 'aviation_attitude',
-          'global_message_number' => 178,
-          'fields' => [
-              'timestamp_ms' => [  # Fractional part of timestamp, added to timestamp
-                  'name' => 'timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'units' => 'ms',
-              ],
-              'system_time' => [  # System time associated with sample expressed in ms.
-                  'name' => 'system_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 1,
-                  'units' => 'ms',
-              ],
-              'pitch' => [  # Range -PI/2 to +PI/2
-                  'name' => 'pitch',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 2,
-                  'scale' => 10430.38,
-                  'units' => 'radians',
-              ],
-              'roll' => [  # Range -PI to +PI
-                  'name' => 'roll',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 3,
-                  'scale' => 10430.38,
-                  'units' => 'radians',
-              ],
-              'accel_lateral' => [  # Range -78.4 to +78.4 (-8 Gs to 8 Gs]
-                  'name' => 'accel_lateral',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 4,
-                  'scale' => 100,
-                  'units' => 'm/s^2',
-              ],
-              'accel_normal' => [  # Range -78.4 to +78.4 (-8 Gs to 8 Gs]
-                  'name' => 'accel_normal',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 5,
-                  'scale' => 100,
-                  'units' => 'm/s^2',
-              ],
-              'turn_rate' => [  # Range -8.727 to +8.727 (-500 degs/sec to +500 degs/sec]
-                  'name' => 'turn_rate',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 6,
-                  'scale' => 1024,
-                  'units' => 'radians/second',
-              ],
-              'stage' => [
-                  'name' => 'stage',
-                  'type' =>  self::FIELD_TYPES['attitude_stage'],
-                  'def_num' => 7,
-              ],
-              'attitude_stage_complete' => [  # The percent complete of the current attitude stage.  Set to 0 for attitude stages 0, 1 and 2 and to 100 for attitude stage 3 by AHRS modules that do not support it.  Range - 100
-                  'name' => 'attitude_stage_complete',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 8,
-                  'units' => '%',
-              ],
-              'track' => [  # Track Angle/Heading Range 0 - 2pi
-                  'name' => 'track',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 9,
-                  'scale' => 10430.38,
-                  'units' => 'radians',
-              ],
-              'validity' => [
-                  'name' => 'validity',
-                  'type' =>  self::FIELD_TYPES['attitude_validity'],
-                  'def_num' => 10,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Timestamp message was output
-          ],
-      ],
-      'video' => [
-          'name' => 'video',
-          'global_message_number' => 184,
-          'fields' => [
-              'url' => [
-                  'name' => 'url',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 0,
-              ],
-              'hosting_provider' => [
-                  'name' => 'hosting_provider',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 1,
-              ],
-              'duration' => [  # Playback time of video
-                  'name' => 'duration',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 2,
-                  'units' => 'ms',
-              ],
-          ],
-      ],
-      'video_title' => [
-          'name' => 'video_title',
-          'global_message_number' => 185,
-          'fields' => [
-              'message_count' => [  # Total number of title parts
-                  'name' => 'message_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-              ],
-              'text' => [
-                  'name' => 'text',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 1,
-              ],
-              'message_index' => [  # Long titles will be split into multiple parts
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'video_description' => [
-          'name' => 'video_description',
-          'global_message_number' => 186,
-          'fields' => [
-              'message_count' => [  # Total number of description parts
-                  'name' => 'message_count',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-              ],
-              'text' => [
-                  'name' => 'text',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 1,
-              ],
-              'message_index' => [  # Long descriptions will be split into multiple parts
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'video_clip' => [
-          'name' => 'video_clip',
-          'global_message_number' => 187,
-          'fields' => [
-              'clip_number' => [
-                  'name' => 'clip_number',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-              ],
-              'start_timestamp' => [
-                  'name' => 'start_timestamp',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 1,
-              ],
-              'start_timestamp_ms' => [
-                  'name' => 'start_timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-              ],
-              'end_timestamp' => [
-                  'name' => 'end_timestamp',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 3,
-              ],
-              'end_timestamp_ms' => [
-                  'name' => 'end_timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-              ],
-              'clip_start' => [  # Start of clip in video time
-                  'name' => 'clip_start',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 6,
-                  'units' => 'ms',
-              ],
-              'clip_end' => [  # End of clip in video time
-                  'name' => 'clip_end',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 7,
-                  'units' => 'ms',
-              ],
-          ],
-      ],
-      'ohr_settings' => [
-          'name' => 'ohr_settings',
-          'global_message_number' => 188,
-          'fields' => [
-              'enabled' => [
-                  'name' => 'enabled',
-                  'type' =>  self::FIELD_TYPES['switch'],
-                  'def_num' => 0,
-              ],
-          ],
-      ],
-      'exd_screen_configuration' => [
-          'name' => 'exd_screen_configuration',
-          'global_message_number' => 200,
-          'fields' => [
-              'screen_index' => [
-                  'name' => 'screen_index',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 0,
-              ],
-              'field_count' => [  # number of fields in screen
-                  'name' => 'field_count',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 1,
-              ],
-              'layout' => [
-                  'name' => 'layout',
-                  'type' =>  self::FIELD_TYPES['exd_layout'],
-                  'def_num' => 2,
-              ],
-              'screen_enabled' => [
-                  'name' => 'screen_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 3,
-              ],
-          ],
-      ],
-      'exd_data_field_configuration' => [
-          'name' => 'exd_data_field_configuration',
-          'global_message_number' => 201,
-          'fields' => [
-              'screen_index' => [
-                  'name' => 'screen_index',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 0,
-              ],
-              'concept_field' => [
-                  'name' => 'concept_field',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 1,
-                  'components' => [
-                      [
-                          'name' => 'field_id',
-                          'def_num' => 2,
-                          'accumulate' => False,
-                          'bits' => 4,
-                          'bit_offset' => 0,
-                      ],
-                      [
-                          'name' => 'concept_count',
-                          'def_num' => 3,
-                          'accumulate' => False,
-                          'bits' => 4,
-                          'bit_offset' => 4,
-                      ],
-                  ],
-              ],
-              'field_id' => [
-                  'name' => 'field_id',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 2,
-              ],
-              'concept_count' => [
-                  'name' => 'concept_count',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 3,
-              ],
-              'display_type' => [
-                  'name' => 'display_type',
-                  'type' =>  self::FIELD_TYPES['exd_display_type'],
-                  'def_num' => 4,
-              ],
-              'title' => [
-                  'name' => 'title',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 5,
-              ],
-          ],
-      ],
-      'exd_data_concept_configuration' => [
-          'name' => 'exd_data_concept_configuration',
-          'global_message_number' => 202,
-          'fields' => [
-              'screen_index' => [
-                  'name' => 'screen_index',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 0,
-              ],
-              'concept_field' => [
-                  'name' => 'concept_field',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 1,
-                  'components' => [
-                      [
-                          'name' => 'field_id',
-                          'def_num' => 2,
-                          'accumulate' => False,
-                          'bits' => 4,
-                          'bit_offset' => 0,
-                      ],
-                      [
-                          'name' => 'concept_index',
-                          'def_num' => 3,
-                          'accumulate' => False,
-                          'bits' => 4,
-                          'bit_offset' => 4,
-                      ],
-                  ],
-              ],
-              'field_id' => [
-                  'name' => 'field_id',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 2,
-              ],
-              'concept_index' => [
-                  'name' => 'concept_index',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 3,
-              ],
-              'data_page' => [
-                  'name' => 'data_page',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 4,
-              ],
-              'concept_key' => [
-                  'name' => 'concept_key',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 5,
-              ],
-              'scaling' => [
-                  'name' => 'scaling',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 6,
-              ],
-              'data_units' => [
-                  'name' => 'data_units',
-                  'type' =>  self::FIELD_TYPES['exd_data_units'],
-                  'def_num' => 8,
-              ],
-              'qualifier' => [
-                  'name' => 'qualifier',
-                  'type' =>  self::FIELD_TYPES['exd_qualifiers'],
-                  'def_num' => 9,
-              ],
-              'descriptor' => [
-                  'name' => 'descriptor',
-                  'type' =>  self::FIELD_TYPES['exd_descriptors'],
-                  'def_num' => 10,
-              ],
-              'is_signed' => [
-                  'name' => 'is_signed',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 11,
-              ],
-          ],
-      ],
-      'field_description' => [  # Must be logged before developer field is used
-          'name' => 'field_description',
-          'global_message_number' => 206,
-          'fields' => [
-              'developer_data_index' => [
-                  'name' => 'developer_data_index',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 0,
-              ],
-              'field_definition_number' => [
-                  'name' => 'field_definition_number',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 1,
-              ],
-              'fit_base_type_id' => [
-                  'name' => 'fit_base_type_id',
-                  'type' =>  self::FIELD_TYPES['fit_base_type'],
-                  'def_num' => 2,
-              ],
-              'field_name' => [
-                  'name' => 'field_name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 3,
-              ],
-              'array' => [
-                  'name' => 'array',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 4,
-              ],
-              'components' => [
-                  'name' => 'components',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 5,
-              ],
-              'scale' => [
-                  'name' => 'scale',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 6,
-              ],
-              'offset' => [
-                  'name' => 'offset',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 7,
-              ],
-              'units' => [
-                  'name' => 'units',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 8,
-              ],
-              'bits' => [
-                  'name' => 'bits',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 9,
-              ],
-              'accumulate' => [
-                  'name' => 'accumulate',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 10,
-              ],
-              'fit_base_unit_id' => [
-                  'name' => 'fit_base_unit_id',
-                  'type' =>  self::FIELD_TYPES['fit_base_unit'],
-                  'def_num' => 13,
-              ],
-              'native_mesg_num' => [
-                  'name' => 'native_mesg_num',
-                  'type' =>  self::FIELD_TYPES['global_message_number'],
-                  'def_num' => 14,
-              ],
-              'native_field_num' => [
-                  'name' => 'native_field_num',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 15,
-              ],
-          ],
-      ],
-      'developer_data_id' => [  # Must be logged before field description
-          'name' => 'developer_data_id',
-          'global_message_number' => 207,
-          'fields' => [
-              'developer_id' => [
-                  'name' => 'developer_id',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 0,
-              ],
-              'application_id' => [
-                  'name' => 'application_id',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 1,
-              ],
-              'manufacturer_id' => [
-                  'name' => 'manufacturer_id',
-                  'type' =>  self::FIELD_TYPES['manufacturer'],
-                  'def_num' => 2,
-              ],
-              'developer_data_index' => [
-                  'name' => 'developer_data_index',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 3,
-              ],
-              'application_version' => [
-                  'name' => 'application_version',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 4,
-              ],
-          ],
-      ],
-      'magnetometer_data' => [
-          'name' => 'magnetometer_data',
-          'global_message_number' => 208,
-          'fields' => [
-              'timestamp_ms' => [  # Millisecond part of the timestamp.
-                  'name' => 'timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'units' => 'ms',
-              ],
-              'sample_time_offset' => [  # Each time in the array describes the time at which the compass sample with the corrosponding index was taken. Limited to 30 samples in each message. The samples may span across seconds. Array size must match the number of samples in cmps_x and cmps_y and cmps_z
-                  'name' => 'sample_time_offset',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-                  'units' => 'ms',
-              ],
-              'mag_x' => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
-                  'name' => 'mag_x',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-                  'units' => 'counts',
-              ],
-              'mag_y' => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
-                  'name' => 'mag_y',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-                  'units' => 'counts',
-              ],
-              'mag_z' => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
-                  'name' => 'mag_z',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'units' => 'counts',
-              ],
-              'calibrated_mag_x' => [  # Calibrated Magnetometer reading
-                  'name' => 'calibrated_mag_x',
-                  'type' => self::BASE_TYPES[0x88],  # float32
-                  'def_num' => 5,
-                  'units' => 'G',
-              ],
-              'calibrated_mag_y' => [  # Calibrated Magnetometer reading
-                  'name' => 'calibrated_mag_y',
-                  'type' => self::BASE_TYPES[0x88],  # float32
-                  'def_num' => 6,
-                  'units' => 'G',
-              ],
-              'calibrated_mag_z' => [  # Calibrated Magnetometer reading
-                  'name' => 'calibrated_mag_z',
-                  'type' => self::BASE_TYPES[0x88],  # float32
-                  'def_num' => 7,
-                  'units' => 'G',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
-          ],
-      ],
-      'barometer_data' => [
-          'name' => 'barometer_data',
-          'global_message_number' => 209,
-          'fields' => [
-              'timestamp_ms' => [  # Millisecond part of the timestamp.
-                  'name' => 'timestamp_ms',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'units' => 'ms',
-              ],
-              'sample_time_offset' => [  # Each time in the array describes the time at which the barometer sample with the corrosponding index was taken. The samples may span across seconds. Array size must match the number of samples in baro_cal
-                  'name' => 'sample_time_offset',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-                  'units' => 'ms',
-              ],
-              'baro_pres' => [  # These are the raw ADC reading. The samples may span across seconds. A conversion will need to be done on this data once read.
-                  'name' => 'baro_pres',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 2,
-                  'units' => 'Pa',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
-          ],
-      ],
-      'one_d_sensor_calibration' => [
-          'name' => 'one_d_sensor_calibration',
-          'global_message_number' => 210,
-          'fields' => [
-              'sensor_type' => [  # Indicates which sensor the calibration is for
-                  'name' => 'sensor_type',
-                  'type' =>  self::FIELD_TYPES['sensor_type'],
-                  'def_num' => 0,
-              ],
-              'calibration_factor' => [  # Calibration factor used to convert from raw ADC value to degrees, g,  etc.
-                  'name' => 'calibration_factor',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 1,
-                  'subfields' => [
-                      [  # Barometer calibration factor
-                          'name' => 'baro_cal_factor',
-                          'def_num' => 1,
-                          'type' => self::BASE_TYPES[0x86],  # uint32
-                          'units' => 'Pa',
-                          'ref_fields' => [
-                              [
-                                  'name' => 'sensor_type',
-                                  'def_num' => 0,
-                                  'value' => 'barometer',
-                                  'raw_value' => 3,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'calibration_divisor' => [  # Calibration factor divisor
-                  'name' => 'calibration_divisor',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 2,
-                  'units' => 'counts',
-              ],
-              'level_shift' => [  # Level shift value used to shift the ADC value back into range
-                  'name' => 'level_shift',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 3,
-              ],
-              'offset_cal' => [  # Internal Calibration factor
-                  'name' => 'offset_cal',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 4,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
-          ],
-      ],
-      'set' => [
-          'name' => 'set',
-          'global_message_number' => 225,
-          'fields' => [
-              'duration' => [
-                  'name' => 'duration',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 0,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'repetitions' => [  # # of repitions of the movement
-                  'name' => 'repetitions',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-              ],
-              'weight' => [  # Amount of weight applied for the set
-                  'name' => 'weight',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'scale' => 16,
-                  'units' => 'kg',
-              ],
-              'set_type' => [
-                  'name' => 'set_type',
-                  'type' =>  self::FIELD_TYPES['set_type'],
-                  'def_num' => 5,
-              ],
-              'start_time' => [  # Start time of the set
-                  'name' => 'start_time',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 6,
-              ],
-              'category' => [
-                  'name' => 'category',
-                  'type' =>  self::FIELD_TYPES['exercise_category'],
-                  'def_num' => 7,
-              ],
-              'category_subtype' => [  # Based on the associated category, see [category]_exercise_names
-                  'name' => 'category_subtype',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 8,
-              ],
-              'weight_display_unit' => [
-                  'name' => 'weight_display_unit',
-                  'type' =>  self::FIELD_TYPES['fit_base_unit'],
-                  'def_num' => 9,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 10,
-              ],
-              'wkt_step_index' => [
-                  'name' => 'wkt_step_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 11,
-              ],
-              'timestamp' => [  # Timestamp of the set
-                  'name' => 'timestamp',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'stress_level' => [  # Value from 1 to 100 calculated by FirstBeat
-          'name' => 'stress_level',
-          'global_message_number' => 227,
-          'fields' => [
-              'stress_level_value' => [
-                  'name' => 'stress_level_value',
-                  'type' => self::BASE_TYPES[0x83],  # sint16
-                  'def_num' => 0,
-              ],
-              'stress_level_time' => [  # Time stress score was calculated
-                  'name' => 'stress_level_time',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 1,
-                  'units' => 's',
-              ],
-          ],
-      ],
-      'dive_settings' => [
-          'name' => 'dive_settings',
-          'global_message_number' => 258,
-          'fields' => [
-              'name' => [
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 0,
-              ],
-              'model' => [
-                  'name' => 'model',
-                  'type' =>  self::FIELD_TYPES['tissue_model_type'],
-                  'def_num' => 1,
-              ],
-              'gf_low' => [
-                  'name' => 'gf_low',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 2,
-                  'units' => 'percent',
-              ],
-              'gf_high' => [
-                  'name' => 'gf_high',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 3,
-                  'units' => 'percent',
-              ],
-              'water_type' => [
-                  'name' => 'water_type',
-                  'type' =>  self::FIELD_TYPES['water_type'],
-                  'def_num' => 4,
-              ],
-              'water_density' => [  # Fresh water is usually 1000; salt water is usually 1025
-                  'name' => 'water_density',
-                  'type' => self::BASE_TYPES[0x88],  # float32
-                  'def_num' => 5,
-                  'units' => 'kg/m^3',
-              ],
-              'po2_warn' => [  # Typically 1.40
-                  'name' => 'po2_warn',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 6,
-                  'scale' => 100,
-                  'units' => 'percent',
-              ],
-              'po2_critical' => [  # Typically 1.60
-                  'name' => 'po2_critical',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 7,
-                  'scale' => 100,
-                  'units' => 'percent',
-              ],
-              'po2_deco' => [
-                  'name' => 'po2_deco',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 8,
-                  'scale' => 100,
-                  'units' => 'percent',
-              ],
-              'safety_stop_enabled' => [
-                  'name' => 'safety_stop_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 9,
-              ],
-              'bottom_depth' => [
-                  'name' => 'bottom_depth',
-                  'type' => self::BASE_TYPES[0x88],  # float32
-                  'def_num' => 10,
-              ],
-              'bottom_time' => [
-                  'name' => 'bottom_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 11,
-              ],
-              'apnea_countdown_enabled' => [
-                  'name' => 'apnea_countdown_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 12,
-              ],
-              'apnea_countdown_time' => [
-                  'name' => 'apnea_countdown_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 13,
-              ],
-              'backlight_mode' => [
-                  'name' => 'backlight_mode',
-                  'type' =>  self::FIELD_TYPES['dive_backlight_mode'],
-                  'def_num' => 14,
-              ],
-              'backlight_brightness' => [
-                  'name' => 'backlight_brightness',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 15,
-              ],
-              'backlight_timeout' => [
-                  'name' => 'backlight_timeout',
-                  'type' =>  self::FIELD_TYPES['backlight_timeout'],
-                  'def_num' => 16,
-              ],
-              'repeat_dive_interval' => [  # Time between surfacing and ending the activity
-                  'name' => 'repeat_dive_interval',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 17,
-                  'units' => 's',
-              ],
-              'safety_stop_time' => [  # Time at safety stop (if enabled]
-                  'name' => 'safety_stop_time',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 18,
-                  'units' => 's',
-              ],
-              'heart_rate_source_type' => [
-                  'name' => 'heart_rate_source_type',
-                  'type' =>  self::FIELD_TYPES['source_type'],
-                  'def_num' => 19,
-              ],
-              'heart_rate_source' => [
-                  'name' => 'heart_rate_source',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 20,
-                  'subfields' => [
-                      [
-                          'name' => 'heart_rate_antplus_device_type',
-                          'def_num' => 20,
-                          'type' =>  self::FIELD_TYPES['antplus_device_type'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'heart_rate_source_type',
-                                  'def_num' => 19,
-                                  'value' => 'antplus',
-                                  'raw_value' => 1,
-                              ],
-                          ],
-                      ],
-                      [
-                          'name' => 'heart_rate_local_device_type',
-                          'def_num' => 20,
-                          'type' =>  self::FIELD_TYPES['local_device_type'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'heart_rate_source_type',
-                                  'def_num' => 19,
-                                  'value' => 'local',
-                                  'raw_value' => 5,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'dive_gas' => [
-          'name' => 'dive_gas',
-          'global_message_number' => 259,
-          'fields' => [
-              'helium_content' => [
-                  'name' => 'helium_content',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 0,
-                  'units' => 'percent',
-              ],
-              'oxygen_content' => [
-                  'name' => 'oxygen_content',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 1,
-                  'units' => 'percent',
-              ],
-              'status' => [
-                  'name' => 'status',
-                  'type' =>  self::FIELD_TYPES['dive_gas_status'],
-                  'def_num' => 2,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'dive_alarm' => [
-          'name' => 'dive_alarm',
-          'global_message_number' => 262,
-          'fields' => [
-              'depth' => [
-                  'name' => 'depth',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 0,
-                  'scale' => 1000,
-                  'units' => 'm',
-              ],
-              'time' => [
-                  'name' => 'time',
-                  'type' => self::BASE_TYPES[0x85],  # sint32
-                  'def_num' => 1,
-                  'units' => 's',
-              ],
-              'enabled' => [
-                  'name' => 'enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 2,
-              ],
-              'alarm_type' => [
-                  'name' => 'alarm_type',
-                  'type' =>  self::FIELD_TYPES['dive_alarm_type'],
-                  'def_num' => 3,
-              ],
-              'sound' => [
-                  'name' => 'sound',
-                  'type' =>  self::FIELD_TYPES['tone'],
-                  'def_num' => 4,
-              ],
-              'dive_types' => [
-                  'name' => 'dive_types',
-                  'type' =>  self::FIELD_TYPES['sub_sport'],
-                  'def_num' => 5,
-              ],
-              'message_index' => [  # Index of the alarm
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'exercise_title' => [
-          'name' => 'exercise_title',
-          'global_message_number' => 264,
-          'fields' => [
-              'exercise_category' => [
-                  'name' => 'exercise_category',
-                  'type' =>  self::FIELD_TYPES['exercise_category'],
-                  'def_num' => 0,
-              ],
-              'exercise_name' => [
-                  'name' => 'exercise_name',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-              ],
-              'wkt_step_name' => [
-                  'name' => 'wkt_step_name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 2,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
-      'dive_summary' => [
-          'name' => 'dive_summary',
-          'global_message_number' => 268,
-          'fields' => [
-              'reference_mesg' => [
-                  'name' => 'reference_mesg',
-                  'type' =>  self::FIELD_TYPES['global_message_number'],
-                  'def_num' => 0,
-              ],
-              'reference_index' => [
-                  'name' => 'reference_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 1,
-              ],
-              'avg_depth' => [  # 0 if above water
-                  'name' => 'avg_depth',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 2,
-                  'scale' => 1000,
-                  'units' => 'm',
-              ],
-              'max_depth' => [  # 0 if above water
-                  'name' => 'max_depth',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 3,
-                  'scale' => 1000,
-                  'units' => 'm',
-              ],
-              'surface_interval' => [  # Time since end of last dive
-                  'name' => 'surface_interval',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 4,
-                  'units' => 's',
-              ],
-              'start_cns' => [
-                  'name' => 'start_cns',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 5,
-                  'units' => 'percent',
-              ],
-              'end_cns' => [
-                  'name' => 'end_cns',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 6,
-                  'units' => 'percent',
-              ],
-              'start_n2' => [
-                  'name' => 'start_n2',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 7,
-                  'units' => 'percent',
-              ],
-              'end_n2' => [
-                  'name' => 'end_n2',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 8,
-                  'units' => 'percent',
-              ],
-              'o2_toxicity' => [
-                  'name' => 'o2_toxicity',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 9,
-                  'units' => 'OTUs',
-              ],
-              'dive_number' => [
-                  'name' => 'dive_number',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 10,
-              ],
-              'bottom_time' => [
-                  'name' => 'bottom_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 11,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
+    # ************************************  ************************************
+    1 => [
+        'name' => 'capabilities',
+        'global_number' => 1,
+        'fields' => [
+            0 => [  # Use language_bits_x types where x is index of array.
+                'name' => 'languages',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 0,
+            ],
+            1 => [  # Use sport_bits_x types where x is index of array.
+                'name' => 'sports',
+                'type' => self::FIELD_TYPES['sport_bits_0'],
+                'def_num' => 1,
+            ],
+            21 => [
+                'name' => 'workouts_supported',
+                'type' => self::FIELD_TYPES['workout_capabilities'],
+                'def_num' => 21,
+            ],
+            23 => [
+                'name' => 'connectivity_supported',
+                'type' => self::FIELD_TYPES['connectivity_capabilities'],
+                'def_num' => 23,
+            ],
+        ],
+    ],
+    4 => [
+        'name' => 'hrm_profile',
+        'global_number' => 4,
+        'fields' => [
+            0 => [
+                'name' => 'enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'hrm_ant_id',
+                'type' => self::BASE_TYPES[0x8B],  # uint16z
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'log_hrv',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'hrm_ant_id_trans_type',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 3,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    5 => [
+        'name' => 'sdm_profile',
+        'global_number' => 5,
+        'fields' => [
+            0 => [
+                'name' => 'enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'sdm_ant_id',
+                'type' => self::BASE_TYPES[0x8B],  # uint16z
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'sdm_cal_factor',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+                'scale' => 10,
+                'units' => '%',
+            ],
+            3 => [
+                'name' => 'odometer',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 3,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            4 => [  # Use footpod for speed source instead of GPS
+                'name' => 'speed_source',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 4,
+            ],
+            5 => [
+                'name' => 'sdm_ant_id_trans_type',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 5,
+            ],
+            7 => [  # Rollover counter that can be used to extend the odometer
+                'name' => 'odometer_rollover',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 7,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    6 => [
+        'name' => 'bike_profile',
+        'global_number' => 6,
+        'fields' => [
+            0 => [
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'sport',
+                'type' => self::FIELD_TYPES['sport'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'sub_sport',
+                'type' => self::FIELD_TYPES['sub_sport'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'odometer',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 3,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            4 => [
+                'name' => 'bike_spd_ant_id',
+                'type' => self::BASE_TYPES[0x8B],  # uint16z
+                'def_num' => 4,
+            ],
+            5 => [
+                'name' => 'bike_cad_ant_id',
+                'type' => self::BASE_TYPES[0x8B],  # uint16z
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'bike_spdcad_ant_id',
+                'type' => self::BASE_TYPES[0x8B],  # uint16z
+                'def_num' => 6,
+            ],
+            7 => [
+                'name' => 'bike_power_ant_id',
+                'type' => self::BASE_TYPES[0x8B],  # uint16z
+                'def_num' => 7,
+            ],
+            8 => [
+                'name' => 'custom_wheelsize',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 8,
+                'scale' => 1000,
+                'units' => 'm',
+            ],
+            9 => [
+                'name' => 'auto_wheelsize',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 9,
+                'scale' => 1000,
+                'units' => 'm',
+            ],
+            10 => [
+                'name' => 'bike_weight',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 10,
+                'scale' => 10,
+                'units' => 'kg',
+            ],
+            11 => [
+                'name' => 'power_cal_factor',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 11,
+                'scale' => 10,
+                'units' => '%',
+            ],
+            12 => [
+                'name' => 'auto_wheel_cal',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 12,
+            ],
+            13 => [
+                'name' => 'auto_power_zero',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 13,
+            ],
+            14 => [
+                'name' => 'id',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 14,
+            ],
+            15 => [
+                'name' => 'spd_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 15,
+            ],
+            16 => [
+                'name' => 'cad_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 16,
+            ],
+            17 => [
+                'name' => 'spdcad_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 17,
+            ],
+            18 => [
+                'name' => 'power_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 18,
+            ],
+            19 => [
+                'name' => 'crank_length',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 19,
+                'scale' => 2,
+                'offset' => -110,
+                'units' => 'mm',
+            ],
+            20 => [
+                'name' => 'enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 20,
+            ],
+            21 => [
+                'name' => 'bike_spd_ant_id_trans_type',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 21,
+            ],
+            22 => [
+                'name' => 'bike_cad_ant_id_trans_type',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 22,
+            ],
+            23 => [
+                'name' => 'bike_spdcad_ant_id_trans_type',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 23,
+            ],
+            24 => [
+                'name' => 'bike_power_ant_id_trans_type',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 24,
+            ],
+            37 => [  # Rollover counter that can be used to extend the odometer
+                'name' => 'odometer_rollover',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 37,
+            ],
+            38 => [  # Number of front gears
+                'name' => 'front_gear_num',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 38,
+            ],
+            39 => [  # Number of teeth on each gear 0 is innermost
+                'name' => 'front_gear',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 39,
+            ],
+            40 => [  # Number of rear gears
+                'name' => 'rear_gear_num',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 40,
+            ],
+            41 => [  # Number of teeth on each gear 0 is innermost
+                'name' => 'rear_gear',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 41,
+            ],
+            44 => [
+                'name' => 'shimano_di2_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 44,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    8 => [
+        'name' => 'hr_zone',
+        'global_number' => 8,
+        'fields' => [
+            1 => [
+                'name' => 'high_bpm',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 1,
+                'units' => 'bpm',
+            ],
+            2 => [
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 2,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    9 => [
+        'name' => 'power_zone',
+        'global_number' => 9,
+        'fields' => [
+            1 => [
+                'name' => 'high_value',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+                'units' => 'watts',
+            ],
+            2 => [
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 2,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    10 => [
+        'name' => 'met_zone',
+        'global_number' => 10,
+        'fields' => [
+            1 => [
+                'name' => 'high_bpm',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'calories',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+                'scale' => 10,
+                'units' => 'kcal/min',
+            ],
+            3 => [
+                'name' => 'fat_calories',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 3,
+                'scale' => 10,
+                'units' => 'kcal/min',
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    12 => [
+        'name' => 'sport',
+        'global_number' => 12,
+        'fields' => [
+            0 => [
+                'name' => 'sport',
+                'type' => self::FIELD_TYPES['sport'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'sub_sport',
+                'type' => self::FIELD_TYPES['sub_sport'],
+                'def_num' => 1,
+            ],
+            3 => [
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 3,
+            ],
+        ],
+    ],
+    18 => [
+        'name' => 'session',
+        'global_number' => 18,
+        'fields' => [
+            0 => [  # session
+                'name' => 'event',
+                'type' => self::FIELD_TYPES['event'],
+                'def_num' => 0,
+            ],
+            1 => [  # stop
+                'name' => 'event_type',
+                'type' => self::FIELD_TYPES['event_type'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'start_time',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'start_position_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 3,
+                'units' => 'semicircles',
+            ],
+            4 => [
+                'name' => 'start_position_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 4,
+                'units' => 'semicircles',
+            ],
+            5 => [
+                'name' => 'sport',
+                'type' => self::FIELD_TYPES['sport'],
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'sub_sport',
+                'type' => self::FIELD_TYPES['sub_sport'],
+                'def_num' => 6,
+            ],
+            7 => [  # Time (includes pauses)
+                'name' => 'total_elapsed_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 7,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            8 => [  # Timer Time (excludes pauses)
+                'name' => 'total_timer_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 8,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            9 => [
+                'name' => 'total_distance',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 9,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            10 => [
+                'name' => 'total_cycles',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 10,
+                'units' => 'cycles',
+                'subfields' => [
+                    [
+                        'name' => 'total_strides',
+                        'def_num' => 10,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'units' => 'strides',
+                        'ref_fields' => [
+                            [
+                                'name' => 'sport',
+                                'def_num' => 5,
+                                'value' => 'running',
+                                'raw_value' => 1,
+                            ],
+                            [
+                                'name' => 'sport',
+                                'def_num' => 5,
+                                'value' => 'walking',
+                                'raw_value' => 11,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            11 => [
+                'name' => 'total_calories',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 11,
+                'units' => 'kcal',
+            ],
+            13 => [
+                'name' => 'total_fat_calories',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 13,
+                'units' => 'kcal',
+            ],
+            14 => [  # total_distance / total_timer_time
+                'name' => 'avg_speed',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 14,
+                'scale' => 1000,
+                'units' => 'm/s',
+                'components' => [
+                    [
+                        'name' => 'enhanced_avg_speed',
+                        'def_num' => 124,
+                        'scale' => 1000,
+                        'units' => 'm/s',
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            15 => [
+                'name' => 'max_speed',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 15,
+                'scale' => 1000,
+                'units' => 'm/s',
+                'components' => [
+                    [
+                        'name' => 'enhanced_max_speed',
+                        'def_num' => 125,
+                        'scale' => 1000,
+                        'units' => 'm/s',
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            16 => [  # average heart rate (excludes pause time)
+                'name' => 'avg_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 16,
+                'units' => 'bpm',
+            ],
+            17 => [
+                'name' => 'max_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 17,
+                'units' => 'bpm',
+            ],
+            18 => [  # total_cycles / total_timer_time if non_zero_avg_cadence otherwise total_cycles / total_elapsed_time
+                'name' => 'avg_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 18,
+                'units' => 'rpm',
+                'subfields' => [
+                    [
+                        'name' => 'avg_running_cadence',
+                        'def_num' => 18,
+                        'type' => self::BASE_TYPES[0x02],  # uint8
+                        'units' => 'strides/min',
+                        'ref_fields' => [
+                            [
+                                'name' => 'sport',
+                                'def_num' => 5,
+                                'value' => 'running',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            19 => [
+                'name' => 'max_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 19,
+                'units' => 'rpm',
+                'subfields' => [
+                    [
+                        'name' => 'max_running_cadence',
+                        'def_num' => 19,
+                        'type' => self::BASE_TYPES[0x02],  # uint8
+                        'units' => 'strides/min',
+                        'ref_fields' => [
+                            [
+                                'name' => 'sport',
+                                'def_num' => 5,
+                                'value' => 'running',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            20 => [  # total_power / total_timer_time if non_zero_avg_power otherwise total_power / total_elapsed_time
+                'name' => 'avg_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 20,
+                'units' => 'watts',
+            ],
+            21 => [
+                'name' => 'max_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 21,
+                'units' => 'watts',
+            ],
+            22 => [
+                'name' => 'total_ascent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 22,
+                'units' => 'm',
+            ],
+            23 => [
+                'name' => 'total_descent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 23,
+                'units' => 'm',
+            ],
+            24 => [
+                'name' => 'total_training_effect',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 24,
+                'scale' => 10,
+            ],
+            25 => [
+                'name' => 'first_lap_index',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 25,
+            ],
+            26 => [
+                'name' => 'num_laps',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 26,
+            ],
+            27 => [
+                'name' => 'event_group',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 27,
+            ],
+            28 => [
+                'name' => 'trigger',
+                'type' => self::FIELD_TYPES['session_trigger'],
+                'def_num' => 28,
+            ],
+            29 => [
+                'name' => 'nec_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 29,
+                'units' => 'semicircles',
+            ],
+            30 => [
+                'name' => 'nec_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 30,
+                'units' => 'semicircles',
+            ],
+            31 => [
+                'name' => 'swc_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 31,
+                'units' => 'semicircles',
+            ],
+            32 => [
+                'name' => 'swc_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 32,
+                'units' => 'semicircles',
+            ],
+            34 => [
+                'name' => 'normalized_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 34,
+                'units' => 'watts',
+            ],
+            35 => [
+                'name' => 'training_stress_score',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 35,
+                'scale' => 10,
+                'units' => 'tss',
+            ],
+            36 => [
+                'name' => 'intensity_factor',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 36,
+                'scale' => 1000,
+                'units' => 'if',
+            ],
+            37 => [
+                'name' => 'left_right_balance',
+                'type' => self::FIELD_TYPES['left_right_balance_100'],
+                'def_num' => 37,
+            ],
+            41 => [
+                'name' => 'avg_stroke_count',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 41,
+                'scale' => 10,
+                'units' => 'strokes/lap',
+            ],
+            42 => [
+                'name' => 'avg_stroke_distance',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 42,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            43 => [
+                'name' => 'swim_stroke',
+                'type' => self::FIELD_TYPES['swim_stroke'],
+                'def_num' => 43,
+                'units' => 'swim_stroke',
+            ],
+            44 => [
+                'name' => 'pool_length',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 44,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            45 => [
+                'name' => 'threshold_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 45,
+                'units' => 'watts',
+            ],
+            46 => [
+                'name' => 'pool_length_unit',
+                'type' => self::FIELD_TYPES['display_measure'],
+                'def_num' => 46,
+            ],
+            47 => [  # # of active lengths of swim pool
+                'name' => 'num_active_lengths',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 47,
+                'units' => 'lengths',
+            ],
+            48 => [
+                'name' => 'total_work',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 48,
+                'units' => 'J',
+            ],
+            49 => [
+                'name' => 'avg_altitude',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 49,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+                'components' => [
+                    [
+                        'name' => 'enhanced_avg_altitude',
+                        'def_num' => 126,
+                        'scale' => 5,
+                        'offset' => 500,
+                        'units' => 'm',
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            50 => [
+                'name' => 'max_altitude',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 50,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+                'components' => [
+                    [
+                        'name' => 'enhanced_max_altitude',
+                        'def_num' => 128,
+                        'scale' => 5,
+                        'offset' => 500,
+                        'units' => 'm',
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            51 => [
+                'name' => 'gps_accuracy',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 51,
+                'units' => 'm',
+            ],
+            52 => [
+                'name' => 'avg_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 52,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            53 => [
+                'name' => 'avg_pos_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 53,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            54 => [
+                'name' => 'avg_neg_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 54,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            55 => [
+                'name' => 'max_pos_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 55,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            56 => [
+                'name' => 'max_neg_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 56,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            57 => [
+                'name' => 'avg_temperature',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 57,
+                'units' => 'C',
+            ],
+            58 => [
+                'name' => 'max_temperature',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 58,
+                'units' => 'C',
+            ],
+            59 => [
+                'name' => 'total_moving_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 59,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            60 => [
+                'name' => 'avg_pos_vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 60,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            61 => [
+                'name' => 'avg_neg_vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 61,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            62 => [
+                'name' => 'max_pos_vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 62,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            63 => [
+                'name' => 'max_neg_vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 63,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            64 => [
+                'name' => 'min_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 64,
+                'units' => 'bpm',
+            ],
+            65 => [
+                'name' => 'time_in_hr_zone',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 65,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            66 => [
+                'name' => 'time_in_speed_zone',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 66,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            67 => [
+                'name' => 'time_in_cadence_zone',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 67,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            68 => [
+                'name' => 'time_in_power_zone',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 68,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            69 => [
+                'name' => 'avg_lap_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 69,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            70 => [
+                'name' => 'best_lap_index',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 70,
+            ],
+            71 => [
+                'name' => 'min_altitude',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 71,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+                'components' => [
+                    [
+                        'name' => 'enhanced_min_altitude',
+                        'def_num' => 127,
+                        'scale' => 5,
+                        'offset' => 500,
+                        'units' => 'm',
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            82 => [
+                'name' => 'player_score',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 82,
+            ],
+            83 => [
+                'name' => 'opponent_score',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 83,
+            ],
+            84 => [
+                'name' => 'opponent_name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 84,
+            ],
+            85 => [  # stroke_type enum used as the index
+                'name' => 'stroke_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 85,
+                'units' => 'counts',
+            ],
+            86 => [  # zone number used as the index
+                'name' => 'zone_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 86,
+                'units' => 'counts',
+            ],
+            87 => [
+                'name' => 'max_ball_speed',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 87,
+                'scale' => 100,
+                'units' => 'm/s',
+            ],
+            88 => [
+                'name' => 'avg_ball_speed',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 88,
+                'scale' => 100,
+                'units' => 'm/s',
+            ],
+            89 => [
+                'name' => 'avg_vertical_oscillation',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 89,
+                'scale' => 10,
+                'units' => 'mm',
+            ],
+            90 => [
+                'name' => 'avg_stance_time_percent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 90,
+                'scale' => 100,
+                'units' => 'percent',
+            ],
+            91 => [
+                'name' => 'avg_stance_time',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 91,
+                'scale' => 10,
+                'units' => 'ms',
+            ],
+            92 => [  # fractional part of the avg_cadence
+                'name' => 'avg_fractional_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 92,
+                'scale' => 128,
+                'units' => 'rpm',
+            ],
+            93 => [  # fractional part of the max_cadence
+                'name' => 'max_fractional_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 93,
+                'scale' => 128,
+                'units' => 'rpm',
+            ],
+            94 => [  # fractional part of the total_cycles
+                'name' => 'total_fractional_cycles',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 94,
+                'scale' => 128,
+                'units' => 'cycles',
+            ],
+            95 => [  # Avg saturated and unsaturated hemoglobin
+                'name' => 'avg_total_hemoglobin_conc',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 95,
+                'scale' => 100,
+                'units' => 'g/dL',
+            ],
+            96 => [  # Min saturated and unsaturated hemoglobin
+                'name' => 'min_total_hemoglobin_conc',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 96,
+                'scale' => 100,
+                'units' => 'g/dL',
+            ],
+            97 => [  # Max saturated and unsaturated hemoglobin
+                'name' => 'max_total_hemoglobin_conc',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 97,
+                'scale' => 100,
+                'units' => 'g/dL',
+            ],
+            98 => [  # Avg percentage of hemoglobin saturated with oxygen
+                'name' => 'avg_saturated_hemoglobin_percent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 98,
+                'scale' => 10,
+                'units' => '%',
+            ],
+            99 => [  # Min percentage of hemoglobin saturated with oxygen
+                'name' => 'min_saturated_hemoglobin_percent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 99,
+                'scale' => 10,
+                'units' => '%',
+            ],
+            100 => [  # Max percentage of hemoglobin saturated with oxygen
+                'name' => 'max_saturated_hemoglobin_percent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 100,
+                'scale' => 10,
+                'units' => '%',
+            ],
+            101 => [
+                'name' => 'avg_left_torque_effectiveness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 101,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            102 => [
+                'name' => 'avg_right_torque_effectiveness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 102,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            103 => [
+                'name' => 'avg_left_pedal_smoothness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 103,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            104 => [
+                'name' => 'avg_right_pedal_smoothness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 104,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            105 => [
+                'name' => 'avg_combined_pedal_smoothness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 105,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            111 => [
+                'name' => 'sport_index',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 111,
+            ],
+            112 => [  # Total time spend in the standing position
+                'name' => 'time_standing',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 112,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            113 => [  # Number of transitions to the standing state
+                'name' => 'stand_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 113,
+            ],
+            114 => [  # Average platform center offset Left
+                'name' => 'avg_left_pco',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 114,
+                'units' => 'mm',
+            ],
+            115 => [  # Average platform center offset Right
+                'name' => 'avg_right_pco',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 115,
+                'units' => 'mm',
+            ],
+            116 => [  # Average left power phase angles. Indexes defined by power_phase_type.
+                'name' => 'avg_left_power_phase',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 116,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            117 => [  # Average left power phase peak angles. Data value indexes defined by power_phase_type.
+                'name' => 'avg_left_power_phase_peak',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 117,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            118 => [  # Average right power phase angles. Data value indexes defined by power_phase_type.
+                'name' => 'avg_right_power_phase',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 118,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            119 => [  # Average right power phase peak angles data value indexes  defined by power_phase_type.
+                'name' => 'avg_right_power_phase_peak',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 119,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            120 => [  # Average power by position. Data value indexes defined by rider_position_type.
+                'name' => 'avg_power_position',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 120,
+                'units' => 'watts',
+            ],
+            121 => [  # Maximum power by position. Data value indexes defined by rider_position_type.
+                'name' => 'max_power_position',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 121,
+                'units' => 'watts',
+            ],
+            122 => [  # Average cadence by position. Data value indexes defined by rider_position_type.
+                'name' => 'avg_cadence_position',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 122,
+                'units' => 'rpm',
+            ],
+            123 => [  # Maximum cadence by position. Data value indexes defined by rider_position_type.
+                'name' => 'max_cadence_position',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 123,
+                'units' => 'rpm',
+            ],
+            124 => [  # total_distance / total_timer_time
+                'name' => 'enhanced_avg_speed',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 124,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            125 => [
+                'name' => 'enhanced_max_speed',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 125,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            126 => [
+                'name' => 'enhanced_avg_altitude',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 126,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+            ],
+            127 => [
+                'name' => 'enhanced_min_altitude',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 127,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+            ],
+            128 => [
+                'name' => 'enhanced_max_altitude',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 128,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+            ],
+            129 => [  # lev average motor power during session
+                'name' => 'avg_lev_motor_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 129,
+                'units' => 'watts',
+            ],
+            130 => [  # lev maximum motor power during session
+                'name' => 'max_lev_motor_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 130,
+                'units' => 'watts',
+            ],
+            131 => [  # lev battery consumption during session
+                'name' => 'lev_battery_consumption',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 131,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            132 => [
+                'name' => 'avg_vertical_ratio',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 132,
+                'scale' => 100,
+                'units' => 'percent',
+            ],
+            133 => [
+                'name' => 'avg_stance_time_balance',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 133,
+                'scale' => 100,
+                'units' => 'percent',
+            ],
+            134 => [
+                'name' => 'avg_step_length',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 134,
+                'scale' => 10,
+                'units' => 'mm',
+            ],
+            137 => [
+                'name' => 'total_anaerobic_training_effect',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 137,
+                'scale' => 10,
+            ],
+            139 => [
+                'name' => 'avg_vam',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 139,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Sesson end time.
+            254 => [  # Selected bit is set for the current session.
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    19 => [
+        'name' => 'lap',
+        'global_number' => 19,
+        'fields' => [
+            0 => [
+                'name' => 'event',
+                'type' => self::FIELD_TYPES['event'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'event_type',
+                'type' => self::FIELD_TYPES['event_type'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'start_time',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'start_position_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 3,
+                'units' => 'semicircles',
+            ],
+            4 => [
+                'name' => 'start_position_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 4,
+                'units' => 'semicircles',
+            ],
+            5 => [
+                'name' => 'end_position_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 5,
+                'units' => 'semicircles',
+            ],
+            6 => [
+                'name' => 'end_position_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 6,
+                'units' => 'semicircles',
+            ],
+            7 => [  # Time (includes pauses)
+                'name' => 'total_elapsed_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 7,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            8 => [  # Timer Time (excludes pauses)
+                'name' => 'total_timer_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 8,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            9 => [
+                'name' => 'total_distance',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 9,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            10 => [
+                'name' => 'total_cycles',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 10,
+                'units' => 'cycles',
+                'subfields' => [
+                    [
+                        'name' => 'total_strides',
+                        'def_num' => 10,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'units' => 'strides',
+                        'ref_fields' => [
+                            [
+                                'name' => 'sport',
+                                'def_num' => 25,
+                                'value' => 'running',
+                                'raw_value' => 1,
+                            ],
+                            [
+                                'name' => 'sport',
+                                'def_num' => 25,
+                                'value' => 'walking',
+                                'raw_value' => 11,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            11 => [
+                'name' => 'total_calories',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 11,
+                'units' => 'kcal',
+            ],
+            12 => [  # If New Leaf
+                'name' => 'total_fat_calories',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 12,
+                'units' => 'kcal',
+            ],
+            13 => [
+                'name' => 'avg_speed',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 13,
+                'scale' => 1000,
+                'units' => 'm/s',
+                'components' => [
+                    [
+                        'name' => 'enhanced_avg_speed',
+                        'def_num' => 110,
+                        'scale' => 1000,
+                        'units' => 'm/s',
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            14 => [
+                'name' => 'max_speed',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 14,
+                'scale' => 1000,
+                'units' => 'm/s',
+                'components' => [
+                    [
+                        'name' => 'enhanced_max_speed',
+                        'def_num' => 111,
+                        'scale' => 1000,
+                        'units' => 'm/s',
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            15 => [
+                'name' => 'avg_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 15,
+                'units' => 'bpm',
+            ],
+            16 => [
+                'name' => 'max_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 16,
+                'units' => 'bpm',
+            ],
+            17 => [  # total_cycles / total_timer_time if non_zero_avg_cadence otherwise total_cycles / total_elapsed_time
+                'name' => 'avg_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 17,
+                'units' => 'rpm',
+                'subfields' => [
+                    [
+                        'name' => 'avg_running_cadence',
+                        'def_num' => 17,
+                        'type' => self::BASE_TYPES[0x02],  # uint8
+                        'units' => 'strides/min',
+                        'ref_fields' => [
+                            [
+                                'name' => 'sport',
+                                'def_num' => 25,
+                                'value' => 'running',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            18 => [
+                'name' => 'max_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 18,
+                'units' => 'rpm',
+                'subfields' => [
+                    [
+                        'name' => 'max_running_cadence',
+                        'def_num' => 18,
+                        'type' => self::BASE_TYPES[0x02],  # uint8
+                        'units' => 'strides/min',
+                        'ref_fields' => [
+                            [
+                                'name' => 'sport',
+                                'def_num' => 25,
+                                'value' => 'running',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            19 => [  # total_power / total_timer_time if non_zero_avg_power otherwise total_power / total_elapsed_time
+                'name' => 'avg_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 19,
+                'units' => 'watts',
+            ],
+            20 => [
+                'name' => 'max_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 20,
+                'units' => 'watts',
+            ],
+            21 => [
+                'name' => 'total_ascent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 21,
+                'units' => 'm',
+            ],
+            22 => [
+                'name' => 'total_descent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 22,
+                'units' => 'm',
+            ],
+            23 => [
+                'name' => 'intensity',
+                'type' => self::FIELD_TYPES['intensity'],
+                'def_num' => 23,
+            ],
+            24 => [
+                'name' => 'lap_trigger',
+                'type' => self::FIELD_TYPES['lap_trigger'],
+                'def_num' => 24,
+            ],
+            25 => [
+                'name' => 'sport',
+                'type' => self::FIELD_TYPES['sport'],
+                'def_num' => 25,
+            ],
+            26 => [
+                'name' => 'event_group',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 26,
+            ],
+            32 => [  # # of lengths of swim pool
+                'name' => 'num_lengths',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 32,
+                'units' => 'lengths',
+            ],
+            33 => [
+                'name' => 'normalized_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 33,
+                'units' => 'watts',
+            ],
+            34 => [
+                'name' => 'left_right_balance',
+                'type' => self::FIELD_TYPES['left_right_balance_100'],
+                'def_num' => 34,
+            ],
+            35 => [
+                'name' => 'first_length_index',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 35,
+            ],
+            37 => [
+                'name' => 'avg_stroke_distance',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 37,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            38 => [
+                'name' => 'swim_stroke',
+                'type' => self::FIELD_TYPES['swim_stroke'],
+                'def_num' => 38,
+            ],
+            39 => [
+                'name' => 'sub_sport',
+                'type' => self::FIELD_TYPES['sub_sport'],
+                'def_num' => 39,
+            ],
+            40 => [  # # of active lengths of swim pool
+                'name' => 'num_active_lengths',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 40,
+                'units' => 'lengths',
+            ],
+            41 => [
+                'name' => 'total_work',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 41,
+                'units' => 'J',
+            ],
+            42 => [
+                'name' => 'avg_altitude',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 42,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+                'components' => [
+                    [
+                        'name' => 'enhanced_avg_altitude',
+                        'def_num' => 112,
+                        'scale' => 5,
+                        'offset' => 500,
+                        'units' => 'm',
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            43 => [
+                'name' => 'max_altitude',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 43,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+                'components' => [
+                    [
+                        'name' => 'enhanced_max_altitude',
+                        'def_num' => 114,
+                        'scale' => 5,
+                        'offset' => 500,
+                        'units' => 'm',
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            44 => [
+                'name' => 'gps_accuracy',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 44,
+                'units' => 'm',
+            ],
+            45 => [
+                'name' => 'avg_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 45,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            46 => [
+                'name' => 'avg_pos_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 46,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            47 => [
+                'name' => 'avg_neg_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 47,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            48 => [
+                'name' => 'max_pos_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 48,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            49 => [
+                'name' => 'max_neg_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 49,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            50 => [
+                'name' => 'avg_temperature',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 50,
+                'units' => 'C',
+            ],
+            51 => [
+                'name' => 'max_temperature',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 51,
+                'units' => 'C',
+            ],
+            52 => [
+                'name' => 'total_moving_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 52,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            53 => [
+                'name' => 'avg_pos_vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 53,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            54 => [
+                'name' => 'avg_neg_vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 54,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            55 => [
+                'name' => 'max_pos_vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 55,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            56 => [
+                'name' => 'max_neg_vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 56,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            57 => [
+                'name' => 'time_in_hr_zone',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 57,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            58 => [
+                'name' => 'time_in_speed_zone',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 58,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            59 => [
+                'name' => 'time_in_cadence_zone',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 59,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            60 => [
+                'name' => 'time_in_power_zone',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 60,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            61 => [
+                'name' => 'repetition_num',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 61,
+            ],
+            62 => [
+                'name' => 'min_altitude',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 62,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+                'components' => [
+                    [
+                        'name' => 'enhanced_min_altitude',
+                        'def_num' => 113,
+                        'scale' => 5,
+                        'offset' => 500,
+                        'units' => 'm',
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            63 => [
+                'name' => 'min_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 63,
+                'units' => 'bpm',
+            ],
+            71 => [
+                'name' => 'wkt_step_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 71,
+            ],
+            74 => [
+                'name' => 'opponent_score',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 74,
+            ],
+            75 => [  # stroke_type enum used as the index
+                'name' => 'stroke_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 75,
+                'units' => 'counts',
+            ],
+            76 => [  # zone number used as the index
+                'name' => 'zone_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 76,
+                'units' => 'counts',
+            ],
+            77 => [
+                'name' => 'avg_vertical_oscillation',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 77,
+                'scale' => 10,
+                'units' => 'mm',
+            ],
+            78 => [
+                'name' => 'avg_stance_time_percent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 78,
+                'scale' => 100,
+                'units' => 'percent',
+            ],
+            79 => [
+                'name' => 'avg_stance_time',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 79,
+                'scale' => 10,
+                'units' => 'ms',
+            ],
+            80 => [  # fractional part of the avg_cadence
+                'name' => 'avg_fractional_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 80,
+                'scale' => 128,
+                'units' => 'rpm',
+            ],
+            81 => [  # fractional part of the max_cadence
+                'name' => 'max_fractional_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 81,
+                'scale' => 128,
+                'units' => 'rpm',
+            ],
+            82 => [  # fractional part of the total_cycles
+                'name' => 'total_fractional_cycles',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 82,
+                'scale' => 128,
+                'units' => 'cycles',
+            ],
+            83 => [
+                'name' => 'player_score',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 83,
+            ],
+            84 => [  # Avg saturated and unsaturated hemoglobin
+                'name' => 'avg_total_hemoglobin_conc',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 84,
+                'scale' => 100,
+                'units' => 'g/dL',
+            ],
+            85 => [  # Min saturated and unsaturated hemoglobin
+                'name' => 'min_total_hemoglobin_conc',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 85,
+                'scale' => 100,
+                'units' => 'g/dL',
+            ],
+            86 => [  # Max saturated and unsaturated hemoglobin
+                'name' => 'max_total_hemoglobin_conc',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 86,
+                'scale' => 100,
+                'units' => 'g/dL',
+            ],
+            87 => [  # Avg percentage of hemoglobin saturated with oxygen
+                'name' => 'avg_saturated_hemoglobin_percent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 87,
+                'scale' => 10,
+                'units' => '%',
+            ],
+            88 => [  # Min percentage of hemoglobin saturated with oxygen
+                'name' => 'min_saturated_hemoglobin_percent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 88,
+                'scale' => 10,
+                'units' => '%',
+            ],
+            89 => [  # Max percentage of hemoglobin saturated with oxygen
+                'name' => 'max_saturated_hemoglobin_percent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 89,
+                'scale' => 10,
+                'units' => '%',
+            ],
+            91 => [
+                'name' => 'avg_left_torque_effectiveness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 91,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            92 => [
+                'name' => 'avg_right_torque_effectiveness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 92,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            93 => [
+                'name' => 'avg_left_pedal_smoothness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 93,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            94 => [
+                'name' => 'avg_right_pedal_smoothness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 94,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            95 => [
+                'name' => 'avg_combined_pedal_smoothness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 95,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            98 => [  # Total time spent in the standing position
+                'name' => 'time_standing',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 98,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            99 => [  # Number of transitions to the standing state
+                'name' => 'stand_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 99,
+            ],
+            100 => [  # Average left platform center offset
+                'name' => 'avg_left_pco',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 100,
+                'units' => 'mm',
+            ],
+            101 => [  # Average right platform center offset
+                'name' => 'avg_right_pco',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 101,
+                'units' => 'mm',
+            ],
+            102 => [  # Average left power phase angles. Data value indexes defined by power_phase_type.
+                'name' => 'avg_left_power_phase',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 102,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            103 => [  # Average left power phase peak angles. Data value indexes  defined by power_phase_type.
+                'name' => 'avg_left_power_phase_peak',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 103,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            104 => [  # Average right power phase angles. Data value indexes defined by power_phase_type.
+                'name' => 'avg_right_power_phase',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 104,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            105 => [  # Average right power phase peak angles. Data value indexes  defined by power_phase_type.
+                'name' => 'avg_right_power_phase_peak',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 105,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            106 => [  # Average power by position. Data value indexes defined by rider_position_type.
+                'name' => 'avg_power_position',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 106,
+                'units' => 'watts',
+            ],
+            107 => [  # Maximum power by position. Data value indexes defined by rider_position_type.
+                'name' => 'max_power_position',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 107,
+                'units' => 'watts',
+            ],
+            108 => [  # Average cadence by position. Data value indexes defined by rider_position_type.
+                'name' => 'avg_cadence_position',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 108,
+                'units' => 'rpm',
+            ],
+            109 => [  # Maximum cadence by position. Data value indexes defined by rider_position_type.
+                'name' => 'max_cadence_position',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 109,
+                'units' => 'rpm',
+            ],
+            110 => [
+                'name' => 'enhanced_avg_speed',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 110,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            111 => [
+                'name' => 'enhanced_max_speed',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 111,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            112 => [
+                'name' => 'enhanced_avg_altitude',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 112,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+            ],
+            113 => [
+                'name' => 'enhanced_min_altitude',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 113,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+            ],
+            114 => [
+                'name' => 'enhanced_max_altitude',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 114,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+            ],
+            115 => [  # lev average motor power during lap
+                'name' => 'avg_lev_motor_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 115,
+                'units' => 'watts',
+            ],
+            116 => [  # lev maximum motor power during lap
+                'name' => 'max_lev_motor_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 116,
+                'units' => 'watts',
+            ],
+            117 => [  # lev battery consumption during lap
+                'name' => 'lev_battery_consumption',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 117,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            118 => [
+                'name' => 'avg_vertical_ratio',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 118,
+                'scale' => 100,
+                'units' => 'percent',
+            ],
+            119 => [
+                'name' => 'avg_stance_time_balance',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 119,
+                'scale' => 100,
+                'units' => 'percent',
+            ],
+            120 => [
+                'name' => 'avg_step_length',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 120,
+                'scale' => 10,
+                'units' => 'mm',
+            ],
+            121 => [
+                'name' => 'avg_vam',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 121,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Lap end time.
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    20 => [
+        'name' => 'record',
+        'global_number' => 20,
+        'fields' => [
+            0 => [
+                'name' => 'position_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 0,
+                'units' => 'semicircles',
+            ],
+            1 => [
+                'name' => 'position_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 1,
+                'units' => 'semicircles',
+            ],
+            2 => [
+                'name' => 'altitude',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+                'components' => [
+                    [
+                        'name' => 'enhanced_altitude',
+                        'def_num' => 78,
+                        'scale' => 5,
+                        'offset' => 500,
+                        'units' => 'm',
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            3 => [
+                'name' => 'heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 3,
+                'units' => 'bpm',
+            ],
+            4 => [
+                'name' => 'cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 4,
+                'units' => 'rpm',
+            ],
+            5 => [
+                'name' => 'distance',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 5,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            6 => [
+                'name' => 'speed',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 6,
+                'scale' => 1000,
+                'units' => 'm/s',
+                'components' => [
+                    [
+                        'name' => 'enhanced_speed',
+                        'def_num' => 73,
+                        'scale' => 1000,
+                        'units' => 'm/s',
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            7 => [
+                'name' => 'power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 7,
+                'units' => 'watts',
+            ],
+            8 => [
+                'name' => 'compressed_speed_distance',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 8,
+                'components' => [
+                    [
+                        'name' => 'speed',
+                        'def_num' => 6,
+                        'scale' => 100,
+                        'units' => 'm/s',
+                        'accumulate' => False,
+                        'bits' => 12,
+                        'bit_offset' => 0,
+                    ],
+                    [
+                        'name' => 'distance',
+                        'def_num' => 5,
+                        'scale' => 16,
+                        'units' => 'm',
+                        'accumulate' => True,
+                        'bits' => 12,
+                        'bit_offset' => 12,
+                    ],
+                ],
+            ],
+            9 => [
+                'name' => 'grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 9,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            10 => [  # Relative. 0 is none  254 is Max.
+                'name' => 'resistance',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 10,
+            ],
+            11 => [
+                'name' => 'time_from_course',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 11,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            12 => [
+                'name' => 'cycle_length',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 12,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            13 => [
+                'name' => 'temperature',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 13,
+                'units' => 'C',
+            ],
+            17 => [  # Speed at 1s intervals.  Timestamp field indicates time of last array element.
+                'name' => 'speed_1s',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 17,
+                'scale' => 16,
+                'units' => 'm/s',
+            ],
+            18 => [
+                'name' => 'cycles',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 18,
+                'components' => [
+                    [
+                        'name' => 'total_cycles',
+                        'def_num' => 19,
+                        'units' => 'cycles',
+                        'accumulate' => True,
+                        'bits' => 8,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            19 => [
+                'name' => 'total_cycles',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 19,
+                'units' => 'cycles',
+            ],
+            28 => [
+                'name' => 'compressed_accumulated_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 28,
+                'components' => [
+                    [
+                        'name' => 'accumulated_power',
+                        'def_num' => 29,
+                        'units' => 'watts',
+                        'accumulate' => True,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            29 => [
+                'name' => 'accumulated_power',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 29,
+                'units' => 'watts',
+            ],
+            30 => [
+                'name' => 'left_right_balance',
+                'type' => self::FIELD_TYPES['left_right_balance'],
+                'def_num' => 30,
+            ],
+            31 => [
+                'name' => 'gps_accuracy',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 31,
+                'units' => 'm',
+            ],
+            32 => [
+                'name' => 'vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 32,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            33 => [
+                'name' => 'calories',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 33,
+                'units' => 'kcal',
+            ],
+            39 => [
+                'name' => 'vertical_oscillation',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 39,
+                'scale' => 10,
+                'units' => 'mm',
+            ],
+            40 => [
+                'name' => 'stance_time_percent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 40,
+                'scale' => 100,
+                'units' => 'percent',
+            ],
+            41 => [
+                'name' => 'stance_time',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 41,
+                'scale' => 10,
+                'units' => 'ms',
+            ],
+            42 => [
+                'name' => 'activity_type',
+                'type' => self::FIELD_TYPES['activity_type'],
+                'def_num' => 42,
+            ],
+            43 => [
+                'name' => 'left_torque_effectiveness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 43,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            44 => [
+                'name' => 'right_torque_effectiveness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 44,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            45 => [
+                'name' => 'left_pedal_smoothness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 45,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            46 => [
+                'name' => 'right_pedal_smoothness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 46,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            47 => [
+                'name' => 'combined_pedal_smoothness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 47,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            48 => [
+                'name' => 'time128',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 48,
+                'scale' => 128,
+                'units' => 's',
+            ],
+            49 => [
+                'name' => 'stroke_type',
+                'type' => self::FIELD_TYPES['stroke_type'],
+                'def_num' => 49,
+            ],
+            50 => [
+                'name' => 'zone',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 50,
+            ],
+            51 => [
+                'name' => 'ball_speed',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 51,
+                'scale' => 100,
+                'units' => 'm/s',
+            ],
+            52 => [  # Log cadence and fractional cadence for backwards compatability
+                'name' => 'cadence256',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 52,
+                'scale' => 256,
+                'units' => 'rpm',
+            ],
+            53 => [
+                'name' => 'fractional_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 53,
+                'scale' => 128,
+                'units' => 'rpm',
+            ],
+            54 => [  # Total saturated and unsaturated hemoglobin
+                'name' => 'total_hemoglobin_conc',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 54,
+                'scale' => 100,
+                'units' => 'g/dL',
+            ],
+            55 => [  # Min saturated and unsaturated hemoglobin
+                'name' => 'total_hemoglobin_conc_min',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 55,
+                'scale' => 100,
+                'units' => 'g/dL',
+            ],
+            56 => [  # Max saturated and unsaturated hemoglobin
+                'name' => 'total_hemoglobin_conc_max',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 56,
+                'scale' => 100,
+                'units' => 'g/dL',
+            ],
+            57 => [  # Percentage of hemoglobin saturated with oxygen
+                'name' => 'saturated_hemoglobin_percent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 57,
+                'scale' => 10,
+                'units' => '%',
+            ],
+            58 => [  # Min percentage of hemoglobin saturated with oxygen
+                'name' => 'saturated_hemoglobin_percent_min',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 58,
+                'scale' => 10,
+                'units' => '%',
+            ],
+            59 => [  # Max percentage of hemoglobin saturated with oxygen
+                'name' => 'saturated_hemoglobin_percent_max',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 59,
+                'scale' => 10,
+                'units' => '%',
+            ],
+            62 => [
+                'name' => 'device_index',
+                'type' => self::FIELD_TYPES['device_index'],
+                'def_num' => 62,
+            ],
+            67 => [  # Left platform center offset
+                'name' => 'left_pco',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 67,
+                'units' => 'mm',
+            ],
+            68 => [  # Right platform center offset
+                'name' => 'right_pco',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 68,
+                'units' => 'mm',
+            ],
+            69 => [  # Left power phase angles. Data value indexes defined by power_phase_type.
+                'name' => 'left_power_phase',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 69,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            70 => [  # Left power phase peak angles. Data value indexes defined by power_phase_type.
+                'name' => 'left_power_phase_peak',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 70,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            71 => [  # Right power phase angles. Data value indexes defined by power_phase_type.
+                'name' => 'right_power_phase',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 71,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            72 => [  # Right power phase peak angles. Data value indexes defined by power_phase_type.
+                'name' => 'right_power_phase_peak',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 72,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            73 => [
+                'name' => 'enhanced_speed',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 73,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            78 => [
+                'name' => 'enhanced_altitude',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 78,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+            ],
+            81 => [  # lev battery state of charge
+                'name' => 'battery_soc',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 81,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            82 => [  # lev motor power
+                'name' => 'motor_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 82,
+                'units' => 'watts',
+            ],
+            83 => [
+                'name' => 'vertical_ratio',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 83,
+                'scale' => 100,
+                'units' => 'percent',
+            ],
+            84 => [
+                'name' => 'stance_time_balance',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 84,
+                'scale' => 100,
+                'units' => 'percent',
+            ],
+            85 => [
+                'name' => 'step_length',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 85,
+                'scale' => 10,
+                'units' => 'mm',
+            ],
+            91 => [  # Includes atmospheric pressure
+                'name' => 'absolute_pressure',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 91,
+                'units' => 'Pa',
+            ],
+            92 => [  # 0 if above water
+                'name' => 'depth',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 92,
+                'scale' => 1000,
+                'units' => 'm',
+            ],
+            93 => [  # 0 if above water
+                'name' => 'next_stop_depth',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 93,
+                'scale' => 1000,
+                'units' => 'm',
+            ],
+            94 => [
+                'name' => 'next_stop_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 94,
+                'units' => 's',
+            ],
+            95 => [
+                'name' => 'time_to_surface',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 95,
+                'units' => 's',
+            ],
+            96 => [
+                'name' => 'ndl_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 96,
+                'units' => 's',
+            ],
+            97 => [
+                'name' => 'cns_load',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 97,
+                'units' => 'percent',
+            ],
+            98 => [
+                'name' => 'n2_load',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 98,
+                'units' => 'percent',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
+    21 => [
+        'name' => 'event',
+        'global_number' => 21,
+        'fields' => [
+            0 => [
+                'name' => 'event',
+                'type' => self::FIELD_TYPES['event'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'event_type',
+                'type' => self::FIELD_TYPES['event_type'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'data16',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+                'components' => [
+                    [
+                        'name' => 'data',
+                        'def_num' => 3,
+                        'accumulate' => False,
+                        'bits' => 16,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            3 => [
+                'name' => 'data',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 3,
+                'subfields' => [
+                    [
+                        'name' => 'battery_level',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x84],  # uint16
+                        'scale' => 1000,
+                        'units' => 'V',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'battery',
+                                'raw_value' => 11,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'cad_high_alert',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x84],  # uint16
+                        'units' => 'rpm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'cad_high_alert',
+                                'raw_value' => 17,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'cad_low_alert',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x84],  # uint16
+                        'units' => 'rpm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'cad_low_alert',
+                                'raw_value' => 18,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'calorie_duration_alert',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'units' => 'calories',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'calorie_duration_alert',
+                                'raw_value' => 25,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'comm_timeout',
+                        'def_num' => 3,
+                        'type' => self::FIELD_TYPES['comm_timeout_type'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'comm_timeout',
+                                'raw_value' => 47,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'course_point_index',
+                        'def_num' => 3,
+                        'type' => self::FIELD_TYPES['message_index'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'course_point',
+                                'raw_value' => 10,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'distance_duration_alert',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'scale' => 100,
+                        'units' => 'm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'distance_duration_alert',
+                                'raw_value' => 24,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'fitness_equipment_state',
+                        'def_num' => 3,
+                        'type' => self::FIELD_TYPES['fitness_equipment_state'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'fitness_equipment',
+                                'raw_value' => 27,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'gear_change_data',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'front_gear_change',
+                                'raw_value' => 42,
+                            ],
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'rear_gear_change',
+                                'raw_value' => 43,
+                            ],
+                        ],
+                        'components' => [
+                            [
+                                'name' => 'rear_gear_num',
+                                'def_num' => 11,
+                                'accumulate' => False,
+                                'bits' => 8,
+                                'bit_offset' => 0,
+                            ],
+                            [
+                                'name' => 'rear_gear',
+                                'def_num' => 12,
+                                'accumulate' => False,
+                                'bits' => 8,
+                                'bit_offset' => 8,
+                            ],
+                            [
+                                'name' => 'front_gear_num',
+                                'def_num' => 9,
+                                'accumulate' => False,
+                                'bits' => 8,
+                                'bit_offset' => 16,
+                            ],
+                            [
+                                'name' => 'front_gear',
+                                'def_num' => 10,
+                                'accumulate' => False,
+                                'bits' => 8,
+                                'bit_offset' => 24,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'hr_high_alert',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x02],  # uint8
+                        'units' => 'bpm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'hr_high_alert',
+                                'raw_value' => 13,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'hr_low_alert',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x02],  # uint8
+                        'units' => 'bpm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'hr_low_alert',
+                                'raw_value' => 14,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'power_high_alert',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x84],  # uint16
+                        'units' => 'watts',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'power_high_alert',
+                                'raw_value' => 19,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'power_low_alert',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x84],  # uint16
+                        'units' => 'watts',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'power_low_alert',
+                                'raw_value' => 20,
+                            ],
+                        ],
+                    ],
+                    [  # Indicates the rider position value.
+                        'name' => 'rider_position',
+                        'def_num' => 3,
+                        'type' => self::FIELD_TYPES['rider_position_type'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'rider_position_change',
+                                'raw_value' => 44,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'speed_high_alert',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'scale' => 1000,
+                        'units' => 'm/s',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'speed_high_alert',
+                                'raw_value' => 15,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'speed_low_alert',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'scale' => 1000,
+                        'units' => 'm/s',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'speed_low_alert',
+                                'raw_value' => 16,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'sport_point',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'sport_point',
+                                'raw_value' => 33,
+                            ],
+                        ],
+                        'components' => [
+                            [
+                                'name' => 'score',
+                                'def_num' => 7,
+                                'accumulate' => False,
+                                'bits' => 16,
+                                'bit_offset' => 0,
+                            ],
+                            [
+                                'name' => 'opponent_score',
+                                'def_num' => 8,
+                                'accumulate' => False,
+                                'bits' => 16,
+                                'bit_offset' => 16,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'time_duration_alert',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'scale' => 1000,
+                        'units' => 's',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'time_duration_alert',
+                                'raw_value' => 23,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'timer_trigger',
+                        'def_num' => 3,
+                        'type' => self::FIELD_TYPES['timer_trigger'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'timer',
+                                'raw_value' => 0,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'virtual_partner_speed',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x84],  # uint16
+                        'scale' => 1000,
+                        'units' => 'm/s',
+                        'ref_fields' => [
+                            [
+                                'name' => 'event',
+                                'def_num' => 0,
+                                'value' => 'virtual_partner_pace',
+                                'raw_value' => 12,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            4 => [
+                'name' => 'event_group',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 4,
+            ],
+            7 => [  # Do not populate directly.  Autogenerated by decoder for sport_point subfield components
+                'name' => 'score',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 7,
+            ],
+            8 => [  # Do not populate directly.  Autogenerated by decoder for sport_point subfield components
+                'name' => 'opponent_score',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 8,
+            ],
+            9 => [  # Do not populate directly.  Autogenerated by decoder for gear_change subfield components.  Front gear number. 1 is innermost.
+                'name' => 'front_gear_num',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 9,
+            ],
+            10 => [  # Do not populate directly.  Autogenerated by decoder for gear_change subfield components.  Number of front teeth.
+                'name' => 'front_gear',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 10,
+            ],
+            11 => [  # Do not populate directly.  Autogenerated by decoder for gear_change subfield components.  Rear gear number. 1 is innermost.
+                'name' => 'rear_gear_num',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 11,
+            ],
+            12 => [  # Do not populate directly.  Autogenerated by decoder for gear_change subfield components.  Number of rear teeth.
+                'name' => 'rear_gear',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 12,
+            ],
+            13 => [
+                'name' => 'device_index',
+                'type' => self::FIELD_TYPES['device_index'],
+                'def_num' => 13,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
+    23 => [
+        'name' => 'device_info',
+        'global_number' => 23,
+        'fields' => [
+            0 => [
+                'name' => 'device_index',
+                'type' => self::FIELD_TYPES['device_index'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'device_type',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 1,
+                'subfields' => [
+                    [
+                        'name' => 'ant_device_type',
+                        'def_num' => 1,
+                        'type' => self::BASE_TYPES[0x02],  # uint8
+                        'ref_fields' => [
+                            [
+                                'name' => 'source_type',
+                                'def_num' => 25,
+                                'value' => 'ant',
+                                'raw_value' => 0,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'antplus_device_type',
+                        'def_num' => 1,
+                        'type' => self::FIELD_TYPES['antplus_device_type'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'source_type',
+                                'def_num' => 25,
+                                'value' => 'antplus',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            2 => [
+                'name' => 'manufacturer',
+                'type' => self::FIELD_TYPES['manufacturer'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'serial_number',
+                'type' => self::BASE_TYPES[0x8C],  # uint32z
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'product',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'subfields' => [
+                    [
+                        'name' => 'garmin_product',
+                        'def_num' => 4,
+                        'type' => self::FIELD_TYPES['garmin_product'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 2,
+                                'value' => 'garmin',
+                                'raw_value' => 1,
+                            ],
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 2,
+                                'value' => 'dynastream',
+                                'raw_value' => 15,
+                            ],
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 2,
+                                'value' => 'dynastream_oem',
+                                'raw_value' => 13,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            5 => [
+                'name' => 'software_version',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 5,
+                'scale' => 100,
+            ],
+            6 => [
+                'name' => 'hardware_version',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 6,
+            ],
+            7 => [  # Reset by new battery or charge.
+                'name' => 'cum_operating_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 7,
+                'units' => 's',
+            ],
+            10 => [
+                'name' => 'battery_voltage',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 10,
+                'scale' => 256,
+                'units' => 'V',
+            ],
+            11 => [
+                'name' => 'battery_status',
+                'type' => self::FIELD_TYPES['battery_status'],
+                'def_num' => 11,
+            ],
+            18 => [  # Indicates the location of the sensor
+                'name' => 'sensor_position',
+                'type' => self::FIELD_TYPES['body_location'],
+                'def_num' => 18,
+            ],
+            19 => [  # Used to describe the sensor or location
+                'name' => 'descriptor',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 19,
+            ],
+            20 => [
+                'name' => 'ant_transmission_type',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 20,
+            ],
+            21 => [
+                'name' => 'ant_device_number',
+                'type' => self::BASE_TYPES[0x8B],  # uint16z
+                'def_num' => 21,
+            ],
+            22 => [
+                'name' => 'ant_network',
+                'type' => self::FIELD_TYPES['ant_network'],
+                'def_num' => 22,
+            ],
+            25 => [
+                'name' => 'source_type',
+                'type' => self::FIELD_TYPES['source_type'],
+                'def_num' => 25,
+            ],
+            27 => [  # Optional free form string to indicate the devices name or model
+                'name' => 'product_name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 27,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
+    27 => [
+        'name' => 'workout_step',
+        'global_number' => 27,
+        'fields' => [
+            0 => [
+                'name' => 'wkt_step_name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'duration_type',
+                'type' => self::FIELD_TYPES['wkt_step_duration'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'duration_value',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 2,
+                'subfields' => [
+                    [
+                        'name' => 'duration_calories',
+                        'def_num' => 2,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'units' => 'calories',
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'calories',
+                                'raw_value' => 4,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'duration_distance',
+                        'def_num' => 2,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'scale' => 100,
+                        'units' => 'm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'distance',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'duration_hr',
+                        'def_num' => 2,
+                        'type' => self::FIELD_TYPES['workout_hr'],
+                        'units' => '% or bpm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'hr_less_than',
+                                'raw_value' => 2,
+                            ],
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'hr_greater_than',
+                                'raw_value' => 3,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'duration_power',
+                        'def_num' => 2,
+                        'type' => self::FIELD_TYPES['workout_power'],
+                        'units' => '% or watts',
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'power_less_than',
+                                'raw_value' => 14,
+                            ],
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'power_greater_than',
+                                'raw_value' => 15,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'duration_reps',
+                        'def_num' => 2,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'reps',
+                                'raw_value' => 29,
+                            ],
+                        ],
+                    ],
+                    [  # message_index of step to loop back to. Steps are assumed to be in the order by message_index. custom_name and intensity members are undefined for this duration type.
+                        'name' => 'duration_step',
+                        'def_num' => 2,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_steps_cmplt',
+                                'raw_value' => 6,
+                            ],
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_time',
+                                'raw_value' => 7,
+                            ],
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_distance',
+                                'raw_value' => 8,
+                            ],
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_calories',
+                                'raw_value' => 9,
+                            ],
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_hr_less_than',
+                                'raw_value' => 10,
+                            ],
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_hr_greater_than',
+                                'raw_value' => 11,
+                            ],
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_power_less_than',
+                                'raw_value' => 12,
+                            ],
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_power_greater_than',
+                                'raw_value' => 13,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'duration_time',
+                        'def_num' => 2,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'scale' => 1000,
+                        'units' => 's',
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'time',
+                                'raw_value' => 0,
+                            ],
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repetition_time',
+                                'raw_value' => 28,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            3 => [
+                'name' => 'target_type',
+                'type' => self::FIELD_TYPES['wkt_step_target'],
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'target_value',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 4,
+                'subfields' => [
+                    [
+                        'name' => 'repeat_calories',
+                        'def_num' => 4,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'units' => 'calories',
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_calories',
+                                'raw_value' => 9,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'repeat_distance',
+                        'def_num' => 4,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'scale' => 100,
+                        'units' => 'm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_distance',
+                                'raw_value' => 8,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'repeat_hr',
+                        'def_num' => 4,
+                        'type' => self::FIELD_TYPES['workout_hr'],
+                        'units' => '% or bpm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_hr_less_than',
+                                'raw_value' => 10,
+                            ],
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_hr_greater_than',
+                                'raw_value' => 11,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'repeat_power',
+                        'def_num' => 4,
+                        'type' => self::FIELD_TYPES['workout_power'],
+                        'units' => '% or watts',
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_power_less_than',
+                                'raw_value' => 12,
+                            ],
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_power_greater_than',
+                                'raw_value' => 13,
+                            ],
+                        ],
+                    ],
+                    [  # # of repetitions
+                        'name' => 'repeat_steps',
+                        'def_num' => 4,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_steps_cmplt',
+                                'raw_value' => 6,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'repeat_time',
+                        'def_num' => 4,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'scale' => 1000,
+                        'units' => 's',
+                        'ref_fields' => [
+                            [
+                                'name' => 'duration_type',
+                                'def_num' => 1,
+                                'value' => 'repeat_until_time',
+                                'raw_value' => 7,
+                            ],
+                        ],
+                    ],
+                    [  # Zone (1-?); Custom = 0;
+                        'name' => 'target_cadence_zone',
+                        'def_num' => 4,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'cadence',
+                                'raw_value' => 3,
+                            ],
+                        ],
+                    ],
+                    [  # hr zone (1-5);Custom =0;
+                        'name' => 'target_hr_zone',
+                        'def_num' => 4,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'heart_rate',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                    [  # Power Zone ( 1-7); Custom = 0;
+                        'name' => 'target_power_zone',
+                        'def_num' => 4,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'power',
+                                'raw_value' => 4,
+                            ],
+                        ],
+                    ],
+                    [  # speed zone (1-10);Custom =0;
+                        'name' => 'target_speed_zone',
+                        'def_num' => 4,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'speed',
+                                'raw_value' => 0,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'target_stroke_type',
+                        'def_num' => 4,
+                        'type' => self::FIELD_TYPES['swim_stroke'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'swim_stroke',
+                                'raw_value' => 11,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            5 => [
+                'name' => 'custom_target_value_low',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 5,
+                'subfields' => [
+                    [
+                        'name' => 'custom_target_cadence_low',
+                        'def_num' => 5,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'units' => 'rpm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'cadence',
+                                'raw_value' => 3,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'custom_target_heart_rate_low',
+                        'def_num' => 5,
+                        'type' => self::FIELD_TYPES['workout_hr'],
+                        'units' => '% or bpm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'heart_rate',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'custom_target_power_low',
+                        'def_num' => 5,
+                        'type' => self::FIELD_TYPES['workout_power'],
+                        'units' => '% or watts',
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'power',
+                                'raw_value' => 4,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'custom_target_speed_low',
+                        'def_num' => 5,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'scale' => 1000,
+                        'units' => 'm/s',
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'speed',
+                                'raw_value' => 0,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            6 => [
+                'name' => 'custom_target_value_high',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 6,
+                'subfields' => [
+                    [
+                        'name' => 'custom_target_cadence_high',
+                        'def_num' => 6,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'units' => 'rpm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'cadence',
+                                'raw_value' => 3,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'custom_target_heart_rate_high',
+                        'def_num' => 6,
+                        'type' => self::FIELD_TYPES['workout_hr'],
+                        'units' => '% or bpm',
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'heart_rate',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'custom_target_power_high',
+                        'def_num' => 6,
+                        'type' => self::FIELD_TYPES['workout_power'],
+                        'units' => '% or watts',
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'power',
+                                'raw_value' => 4,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'custom_target_speed_high',
+                        'def_num' => 6,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'scale' => 1000,
+                        'units' => 'm/s',
+                        'ref_fields' => [
+                            [
+                                'name' => 'target_type',
+                                'def_num' => 3,
+                                'value' => 'speed',
+                                'raw_value' => 0,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            7 => [
+                'name' => 'intensity',
+                'type' => self::FIELD_TYPES['intensity'],
+                'def_num' => 7,
+            ],
+            8 => [
+                'name' => 'notes',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 8,
+            ],
+            9 => [
+                'name' => 'equipment',
+                'type' => self::FIELD_TYPES['workout_equipment'],
+                'def_num' => 9,
+            ],
+            10 => [
+                'name' => 'exercise_category',
+                'type' => self::FIELD_TYPES['exercise_category'],
+                'def_num' => 10,
+            ],
+            11 => [
+                'name' => 'exercise_name',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 11,
+            ],
+            12 => [
+                'name' => 'exercise_weight',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 12,
+                'scale' => 100,
+                'units' => 'kg',
+            ],
+            13 => [
+                'name' => 'weight_display_unit',
+                'type' => self::FIELD_TYPES['fit_base_unit'],
+                'def_num' => 13,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    32 => [
+        'name' => 'course_point',
+        'global_number' => 32,
+        'fields' => [
+            1 => [
+                'name' => 'timestamp',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'position_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 2,
+                'units' => 'semicircles',
+            ],
+            3 => [
+                'name' => 'position_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 3,
+                'units' => 'semicircles',
+            ],
+            4 => [
+                'name' => 'distance',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 4,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            5 => [
+                'name' => 'type',
+                'type' => self::FIELD_TYPES['course_point'],
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 6,
+            ],
+            8 => [
+                'name' => 'favorite',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 8,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    37 => [
+        'name' => 'file_capabilities',
+        'global_number' => 37,
+        'fields' => [
+            0 => [
+                'name' => 'type',
+                'type' => self::FIELD_TYPES['file'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'flags',
+                'type' => self::FIELD_TYPES['file_flags'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'directory',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'max_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'max_size',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 4,
+                'units' => 'bytes',
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    38 => [
+        'name' => 'mesg_capabilities',
+        'global_number' => 38,
+        'fields' => [
+            0 => [
+                'name' => 'file',
+                'type' => self::FIELD_TYPES['file'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'global_number',
+                'type' => self::FIELD_TYPES['global_number'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'count_type',
+                'type' => self::FIELD_TYPES['mesg_count'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+                'subfields' => [
+                    [
+                        'name' => 'max_per_file',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x84],  # uint16
+                        'ref_fields' => [
+                            [
+                                'name' => 'count_type',
+                                'def_num' => 2,
+                                'value' => 'max_per_file',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'max_per_file_type',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x84],  # uint16
+                        'ref_fields' => [
+                            [
+                                'name' => 'count_type',
+                                'def_num' => 2,
+                                'value' => 'max_per_file_type',
+                                'raw_value' => 2,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'num_per_file',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x84],  # uint16
+                        'ref_fields' => [
+                            [
+                                'name' => 'count_type',
+                                'def_num' => 2,
+                                'value' => 'num_per_file',
+                                'raw_value' => 0,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    39 => [
+        'name' => 'field_capabilities',
+        'global_number' => 39,
+        'fields' => [
+            0 => [
+                'name' => 'file',
+                'type' => self::FIELD_TYPES['file'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'global_number',
+                'type' => self::FIELD_TYPES['global_number'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'field_num',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    49 => [
+        'name' => 'file_creator',
+        'global_number' => 49,
+        'fields' => [
+            0 => [
+                'name' => 'software_version',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'hardware_version',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 1,
+            ],
+        ],
+    ],
+    53 => [
+        'name' => 'speed_zone',
+        'global_number' => 53,
+        'fields' => [
+            0 => [
+                'name' => 'high_value',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            1 => [
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 1,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    55 => [
+        'name' => 'monitoring',
+        'global_number' => 55,
+        'fields' => [
+            0 => [  # Associates this data to device_info message.  Not required for file with single device (sensor).
+                'name' => 'device_index',
+                'type' => self::FIELD_TYPES['device_index'],
+                'def_num' => 0,
+            ],
+            1 => [  # Accumulated total calories.  Maintained by MonitoringReader for each activity_type.  See SDK documentation
+                'name' => 'calories',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+                'units' => 'kcal',
+            ],
+            2 => [  # Accumulated distance.  Maintained by MonitoringReader for each activity_type.  See SDK documentation.
+                'name' => 'distance',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 2,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            3 => [  # Accumulated cycles.  Maintained by MonitoringReader for each activity_type.  See SDK documentation.
+                'name' => 'cycles',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 3,
+                'scale' => 2,
+                'units' => 'cycles',
+                'subfields' => [
+                    [
+                        'name' => 'steps',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'units' => 'steps',
+                        'ref_fields' => [
+                            [
+                                'name' => 'activity_type',
+                                'def_num' => 5,
+                                'value' => 'walking',
+                                'raw_value' => 6,
+                            ],
+                            [
+                                'name' => 'activity_type',
+                                'def_num' => 5,
+                                'value' => 'running',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'strokes',
+                        'def_num' => 3,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'scale' => 2,
+                        'units' => 'strokes',
+                        'ref_fields' => [
+                            [
+                                'name' => 'activity_type',
+                                'def_num' => 5,
+                                'value' => 'cycling',
+                                'raw_value' => 2,
+                            ],
+                            [
+                                'name' => 'activity_type',
+                                'def_num' => 5,
+                                'value' => 'swimming',
+                                'raw_value' => 5,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            4 => [
+                'name' => 'active_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 4,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            5 => [
+                'name' => 'activity_type',
+                'type' => self::FIELD_TYPES['activity_type'],
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'activity_subtype',
+                'type' => self::FIELD_TYPES['activity_subtype'],
+                'def_num' => 6,
+            ],
+            7 => [
+                'name' => 'activity_level',
+                'type' => self::FIELD_TYPES['activity_level'],
+                'def_num' => 7,
+            ],
+            8 => [
+                'name' => 'distance_16',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 8,
+                'units' => '100*m',
+            ],
+            9 => [
+                'name' => 'cycles_16',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 9,
+                'units' => '2*cycles or steps',
+            ],
+            10 => [
+                'name' => 'active_time_16',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 10,
+                'units' => 's',
+            ],
+            11 => [  # Must align to logging interval, for example, time must be 00:00:00 for daily log.
+                'name' => 'local_timestamp',
+                'type' => self::FIELD_TYPES['local_date_time'],
+                'def_num' => 11,
+            ],
+            12 => [  # Avg temperature during the logging interval ended at timestamp
+                'name' => 'temperature',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 12,
+                'scale' => 100,
+                'units' => 'C',
+            ],
+            14 => [  # Min temperature during the logging interval ended at timestamp
+                'name' => 'temperature_min',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 14,
+                'scale' => 100,
+                'units' => 'C',
+            ],
+            15 => [  # Max temperature during the logging interval ended at timestamp
+                'name' => 'temperature_max',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 15,
+                'scale' => 100,
+                'units' => 'C',
+            ],
+            16 => [  # Indexed using minute_activity_level enum
+                'name' => 'activity_time',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 16,
+                'units' => 'minutes',
+            ],
+            19 => [
+                'name' => 'active_calories',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 19,
+                'units' => 'kcal',
+            ],
+            24 => [  # Indicates single type / intensity for duration since last monitoring message.
+                'name' => 'current_activity_type_intensity',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 24,
+                'components' => [
+                    [
+                        'name' => 'activity_type',
+                        'def_num' => 5,
+                        'accumulate' => False,
+                        'bits' => 5,
+                        'bit_offset' => 0,
+                    ],
+                    [
+                        'name' => 'intensity',
+                        'def_num' => 28,
+                        'accumulate' => False,
+                        'bits' => 3,
+                        'bit_offset' => 5,
+                    ],
+                ],
+            ],
+            25 => [
+                'name' => 'timestamp_min_8',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 25,
+                'units' => 'min',
+            ],
+            26 => [
+                'name' => 'timestamp_16',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 26,
+                'units' => 's',
+            ],
+            27 => [
+                'name' => 'heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 27,
+                'units' => 'bpm',
+            ],
+            28 => [
+                'name' => 'intensity',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 28,
+                'scale' => 10,
+            ],
+            29 => [
+                'name' => 'duration_min',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 29,
+                'units' => 'min',
+            ],
+            30 => [
+                'name' => 'duration',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 30,
+                'units' => 's',
+            ],
+            31 => [
+                'name' => 'ascent',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 31,
+                'scale' => 1000,
+                'units' => 'm',
+            ],
+            32 => [
+                'name' => 'descent',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 32,
+                'scale' => 1000,
+                'units' => 'm',
+            ],
+            33 => [
+                'name' => 'moderate_activity_minutes',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 33,
+                'units' => 'minutes',
+            ],
+            34 => [
+                'name' => 'vigorous_activity_minutes',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 34,
+                'units' => 'minutes',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Must align to logging interval, for example, time must be 00:00:00 for daily log.
+        ],
+    ],
+    72 => [  # Corresponds to file_id of workout or course.
+        'name' => 'training_file',
+        'global_number' => 72,
+        'fields' => [
+            0 => [
+                'name' => 'type',
+                'type' => self::FIELD_TYPES['file'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'manufacturer',
+                'type' => self::FIELD_TYPES['manufacturer'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'product',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+                'subfields' => [
+                    [
+                        'name' => 'garmin_product',
+                        'def_num' => 2,
+                        'type' => self::FIELD_TYPES['garmin_product'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 1,
+                                'value' => 'garmin',
+                                'raw_value' => 1,
+                            ],
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 1,
+                                'value' => 'dynastream',
+                                'raw_value' => 15,
+                            ],
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 1,
+                                'value' => 'dynastream_oem',
+                                'raw_value' => 13,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            3 => [
+                'name' => 'serial_number',
+                'type' => self::BASE_TYPES[0x8C],  # uint32z
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'time_created',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 4,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
+    78 => [  # Heart rate variability
+        'name' => 'hrv',
+        'global_number' => 78,
+        'fields' => [
+            0 => [  # Time between beats
+                'name' => 'time',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+        ],
+    ],
+    80 => [
+        'name' => 'ant_rx',
+        'global_number' => 80,
+        'fields' => [
+            0 => [
+                'name' => 'fractional_timestamp',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'scale' => 32768,
+                'units' => 's',
+            ],
+            1 => [
+                'name' => 'mesg_id',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'mesg_data',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 2,
+                'components' => [
+                    [
+                        'name' => 'channel_number',
+                        'def_num' => 3,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 0,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 8,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 16,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 24,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 32,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 40,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 48,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 56,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 64,
+                    ],
+                ],
+            ],
+            3 => [
+                'name' => 'channel_number',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'data',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 4,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
+    81 => [
+        'name' => 'ant_tx',
+        'global_number' => 81,
+        'fields' => [
+            0 => [
+                'name' => 'fractional_timestamp',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'scale' => 32768,
+                'units' => 's',
+            ],
+            1 => [
+                'name' => 'mesg_id',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'mesg_data',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 2,
+                'components' => [
+                    [
+                        'name' => 'channel_number',
+                        'def_num' => 3,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 0,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 8,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 16,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 24,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 32,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 40,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 48,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 56,
+                    ],
+                    [
+                        'name' => 'data',
+                        'def_num' => 4,
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 64,
+                    ],
+                ],
+            ],
+            3 => [
+                'name' => 'channel_number',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'data',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 4,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
+    82 => [
+        'name' => 'ant_channel_id',
+        'global_number' => 82,
+        'fields' => [
+            0 => [
+                'name' => 'channel_number',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'device_type',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'device_number',
+                'type' => self::BASE_TYPES[0x8B],  # uint16z
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'transmission_type',
+                'type' => self::BASE_TYPES[0x0A],  # uint8z
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'device_index',
+                'type' => self::FIELD_TYPES['device_index'],
+                'def_num' => 4,
+            ],
+        ],
+    ],
+    101 => [
+        'name' => 'length',
+        'global_number' => 101,
+        'fields' => [
+            0 => [
+                'name' => 'event',
+                'type' => self::FIELD_TYPES['event'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'event_type',
+                'type' => self::FIELD_TYPES['event_type'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'start_time',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'total_elapsed_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 3,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            4 => [
+                'name' => 'total_timer_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 4,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            5 => [
+                'name' => 'total_strokes',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 5,
+                'units' => 'strokes',
+            ],
+            6 => [
+                'name' => 'avg_speed',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 6,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            7 => [
+                'name' => 'swim_stroke',
+                'type' => self::FIELD_TYPES['swim_stroke'],
+                'def_num' => 7,
+                'units' => 'swim_stroke',
+            ],
+            9 => [
+                'name' => 'avg_swimming_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 9,
+                'units' => 'strokes/min',
+            ],
+            10 => [
+                'name' => 'event_group',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 10,
+            ],
+            11 => [
+                'name' => 'total_calories',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 11,
+                'units' => 'kcal',
+            ],
+            12 => [
+                'name' => 'length_type',
+                'type' => self::FIELD_TYPES['length_type'],
+                'def_num' => 12,
+            ],
+            18 => [
+                'name' => 'player_score',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 18,
+            ],
+            19 => [
+                'name' => 'opponent_score',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 19,
+            ],
+            20 => [  # stroke_type enum used as the index
+                'name' => 'stroke_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 20,
+                'units' => 'counts',
+            ],
+            21 => [  # zone number used as the index
+                'name' => 'zone_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 21,
+                'units' => 'counts',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    106 => [
+        'name' => 'slave_device',
+        'global_number' => 106,
+        'fields' => [
+            0 => [
+                'name' => 'manufacturer',
+                'type' => self::FIELD_TYPES['manufacturer'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'product',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+                'subfields' => [
+                    [
+                        'name' => 'garmin_product',
+                        'def_num' => 1,
+                        'type' => self::FIELD_TYPES['garmin_product'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 0,
+                                'value' => 'garmin',
+                                'raw_value' => 1,
+                            ],
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 0,
+                                'value' => 'dynastream',
+                                'raw_value' => 15,
+                            ],
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 0,
+                                'value' => 'dynastream_oem',
+                                'raw_value' => 13,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+    127 => [
+        'name' => 'connectivity',
+        'global_number' => 127,
+        'fields' => [
+            0 => [  # Use Bluetooth for connectivity features
+                'name' => 'bluetooth_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 0,
+            ],
+            1 => [  # Use Bluetooth Low Energy for connectivity features
+                'name' => 'bluetooth_le_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 1,
+            ],
+            2 => [  # Use ANT for connectivity features
+                'name' => 'ant_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'live_tracking_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 4,
+            ],
+            5 => [
+                'name' => 'weather_conditions_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'weather_alerts_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 6,
+            ],
+            7 => [
+                'name' => 'auto_activity_upload_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 7,
+            ],
+            8 => [
+                'name' => 'course_download_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 8,
+            ],
+            9 => [
+                'name' => 'workout_download_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 9,
+            ],
+            10 => [
+                'name' => 'gps_ephemeris_download_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 10,
+            ],
+            11 => [
+                'name' => 'incident_detection_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 11,
+            ],
+            12 => [
+                'name' => 'grouptrack_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 12,
+            ],
+        ],
+    ],
+    128 => [
+        'name' => 'weather_conditions',
+        'global_number' => 128,
+        'fields' => [
+            0 => [  # Current or forecast
+                'name' => 'weather_report',
+                'type' => self::FIELD_TYPES['weather_report'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'temperature',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 1,
+                'units' => 'C',
+            ],
+            2 => [  # Corresponds to GSC Response weatherIcon field
+                'name' => 'condition',
+                'type' => self::FIELD_TYPES['weather_status'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'wind_direction',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+                'units' => 'degrees',
+            ],
+            4 => [
+                'name' => 'wind_speed',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            5 => [  # range 0-100
+                'name' => 'precipitation_probability',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 5,
+            ],
+            6 => [  # Heat Index if  GCS heatIdx above or equal to 90F or wind chill if GCS windChill below or equal to 32F
+                'name' => 'temperature_feels_like',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 6,
+                'units' => 'C',
+            ],
+            7 => [
+                'name' => 'relative_humidity',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 7,
+            ],
+            8 => [  # string corresponding to GCS response location string
+                'name' => 'location',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 8,
+            ],
+            9 => [
+                'name' => 'observed_at_time',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 9,
+            ],
+            10 => [
+                'name' => 'observed_location_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 10,
+                'units' => 'semicircles',
+            ],
+            11 => [
+                'name' => 'observed_location_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 11,
+                'units' => 'semicircles',
+            ],
+            12 => [
+                'name' => 'day_of_week',
+                'type' => self::FIELD_TYPES['day_of_week'],
+                'def_num' => 12,
+            ],
+            13 => [
+                'name' => 'high_temperature',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 13,
+                'units' => 'C',
+            ],
+            14 => [
+                'name' => 'low_temperature',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 14,
+                'units' => 'C',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # time of update for current conditions, else forecast time
+        ],
+    ],
+    129 => [
+        'name' => 'weather_alert',
+        'global_number' => 129,
+        'fields' => [
+            0 => [  # Unique identifier from GCS report ID string, length is 12
+                'name' => 'report_id',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 0,
+            ],
+            1 => [  # Time alert was issued
+                'name' => 'issue_time',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 1,
+            ],
+            2 => [  # Time alert expires
+                'name' => 'expire_time',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 2,
+            ],
+            3 => [  # Warning, Watch, Advisory, Statement
+                'name' => 'severity',
+                'type' => self::FIELD_TYPES['weather_severity'],
+                'def_num' => 3,
+            ],
+            4 => [  # Tornado, Severe Thunderstorm, etc.
+                'name' => 'type',
+                'type' => self::FIELD_TYPES['weather_severe_type'],
+                'def_num' => 4,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
+    131 => [
+        'name' => 'cadence_zone',
+        'global_number' => 131,
+        'fields' => [
+            0 => [
+                'name' => 'high_value',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 0,
+                'units' => 'rpm',
+            ],
+            1 => [
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 1,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    132 => [
+        'name' => 'hr',
+        'global_number' => 132,
+        'fields' => [
+            0 => [
+                'name' => 'fractional_timestamp',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'scale' => 32768,
+                'units' => 's',
+            ],
+            1 => [
+                'name' => 'time256',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 1,
+                'scale' => 256,
+                'units' => 's',
+                'components' => [
+                    [
+                        'name' => 'fractional_timestamp',
+                        'def_num' => 0,
+                        'scale' => 256,
+                        'units' => 's',
+                        'accumulate' => False,
+                        'bits' => 8,
+                        'bit_offset' => 0,
+                    ],
+                ],
+            ],
+            6 => [
+                'name' => 'filtered_bpm',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 6,
+                'units' => 'bpm',
+            ],
+            9 => [
+                'name' => 'event_timestamp',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 9,
+                'scale' => 1024,
+                'units' => 's',
+            ],
+            10 => [
+                'name' => 'event_timestamp_12',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 10,
+                'components' => [
+                    [
+                        'name' => 'event_timestamp',
+                        'def_num' => 9,
+                        'scale' => 1024,
+                        'units' => 's',
+                        'accumulate' => True,
+                        'bits' => 12,
+                        'bit_offset' => 0,
+                    ],
+                    [
+                        'name' => 'event_timestamp',
+                        'def_num' => 9,
+                        'scale' => 1024,
+                        'units' => 's',
+                        'accumulate' => True,
+                        'bits' => 12,
+                        'bit_offset' => 12,
+                    ],
+                    [
+                        'name' => 'event_timestamp',
+                        'def_num' => 9,
+                        'scale' => 1024,
+                        'units' => 's',
+                        'accumulate' => True,
+                        'bits' => 12,
+                        'bit_offset' => 24,
+                    ],
+                    [
+                        'name' => 'event_timestamp',
+                        'def_num' => 9,
+                        'scale' => 1024,
+                        'units' => 's',
+                        'accumulate' => True,
+                        'bits' => 12,
+                        'bit_offset' => 36,
+                    ],
+                    [
+                        'name' => 'event_timestamp',
+                        'def_num' => 9,
+                        'scale' => 1024,
+                        'units' => 's',
+                        'accumulate' => True,
+                        'bits' => 12,
+                        'bit_offset' => 48,
+                    ],
+                    [
+                        'name' => 'event_timestamp',
+                        'def_num' => 9,
+                        'scale' => 1024,
+                        'units' => 's',
+                        'accumulate' => True,
+                        'bits' => 12,
+                        'bit_offset' => 60,
+                    ],
+                    [
+                        'name' => 'event_timestamp',
+                        'def_num' => 9,
+                        'scale' => 1024,
+                        'units' => 's',
+                        'accumulate' => True,
+                        'bits' => 12,
+                        'bit_offset' => 72,
+                    ],
+                    [
+                        'name' => 'event_timestamp',
+                        'def_num' => 9,
+                        'scale' => 1024,
+                        'units' => 's',
+                        'accumulate' => True,
+                        'bits' => 12,
+                        'bit_offset' => 84,
+                    ],
+                    [
+                        'name' => 'event_timestamp',
+                        'def_num' => 9,
+                        'scale' => 1024,
+                        'units' => 's',
+                        'accumulate' => True,
+                        'bits' => 12,
+                        'bit_offset' => 96,
+                    ],
+                    [
+                        'name' => 'event_timestamp',
+                        'def_num' => 9,
+                        'scale' => 1024,
+                        'units' => 's',
+                        'accumulate' => True,
+                        'bits' => 12,
+                        'bit_offset' => 108,
+                    ],
+                ],
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
+    142 => [
+        'name' => 'segment_lap',
+        'global_number' => 142,
+        'fields' => [
+            0 => [
+                'name' => 'event',
+                'type' => self::FIELD_TYPES['event'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'event_type',
+                'type' => self::FIELD_TYPES['event_type'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'start_time',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'start_position_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 3,
+                'units' => 'semicircles',
+            ],
+            4 => [
+                'name' => 'start_position_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 4,
+                'units' => 'semicircles',
+            ],
+            5 => [
+                'name' => 'end_position_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 5,
+                'units' => 'semicircles',
+            ],
+            6 => [
+                'name' => 'end_position_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 6,
+                'units' => 'semicircles',
+            ],
+            7 => [  # Time (includes pauses)
+                'name' => 'total_elapsed_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 7,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            8 => [  # Timer Time (excludes pauses)
+                'name' => 'total_timer_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 8,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            9 => [
+                'name' => 'total_distance',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 9,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            10 => [
+                'name' => 'total_cycles',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 10,
+                'units' => 'cycles',
+                'subfields' => [
+                    [
+                        'name' => 'total_strokes',
+                        'def_num' => 10,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'units' => 'strokes',
+                        'ref_fields' => [
+                            [
+                                'name' => 'sport',
+                                'def_num' => 23,
+                                'value' => 'cycling',
+                                'raw_value' => 2,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            11 => [
+                'name' => 'total_calories',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 11,
+                'units' => 'kcal',
+            ],
+            12 => [  # If New Leaf
+                'name' => 'total_fat_calories',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 12,
+                'units' => 'kcal',
+            ],
+            13 => [
+                'name' => 'avg_speed',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 13,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            14 => [
+                'name' => 'max_speed',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 14,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            15 => [
+                'name' => 'avg_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 15,
+                'units' => 'bpm',
+            ],
+            16 => [
+                'name' => 'max_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 16,
+                'units' => 'bpm',
+            ],
+            17 => [  # total_cycles / total_timer_time if non_zero_avg_cadence otherwise total_cycles / total_elapsed_time
+                'name' => 'avg_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 17,
+                'units' => 'rpm',
+            ],
+            18 => [
+                'name' => 'max_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 18,
+                'units' => 'rpm',
+            ],
+            19 => [  # total_power / total_timer_time if non_zero_avg_power otherwise total_power / total_elapsed_time
+                'name' => 'avg_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 19,
+                'units' => 'watts',
+            ],
+            20 => [
+                'name' => 'max_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 20,
+                'units' => 'watts',
+            ],
+            21 => [
+                'name' => 'total_ascent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 21,
+                'units' => 'm',
+            ],
+            22 => [
+                'name' => 'total_descent',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 22,
+                'units' => 'm',
+            ],
+            23 => [
+                'name' => 'sport',
+                'type' => self::FIELD_TYPES['sport'],
+                'def_num' => 23,
+            ],
+            24 => [
+                'name' => 'event_group',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 24,
+            ],
+            25 => [  # North east corner latitude.
+                'name' => 'nec_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 25,
+                'units' => 'semicircles',
+            ],
+            26 => [  # North east corner longitude.
+                'name' => 'nec_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 26,
+                'units' => 'semicircles',
+            ],
+            27 => [  # South west corner latitude.
+                'name' => 'swc_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 27,
+                'units' => 'semicircles',
+            ],
+            28 => [  # South west corner latitude.
+                'name' => 'swc_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 28,
+                'units' => 'semicircles',
+            ],
+            29 => [
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 29,
+            ],
+            30 => [
+                'name' => 'normalized_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 30,
+                'units' => 'watts',
+            ],
+            31 => [
+                'name' => 'left_right_balance',
+                'type' => self::FIELD_TYPES['left_right_balance_100'],
+                'def_num' => 31,
+            ],
+            32 => [
+                'name' => 'sub_sport',
+                'type' => self::FIELD_TYPES['sub_sport'],
+                'def_num' => 32,
+            ],
+            33 => [
+                'name' => 'total_work',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 33,
+                'units' => 'J',
+            ],
+            34 => [
+                'name' => 'avg_altitude',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 34,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+            ],
+            35 => [
+                'name' => 'max_altitude',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 35,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+            ],
+            36 => [
+                'name' => 'gps_accuracy',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 36,
+                'units' => 'm',
+            ],
+            37 => [
+                'name' => 'avg_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 37,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            38 => [
+                'name' => 'avg_pos_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 38,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            39 => [
+                'name' => 'avg_neg_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 39,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            40 => [
+                'name' => 'max_pos_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 40,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            41 => [
+                'name' => 'max_neg_grade',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 41,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            42 => [
+                'name' => 'avg_temperature',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 42,
+                'units' => 'C',
+            ],
+            43 => [
+                'name' => 'max_temperature',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 43,
+                'units' => 'C',
+            ],
+            44 => [
+                'name' => 'total_moving_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 44,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            45 => [
+                'name' => 'avg_pos_vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 45,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            46 => [
+                'name' => 'avg_neg_vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 46,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            47 => [
+                'name' => 'max_pos_vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 47,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            48 => [
+                'name' => 'max_neg_vertical_speed',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 48,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            49 => [
+                'name' => 'time_in_hr_zone',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 49,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            50 => [
+                'name' => 'time_in_speed_zone',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 50,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            51 => [
+                'name' => 'time_in_cadence_zone',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 51,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            52 => [
+                'name' => 'time_in_power_zone',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 52,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            53 => [
+                'name' => 'repetition_num',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 53,
+            ],
+            54 => [
+                'name' => 'min_altitude',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 54,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+            ],
+            55 => [
+                'name' => 'min_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 55,
+                'units' => 'bpm',
+            ],
+            56 => [
+                'name' => 'active_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 56,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            57 => [
+                'name' => 'wkt_step_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 57,
+            ],
+            58 => [
+                'name' => 'sport_event',
+                'type' => self::FIELD_TYPES['sport_event'],
+                'def_num' => 58,
+            ],
+            59 => [
+                'name' => 'avg_left_torque_effectiveness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 59,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            60 => [
+                'name' => 'avg_right_torque_effectiveness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 60,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            61 => [
+                'name' => 'avg_left_pedal_smoothness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 61,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            62 => [
+                'name' => 'avg_right_pedal_smoothness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 62,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            63 => [
+                'name' => 'avg_combined_pedal_smoothness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 63,
+                'scale' => 2,
+                'units' => 'percent',
+            ],
+            64 => [
+                'name' => 'status',
+                'type' => self::FIELD_TYPES['segment_lap_status'],
+                'def_num' => 64,
+            ],
+            65 => [
+                'name' => 'uuid',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 65,
+            ],
+            66 => [  # fractional part of the avg_cadence
+                'name' => 'avg_fractional_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 66,
+                'scale' => 128,
+                'units' => 'rpm',
+            ],
+            67 => [  # fractional part of the max_cadence
+                'name' => 'max_fractional_cadence',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 67,
+                'scale' => 128,
+                'units' => 'rpm',
+            ],
+            68 => [  # fractional part of the total_cycles
+                'name' => 'total_fractional_cycles',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 68,
+                'scale' => 128,
+                'units' => 'cycles',
+            ],
+            69 => [
+                'name' => 'front_gear_shift_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 69,
+            ],
+            70 => [
+                'name' => 'rear_gear_shift_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 70,
+            ],
+            71 => [  # Total time spent in the standing position
+                'name' => 'time_standing',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 71,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            72 => [  # Number of transitions to the standing state
+                'name' => 'stand_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 72,
+            ],
+            73 => [  # Average left platform center offset
+                'name' => 'avg_left_pco',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 73,
+                'units' => 'mm',
+            ],
+            74 => [  # Average right platform center offset
+                'name' => 'avg_right_pco',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 74,
+                'units' => 'mm',
+            ],
+            75 => [  # Average left power phase angles. Data value indexes defined by power_phase_type.
+                'name' => 'avg_left_power_phase',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 75,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            76 => [  # Average left power phase peak angles. Data value indexes defined by power_phase_type.
+                'name' => 'avg_left_power_phase_peak',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 76,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            77 => [  # Average right power phase angles. Data value indexes defined by power_phase_type.
+                'name' => 'avg_right_power_phase',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 77,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            78 => [  # Average right power phase peak angles. Data value indexes defined by power_phase_type.
+                'name' => 'avg_right_power_phase_peak',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 78,
+                'scale' => 0.7111111,
+                'units' => 'degrees',
+            ],
+            79 => [  # Average power by position. Data value indexes defined by rider_position_type.
+                'name' => 'avg_power_position',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 79,
+                'units' => 'watts',
+            ],
+            80 => [  # Maximum power by position. Data value indexes defined by rider_position_type.
+                'name' => 'max_power_position',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 80,
+                'units' => 'watts',
+            ],
+            81 => [  # Average cadence by position. Data value indexes defined by rider_position_type.
+                'name' => 'avg_cadence_position',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 81,
+                'units' => 'rpm',
+            ],
+            82 => [  # Maximum cadence by position. Data value indexes defined by rider_position_type.
+                'name' => 'max_cadence_position',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 82,
+                'units' => 'rpm',
+            ],
+            83 => [  # Manufacturer that produced the segment
+                'name' => 'manufacturer',
+                'type' => self::FIELD_TYPES['manufacturer'],
+                'def_num' => 83,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Lap end time.
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    149 => [  # Unique Identification data for an individual segment leader within a segment file
+        'name' => 'segment_leaderboard_entry',
+        'global_number' => 149,
+        'fields' => [
+            0 => [  # Friendly name assigned to leader
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 0,
+            ],
+            1 => [  # Leader classification
+                'name' => 'type',
+                'type' => self::FIELD_TYPES['segment_leaderboard_type'],
+                'def_num' => 1,
+            ],
+            2 => [  # Primary user ID of this leader
+                'name' => 'group_primary_key',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 2,
+            ],
+            3 => [  # ID of the activity associated with this leader time
+                'name' => 'activity_id',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 3,
+            ],
+            4 => [  # Segment Time (includes pauses)
+                'name' => 'segment_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 4,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            5 => [  # String version of the activity_id. 21 characters long, express in decimal
+                'name' => 'activity_id_string',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 5,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    150 => [  # Navigation and race evaluation point for a segment decribing a point along the segment path and time it took each segment leader to reach that point
+        'name' => 'segment_point',
+        'global_number' => 150,
+        'fields' => [
+            1 => [
+                'name' => 'position_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 1,
+                'units' => 'semicircles',
+            ],
+            2 => [
+                'name' => 'position_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 2,
+                'units' => 'semicircles',
+            ],
+            3 => [  # Accumulated distance along the segment at the described point
+                'name' => 'distance',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 3,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            4 => [  # Accumulated altitude along the segment at the described point
+                'name' => 'altitude',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+            ],
+            5 => [  # Accumualted time each leader board member required to reach the described point. This value is zero for all leader board members at the starting point of the segment.
+                'name' => 'leader_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 5,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    158 => [
+        'name' => 'workout_session',
+        'global_number' => 158,
+        'fields' => [
+            0 => [
+                'name' => 'sport',
+                'type' => self::FIELD_TYPES['sport'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'sub_sport',
+                'type' => self::FIELD_TYPES['sub_sport'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'num_valid_steps',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'first_step_index',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'pool_length',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            5 => [
+                'name' => 'pool_length_unit',
+                'type' => self::FIELD_TYPES['display_measure'],
+                'def_num' => 5,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    159 => [
+        'name' => 'watchface_settings',
+        'global_number' => 159,
+        'fields' => [
+            0 => [
+                'name' => 'mode',
+                'type' => self::FIELD_TYPES['watchface_mode'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'layout',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 1,
+                'subfields' => [
+                    [
+                        'name' => 'analog_layout',
+                        'def_num' => 1,
+                        'type' => self::FIELD_TYPES['analog_watchface_layout'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'mode',
+                                'def_num' => 0,
+                                'value' => 'analog',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'digital_layout',
+                        'def_num' => 1,
+                        'type' => self::FIELD_TYPES['digital_watchface_layout'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'mode',
+                                'def_num' => 0,
+                                'value' => 'digital',
+                                'raw_value' => 0,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    160 => [
+        'name' => 'gps_metadata',
+        'global_number' => 160,
+        'fields' => [
+            0 => [  # Millisecond part of the timestamp.
+                'name' => 'timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'units' => 'ms',
+            ],
+            1 => [
+                'name' => 'position_lat',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 1,
+                'units' => 'semicircles',
+            ],
+            2 => [
+                'name' => 'position_long',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 2,
+                'units' => 'semicircles',
+            ],
+            3 => [
+                'name' => 'enhanced_altitude',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 3,
+                'scale' => 5,
+                'offset' => 500,
+                'units' => 'm',
+            ],
+            4 => [
+                'name' => 'enhanced_speed',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 4,
+                'scale' => 1000,
+                'units' => 'm/s',
+            ],
+            5 => [
+                'name' => 'heading',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 5,
+                'scale' => 100,
+                'units' => 'degrees',
+            ],
+            6 => [  # Used to correlate UTC to system time if the timestamp of the message is in system time.  This UTC time is derived from the GPS data.
+                'name' => 'utc_timestamp',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 6,
+                'units' => 's',
+            ],
+            7 => [  # velocity[0] is lon velocity.  Velocity[1] is lat velocity.  Velocity[2] is altitude velocity.
+                'name' => 'velocity',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 7,
+                'scale' => 100,
+                'units' => 'm/s',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp.
+        ],
+    ],
+    161 => [
+        'name' => 'camera_event',
+        'global_number' => 161,
+        'fields' => [
+            0 => [  # Millisecond part of the timestamp.
+                'name' => 'timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'units' => 'ms',
+            ],
+            1 => [
+                'name' => 'camera_event_type',
+                'type' => self::FIELD_TYPES['camera_event_type'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'camera_file_uuid',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'camera_orientation',
+                'type' => self::FIELD_TYPES['camera_orientation_type'],
+                'def_num' => 3,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp.
+        ],
+    ],
+    162 => [
+        'name' => 'timestamp_correlation',
+        'global_number' => 162,
+        'fields' => [
+            0 => [  # Fractional part of the UTC timestamp at the time the system timestamp was recorded.
+                'name' => 'fractional_timestamp',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'scale' => 32768,
+                'units' => 's',
+            ],
+            1 => [  # Whole second part of the system timestamp
+                'name' => 'system_timestamp',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 1,
+                'units' => 's',
+            ],
+            2 => [  # Fractional part of the system timestamp
+                'name' => 'fractional_system_timestamp',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+                'scale' => 32768,
+                'units' => 's',
+            ],
+            3 => [  # timestamp epoch expressed in local time used to convert timestamps to local time
+                'name' => 'local_timestamp',
+                'type' => self::FIELD_TYPES['local_date_time'],
+                'def_num' => 3,
+                'units' => 's',
+            ],
+            4 => [  # Millisecond part of the UTC timestamp at the time the system timestamp was recorded.
+                'name' => 'timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'units' => 'ms',
+            ],
+            5 => [  # Millisecond part of the system timestamp
+                'name' => 'system_timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 5,
+                'units' => 'ms',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of UTC timestamp at the time the system timestamp was recorded.
+        ],
+    ],
+    164 => [
+        'name' => 'gyroscope_data',
+        'global_number' => 164,
+        'fields' => [
+            0 => [  # Millisecond part of the timestamp.
+                'name' => 'timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'units' => 'ms',
+            ],
+            1 => [  # Each time in the array describes the time at which the gyro sample with the corrosponding index was taken. Limited to 30 samples in each message. The samples may span across seconds. Array size must match the number of samples in gyro_x and gyro_y and gyro_z
+                'name' => 'sample_time_offset',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+                'units' => 'ms',
+            ],
+            2 => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+                'name' => 'gyro_x',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+                'units' => 'counts',
+            ],
+            3 => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+                'name' => 'gyro_y',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+                'units' => 'counts',
+            ],
+            4 => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+                'name' => 'gyro_z',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'units' => 'counts',
+            ],
+            5 => [  # Calibrated gyro reading
+                'name' => 'calibrated_gyro_x',
+                'type' => self::BASE_TYPES[0x88],  # float32
+                'def_num' => 5,
+                'units' => 'deg/s',
+            ],
+            6 => [  # Calibrated gyro reading
+                'name' => 'calibrated_gyro_y',
+                'type' => self::BASE_TYPES[0x88],  # float32
+                'def_num' => 6,
+                'units' => 'deg/s',
+            ],
+            7 => [  # Calibrated gyro reading
+                'name' => 'calibrated_gyro_z',
+                'type' => self::BASE_TYPES[0x88],  # float32
+                'def_num' => 7,
+                'units' => 'deg/s',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+        ],
+    ],
+    165 => [
+        'name' => 'accelerometer_data',
+        'global_number' => 165,
+        'fields' => [
+            0 => [  # Millisecond part of the timestamp.
+                'name' => 'timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'units' => 'ms',
+            ],
+            1 => [  # Each time in the array describes the time at which the accelerometer sample with the corrosponding index was taken. Limited to 30 samples in each message. The samples may span across seconds. Array size must match the number of samples in accel_x and accel_y and accel_z
+                'name' => 'sample_time_offset',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+                'units' => 'ms',
+            ],
+            2 => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+                'name' => 'accel_x',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+                'units' => 'counts',
+            ],
+            3 => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+                'name' => 'accel_y',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+                'units' => 'counts',
+            ],
+            4 => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+                'name' => 'accel_z',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'units' => 'counts',
+            ],
+            5 => [  # Calibrated accel reading
+                'name' => 'calibrated_accel_x',
+                'type' => self::BASE_TYPES[0x88],  # float32
+                'def_num' => 5,
+                'units' => 'g',
+            ],
+            6 => [  # Calibrated accel reading
+                'name' => 'calibrated_accel_y',
+                'type' => self::BASE_TYPES[0x88],  # float32
+                'def_num' => 6,
+                'units' => 'g',
+            ],
+            7 => [  # Calibrated accel reading
+                'name' => 'calibrated_accel_z',
+                'type' => self::BASE_TYPES[0x88],  # float32
+                'def_num' => 7,
+                'units' => 'g',
+            ],
+            8 => [  # Calibrated accel reading
+                'name' => 'compressed_calibrated_accel_x',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 8,
+                'units' => 'mG',
+            ],
+            9 => [  # Calibrated accel reading
+                'name' => 'compressed_calibrated_accel_y',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 9,
+                'units' => 'mG',
+            ],
+            10 => [  # Calibrated accel reading
+                'name' => 'compressed_calibrated_accel_z',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 10,
+                'units' => 'mG',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+        ],
+    ],
+    167 => [
+        'name' => 'three_d_sensor_calibration',
+        'global_number' => 167,
+        'fields' => [
+            0 => [  # Indicates which sensor the calibration is for
+                'name' => 'sensor_type',
+                'type' => self::FIELD_TYPES['sensor_type'],
+                'def_num' => 0,
+            ],
+            1 => [  # Calibration factor used to convert from raw ADC value to degrees, g,  etc.
+                'name' => 'calibration_factor',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 1,
+                'subfields' => [
+                    [  # Accelerometer calibration factor
+                        'name' => 'accel_cal_factor',
+                        'def_num' => 1,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'units' => 'g',
+                        'ref_fields' => [
+                            [
+                                'name' => 'sensor_type',
+                                'def_num' => 0,
+                                'value' => 'accelerometer',
+                                'raw_value' => 0,
+                            ],
+                        ],
+                    ],
+                    [  # Gyro calibration factor
+                        'name' => 'gyro_cal_factor',
+                        'def_num' => 1,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'units' => 'deg/s',
+                        'ref_fields' => [
+                            [
+                                'name' => 'sensor_type',
+                                'def_num' => 0,
+                                'value' => 'gyroscope',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            2 => [  # Calibration factor divisor
+                'name' => 'calibration_divisor',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 2,
+                'units' => 'counts',
+            ],
+            3 => [  # Level shift value used to shift the ADC value back into range
+                'name' => 'level_shift',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 3,
+            ],
+            4 => [  # Internal calibration factors, one for each: xy, yx, zx
+                'name' => 'offset_cal',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 4,
+            ],
+            5 => [  # 3 x 3 rotation matrix (row major)
+                'name' => 'orientation_matrix',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 5,
+                'scale' => 65535,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+        ],
+    ],
+    169 => [
+        'name' => 'video_frame',
+        'global_number' => 169,
+        'fields' => [
+            0 => [  # Millisecond part of the timestamp.
+                'name' => 'timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'units' => 'ms',
+            ],
+            1 => [  # Number of the frame that the timestamp and timestamp_ms correlate to
+                'name' => 'frame_number',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 1,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+        ],
+    ],
+    174 => [
+        'name' => 'obdii_data',
+        'global_number' => 174,
+        'fields' => [
+            0 => [  # Fractional part of timestamp, added to timestamp
+                'name' => 'timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'units' => 'ms',
+            ],
+            1 => [  # Offset of PID reading [i] from start_timestamp+start_timestamp_ms. Readings may span accross seconds.
+                'name' => 'time_offset',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+                'units' => 'ms',
+            ],
+            2 => [  # Parameter ID
+                'name' => 'pid',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 2,
+            ],
+            3 => [  # Raw parameter data
+                'name' => 'raw_data',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 3,
+            ],
+            4 => [  # Optional, data size of PID[i].  If not specified refer to SAE J1979.
+                'name' => 'pid_data_size',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 4,
+            ],
+            5 => [  # System time associated with sample expressed in ms, can be used instead of time_offset.  There will be a system_time value for each raw_data element.  For multibyte pids the system_time is repeated.
+                'name' => 'system_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 5,
+            ],
+            6 => [  # Timestamp of first sample recorded in the message.  Used with time_offset to generate time of each sample
+                'name' => 'start_timestamp',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 6,
+            ],
+            7 => [  # Fractional part of start_timestamp
+                'name' => 'start_timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 7,
+                'units' => 'ms',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Timestamp message was output
+        ],
+    ],
+    177 => [
+        'name' => 'nmea_sentence',
+        'global_number' => 177,
+        'fields' => [
+            0 => [  # Fractional part of timestamp, added to timestamp
+                'name' => 'timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'units' => 'ms',
+            ],
+            1 => [  # NMEA sentence
+                'name' => 'sentence',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 1,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Timestamp message was output
+        ],
+    ],
+    178 => [
+        'name' => 'aviation_attitude',
+        'global_number' => 178,
+        'fields' => [
+            0 => [  # Fractional part of timestamp, added to timestamp
+                'name' => 'timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'units' => 'ms',
+            ],
+            1 => [  # System time associated with sample expressed in ms.
+                'name' => 'system_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 1,
+                'units' => 'ms',
+            ],
+            2 => [  # Range -PI/2 to +PI/2
+                'name' => 'pitch',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 2,
+                'scale' => 10430.38,
+                'units' => 'radians',
+            ],
+            3 => [  # Range -PI to +PI
+                'name' => 'roll',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 3,
+                'scale' => 10430.38,
+                'units' => 'radians',
+            ],
+            4 => [  # Range -78.4 to +78.4 (-8 Gs to 8 Gs)
+                'name' => 'accel_lateral',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 4,
+                'scale' => 100,
+                'units' => 'm/s^2',
+            ],
+            5 => [  # Range -78.4 to +78.4 (-8 Gs to 8 Gs)
+                'name' => 'accel_normal',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 5,
+                'scale' => 100,
+                'units' => 'm/s^2',
+            ],
+            6 => [  # Range -8.727 to +8.727 (-500 degs/sec to +500 degs/sec)
+                'name' => 'turn_rate',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 6,
+                'scale' => 1024,
+                'units' => 'radians/second',
+            ],
+            7 => [
+                'name' => 'stage',
+                'type' => self::FIELD_TYPES['attitude_stage'],
+                'def_num' => 7,
+            ],
+            8 => [  # The percent complete of the current attitude stage.  Set to 0 for attitude stages 0, 1 and 2 and to 100 for attitude stage 3 by AHRS modules that do not support it.  Range - 100
+                'name' => 'attitude_stage_complete',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 8,
+                'units' => '%',
+            ],
+            9 => [  # Track Angle/Heading Range 0 - 2pi
+                'name' => 'track',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 9,
+                'scale' => 10430.38,
+                'units' => 'radians',
+            ],
+            10 => [
+                'name' => 'validity',
+                'type' => self::FIELD_TYPES['attitude_validity'],
+                'def_num' => 10,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Timestamp message was output
+        ],
+    ],
+    184 => [
+        'name' => 'video',
+        'global_number' => 184,
+        'fields' => [
+            0 => [
+                'name' => 'url',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'hosting_provider',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 1,
+            ],
+            2 => [  # Playback time of video
+                'name' => 'duration',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 2,
+                'units' => 'ms',
+            ],
+        ],
+    ],
+    185 => [
+        'name' => 'video_title',
+        'global_number' => 185,
+        'fields' => [
+            0 => [  # Total number of title parts
+                'name' => 'message_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'text',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 1,
+            ],
+            254 => [  # Long titles will be split into multiple parts
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    186 => [
+        'name' => 'video_description',
+        'global_number' => 186,
+        'fields' => [
+            0 => [  # Total number of description parts
+                'name' => 'message_count',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'text',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 1,
+            ],
+            254 => [  # Long descriptions will be split into multiple parts
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    187 => [
+        'name' => 'video_clip',
+        'global_number' => 187,
+        'fields' => [
+            0 => [
+                'name' => 'clip_number',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'start_timestamp',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'start_timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'end_timestamp',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'end_timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+            ],
+            6 => [  # Start of clip in video time
+                'name' => 'clip_start',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 6,
+                'units' => 'ms',
+            ],
+            7 => [  # End of clip in video time
+                'name' => 'clip_end',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 7,
+                'units' => 'ms',
+            ],
+        ],
+    ],
+    188 => [
+        'name' => 'ohr_settings',
+        'global_number' => 188,
+        'fields' => [
+            0 => [
+                'name' => 'enabled',
+                'type' => self::FIELD_TYPES['switch'],
+                'def_num' => 0,
+            ],
+        ],
+    ],
+    200 => [
+        'name' => 'exd_screen_configuration',
+        'global_number' => 200,
+        'fields' => [
+            0 => [
+                'name' => 'screen_index',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 0,
+            ],
+            1 => [  # number of fields in screen
+                'name' => 'field_count',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'layout',
+                'type' => self::FIELD_TYPES['exd_layout'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'screen_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 3,
+            ],
+        ],
+    ],
+    201 => [
+        'name' => 'exd_data_field_configuration',
+        'global_number' => 201,
+        'fields' => [
+            0 => [
+                'name' => 'screen_index',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'concept_field',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 1,
+                'components' => [
+                    [
+                        'name' => 'field_id',
+                        'def_num' => 2,
+                        'accumulate' => False,
+                        'bits' => 4,
+                        'bit_offset' => 0,
+                    ],
+                    [
+                        'name' => 'concept_count',
+                        'def_num' => 3,
+                        'accumulate' => False,
+                        'bits' => 4,
+                        'bit_offset' => 4,
+                    ],
+                ],
+            ],
+            2 => [
+                'name' => 'field_id',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'concept_count',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'display_type',
+                'type' => self::FIELD_TYPES['exd_display_type'],
+                'def_num' => 4,
+            ],
+            5 => [
+                'name' => 'title',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 5,
+            ],
+        ],
+    ],
+    202 => [
+        'name' => 'exd_data_concept_configuration',
+        'global_number' => 202,
+        'fields' => [
+            0 => [
+                'name' => 'screen_index',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'concept_field',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 1,
+                'components' => [
+                    [
+                        'name' => 'field_id',
+                        'def_num' => 2,
+                        'accumulate' => False,
+                        'bits' => 4,
+                        'bit_offset' => 0,
+                    ],
+                    [
+                        'name' => 'concept_index',
+                        'def_num' => 3,
+                        'accumulate' => False,
+                        'bits' => 4,
+                        'bit_offset' => 4,
+                    ],
+                ],
+            ],
+            2 => [
+                'name' => 'field_id',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'concept_index',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'data_page',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 4,
+            ],
+            5 => [
+                'name' => 'concept_key',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'scaling',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 6,
+            ],
+            8 => [
+                'name' => 'data_units',
+                'type' => self::FIELD_TYPES['exd_data_units'],
+                'def_num' => 8,
+            ],
+            9 => [
+                'name' => 'qualifier',
+                'type' => self::FIELD_TYPES['exd_qualifiers'],
+                'def_num' => 9,
+            ],
+            10 => [
+                'name' => 'descriptor',
+                'type' => self::FIELD_TYPES['exd_descriptors'],
+                'def_num' => 10,
+            ],
+            11 => [
+                'name' => 'is_signed',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 11,
+            ],
+        ],
+    ],
+    206 => [  # Must be logged before developer field is used
+        'name' => 'field_description',
+        'global_number' => 206,
+        'fields' => [
+            0 => [
+                'name' => 'developer_data_index',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'field_definition_number',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'fit_base_type_id',
+                'type' => self::FIELD_TYPES['fit_base_type'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'field_name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'array',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 4,
+            ],
+            5 => [
+                'name' => 'components',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'scale',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 6,
+            ],
+            7 => [
+                'name' => 'offset',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 7,
+            ],
+            8 => [
+                'name' => 'units',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 8,
+            ],
+            9 => [
+                'name' => 'bits',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 9,
+            ],
+            10 => [
+                'name' => 'accumulate',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 10,
+            ],
+            13 => [
+                'name' => 'fit_base_unit_id',
+                'type' => self::FIELD_TYPES['fit_base_unit'],
+                'def_num' => 13,
+            ],
+            14 => [
+                'name' => 'native_mesg_num',
+                'type' => self::FIELD_TYPES['global_number'],
+                'def_num' => 14,
+            ],
+            15 => [
+                'name' => 'native_field_num',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 15,
+            ],
+        ],
+    ],
+    207 => [  # Must be logged before field description
+        'name' => 'developer_data_id',
+        'global_number' => 207,
+        'fields' => [
+            0 => [
+                'name' => 'developer_id',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'application_id',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'manufacturer_id',
+                'type' => self::FIELD_TYPES['manufacturer'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'developer_data_index',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'application_version',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 4,
+            ],
+        ],
+    ],
+    208 => [
+        'name' => 'magnetometer_data',
+        'global_number' => 208,
+        'fields' => [
+            0 => [  # Millisecond part of the timestamp.
+                'name' => 'timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'units' => 'ms',
+            ],
+            1 => [  # Each time in the array describes the time at which the compass sample with the corrosponding index was taken. Limited to 30 samples in each message. The samples may span across seconds. Array size must match the number of samples in cmps_x and cmps_y and cmps_z
+                'name' => 'sample_time_offset',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+                'units' => 'ms',
+            ],
+            2 => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+                'name' => 'mag_x',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+                'units' => 'counts',
+            ],
+            3 => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+                'name' => 'mag_y',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+                'units' => 'counts',
+            ],
+            4 => [  # These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+                'name' => 'mag_z',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'units' => 'counts',
+            ],
+            5 => [  # Calibrated Magnetometer reading
+                'name' => 'calibrated_mag_x',
+                'type' => self::BASE_TYPES[0x88],  # float32
+                'def_num' => 5,
+                'units' => 'G',
+            ],
+            6 => [  # Calibrated Magnetometer reading
+                'name' => 'calibrated_mag_y',
+                'type' => self::BASE_TYPES[0x88],  # float32
+                'def_num' => 6,
+                'units' => 'G',
+            ],
+            7 => [  # Calibrated Magnetometer reading
+                'name' => 'calibrated_mag_z',
+                'type' => self::BASE_TYPES[0x88],  # float32
+                'def_num' => 7,
+                'units' => 'G',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+        ],
+    ],
+    209 => [
+        'name' => 'barometer_data',
+        'global_number' => 209,
+        'fields' => [
+            0 => [  # Millisecond part of the timestamp.
+                'name' => 'timestamp_ms',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'units' => 'ms',
+            ],
+            1 => [  # Each time in the array describes the time at which the barometer sample with the corrosponding index was taken. The samples may span across seconds. Array size must match the number of samples in baro_cal
+                'name' => 'sample_time_offset',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+                'units' => 'ms',
+            ],
+            2 => [  # These are the raw ADC reading. The samples may span across seconds. A conversion will need to be done on this data once read.
+                'name' => 'baro_pres',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 2,
+                'units' => 'Pa',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+        ],
+    ],
+    210 => [
+        'name' => 'one_d_sensor_calibration',
+        'global_number' => 210,
+        'fields' => [
+            0 => [  # Indicates which sensor the calibration is for
+                'name' => 'sensor_type',
+                'type' => self::FIELD_TYPES['sensor_type'],
+                'def_num' => 0,
+            ],
+            1 => [  # Calibration factor used to convert from raw ADC value to degrees, g,  etc.
+                'name' => 'calibration_factor',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 1,
+                'subfields' => [
+                    [  # Barometer calibration factor
+                        'name' => 'baro_cal_factor',
+                        'def_num' => 1,
+                        'type' => self::BASE_TYPES[0x86],  # uint32
+                        'units' => 'Pa',
+                        'ref_fields' => [
+                            [
+                                'name' => 'sensor_type',
+                                'def_num' => 0,
+                                'value' => 'barometer',
+                                'raw_value' => 3,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            2 => [  # Calibration factor divisor
+                'name' => 'calibration_divisor',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 2,
+                'units' => 'counts',
+            ],
+            3 => [  # Level shift value used to shift the ADC value back into range
+                'name' => 'level_shift',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 3,
+            ],
+            4 => [  # Internal Calibration factor
+                'name' => 'offset_cal',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 4,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,  # Whole second part of the timestamp
+        ],
+    ],
+    225 => [
+        'name' => 'set',
+        'global_number' => 225,
+        'fields' => [
+            0 => [
+                'name' => 'duration',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 0,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            3 => [  # # of repitions of the movement
+                'name' => 'repetitions',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+            ],
+            4 => [  # Amount of weight applied for the set
+                'name' => 'weight',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'scale' => 16,
+                'units' => 'kg',
+            ],
+            5 => [
+                'name' => 'set_type',
+                'type' => self::FIELD_TYPES['set_type'],
+                'def_num' => 5,
+            ],
+            6 => [  # Start time of the set
+                'name' => 'start_time',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 6,
+            ],
+            7 => [
+                'name' => 'category',
+                'type' => self::FIELD_TYPES['exercise_category'],
+                'def_num' => 7,
+            ],
+            8 => [  # Based on the associated category, see [category]_exercise_names
+                'name' => 'category_subtype',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 8,
+            ],
+            9 => [
+                'name' => 'weight_display_unit',
+                'type' => self::FIELD_TYPES['fit_base_unit'],
+                'def_num' => 9,
+            ],
+            10 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 10,
+            ],
+            11 => [
+                'name' => 'wkt_step_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 11,
+            ],
+            254 => [  # Timestamp of the set
+                'name' => 'timestamp',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    227 => [  # Value from 1 to 100 calculated by FirstBeat
+        'name' => 'stress_level',
+        'global_number' => 227,
+        'fields' => [
+            0 => [
+                'name' => 'stress_level_value',
+                'type' => self::BASE_TYPES[0x83],  # sint16
+                'def_num' => 0,
+            ],
+            1 => [  # Time stress score was calculated
+                'name' => 'stress_level_time',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 1,
+                'units' => 's',
+            ],
+        ],
+    ],
+    258 => [
+        'name' => 'dive_settings',
+        'global_number' => 258,
+        'fields' => [
+            0 => [
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'model',
+                'type' => self::FIELD_TYPES['tissue_model_type'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'gf_low',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 2,
+                'units' => 'percent',
+            ],
+            3 => [
+                'name' => 'gf_high',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 3,
+                'units' => 'percent',
+            ],
+            4 => [
+                'name' => 'water_type',
+                'type' => self::FIELD_TYPES['water_type'],
+                'def_num' => 4,
+            ],
+            5 => [  # Fresh water is usually 1000; salt water is usually 1025
+                'name' => 'water_density',
+                'type' => self::BASE_TYPES[0x88],  # float32
+                'def_num' => 5,
+                'units' => 'kg/m^3',
+            ],
+            6 => [  # Typically 1.40
+                'name' => 'po2_warn',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 6,
+                'scale' => 100,
+                'units' => 'percent',
+            ],
+            7 => [  # Typically 1.60
+                'name' => 'po2_critical',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 7,
+                'scale' => 100,
+                'units' => 'percent',
+            ],
+            8 => [
+                'name' => 'po2_deco',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 8,
+                'scale' => 100,
+                'units' => 'percent',
+            ],
+            9 => [
+                'name' => 'safety_stop_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 9,
+            ],
+            10 => [
+                'name' => 'bottom_depth',
+                'type' => self::BASE_TYPES[0x88],  # float32
+                'def_num' => 10,
+            ],
+            11 => [
+                'name' => 'bottom_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 11,
+            ],
+            12 => [
+                'name' => 'apnea_countdown_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 12,
+            ],
+            13 => [
+                'name' => 'apnea_countdown_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 13,
+            ],
+            14 => [
+                'name' => 'backlight_mode',
+                'type' => self::FIELD_TYPES['dive_backlight_mode'],
+                'def_num' => 14,
+            ],
+            15 => [
+                'name' => 'backlight_brightness',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 15,
+            ],
+            16 => [
+                'name' => 'backlight_timeout',
+                'type' => self::FIELD_TYPES['backlight_timeout'],
+                'def_num' => 16,
+            ],
+            17 => [  # Time between surfacing and ending the activity
+                'name' => 'repeat_dive_interval',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 17,
+                'units' => 's',
+            ],
+            18 => [  # Time at safety stop (if enabled)
+                'name' => 'safety_stop_time',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 18,
+                'units' => 's',
+            ],
+            19 => [
+                'name' => 'heart_rate_source_type',
+                'type' => self::FIELD_TYPES['source_type'],
+                'def_num' => 19,
+            ],
+            20 => [
+                'name' => 'heart_rate_source',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 20,
+                'subfields' => [
+                    [
+                        'name' => 'heart_rate_antplus_device_type',
+                        'def_num' => 20,
+                        'type' => self::FIELD_TYPES['antplus_device_type'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'heart_rate_source_type',
+                                'def_num' => 19,
+                                'value' => 'antplus',
+                                'raw_value' => 1,
+                            ],
+                        ],
+                    ],
+                    [
+                        'name' => 'heart_rate_local_device_type',
+                        'def_num' => 20,
+                        'type' => self::FIELD_TYPES['local_device_type'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'heart_rate_source_type',
+                                'def_num' => 19,
+                                'value' => 'local',
+                                'raw_value' => 5,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    259 => [
+        'name' => 'dive_gas',
+        'global_number' => 259,
+        'fields' => [
+            0 => [
+                'name' => 'helium_content',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 0,
+                'units' => 'percent',
+            ],
+            1 => [
+                'name' => 'oxygen_content',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 1,
+                'units' => 'percent',
+            ],
+            2 => [
+                'name' => 'status',
+                'type' => self::FIELD_TYPES['dive_gas_status'],
+                'def_num' => 2,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    262 => [
+        'name' => 'dive_alarm',
+        'global_number' => 262,
+        'fields' => [
+            0 => [
+                'name' => 'depth',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 0,
+                'scale' => 1000,
+                'units' => 'm',
+            ],
+            1 => [
+                'name' => 'time',
+                'type' => self::BASE_TYPES[0x85],  # sint32
+                'def_num' => 1,
+                'units' => 's',
+            ],
+            2 => [
+                'name' => 'enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'alarm_type',
+                'type' => self::FIELD_TYPES['dive_alarm_type'],
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'sound',
+                'type' => self::FIELD_TYPES['tone'],
+                'def_num' => 4,
+            ],
+            5 => [
+                'name' => 'dive_types',
+                'type' => self::FIELD_TYPES['sub_sport'],
+                'def_num' => 5,
+            ],
+            254 => [  # Index of the alarm
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    264 => [
+        'name' => 'exercise_title',
+        'global_number' => 264,
+        'fields' => [
+            0 => [
+                'name' => 'exercise_category',
+                'type' => self::FIELD_TYPES['exercise_category'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'exercise_name',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'wkt_step_name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 2,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
+    268 => [
+        'name' => 'dive_summary',
+        'global_number' => 268,
+        'fields' => [
+            0 => [
+                'name' => 'reference_mesg',
+                'type' => self::FIELD_TYPES['global_number'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'reference_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 1,
+            ],
+            2 => [  # 0 if above water
+                'name' => 'avg_depth',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 2,
+                'scale' => 1000,
+                'units' => 'm',
+            ],
+            3 => [  # 0 if above water
+                'name' => 'max_depth',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 3,
+                'scale' => 1000,
+                'units' => 'm',
+            ],
+            4 => [  # Time since end of last dive
+                'name' => 'surface_interval',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 4,
+                'units' => 's',
+            ],
+            5 => [
+                'name' => 'start_cns',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 5,
+                'units' => 'percent',
+            ],
+            6 => [
+                'name' => 'end_cns',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 6,
+                'units' => 'percent',
+            ],
+            7 => [
+                'name' => 'start_n2',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 7,
+                'units' => 'percent',
+            ],
+            8 => [
+                'name' => 'end_n2',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 8,
+                'units' => 'percent',
+            ],
+            9 => [
+                'name' => 'o2_toxicity',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 9,
+                'units' => 'OTUs',
+            ],
+            10 => [
+                'name' => 'dive_number',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 10,
+            ],
+            11 => [
+                'name' => 'bottom_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 11,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
 
 
-      # ************************* Activity File Messages *************************
-      'activity' => [
-          'name' => 'activity',
-          'global_message_number' => 34,
-          'fields' => [
-              'total_timer_time' => [  # Exclude pauses
-                  'name' => 'total_timer_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 0,
-                  'scale' => 1000,
-                  'units' => 's',
-              ],
-              'num_sessions' => [
-                  'name' => 'num_sessions',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-              ],
-              'type' => [
-                  'name' => 'type',
-                  'type' =>  self::FIELD_TYPES['activity'],
-                  'def_num' => 2,
-              ],
-              'event' => [
-                  'name' => 'event',
-                  'type' =>  self::FIELD_TYPES['event'],
-                  'def_num' => 3,
-              ],
-              'event_type' => [
-                  'name' => 'event_type',
-                  'type' =>  self::FIELD_TYPES['event_type'],
-                  'def_num' => 4,
-              ],
-              'local_timestamp' => [  # timestamp epoch expressed in local time, used to convert activity timestamps to local time
-                  'name' => 'local_timestamp',
-                  'type' =>  self::FIELD_TYPES['local_date_time'],
-                  'def_num' => 5,
-              ],
-              'event_group' => [
-                  'name' => 'event_group',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 6,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
+    # ************************* Activity File Messages *************************
+    34 => [
+        'name' => 'activity',
+        'global_number' => 34,
+        'fields' => [
+            0 => [  # Exclude pauses
+                'name' => 'total_timer_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 0,
+                'scale' => 1000,
+                'units' => 's',
+            ],
+            1 => [
+                'name' => 'num_sessions',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'type',
+                'type' => self::FIELD_TYPES['activity'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'event',
+                'type' => self::FIELD_TYPES['event'],
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'event_type',
+                'type' => self::FIELD_TYPES['event_type'],
+                'def_num' => 4,
+            ],
+            5 => [  # timestamp epoch expressed in local time, used to convert activity timestamps to local time
+                'name' => 'local_timestamp',
+                'type' => self::FIELD_TYPES['local_date_time'],
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'event_group',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 6,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
 
 
-      # ********************** Blood Pressure File Messages **********************
-      'blood_pressure' => [
-          'name' => 'blood_pressure',
-          'global_message_number' => 51,
-          'fields' => [
-              'systolic_pressure' => [
-                  'name' => 'systolic_pressure',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 0,
-                  'units' => 'mmHg',
-              ],
-              'diastolic_pressure' => [
-                  'name' => 'diastolic_pressure',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-                  'units' => 'mmHg',
-              ],
-              'mean_arterial_pressure' => [
-                  'name' => 'mean_arterial_pressure',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-                  'units' => 'mmHg',
-              ],
-              'map_3_sample_mean' => [
-                  'name' => 'map_3_sample_mean',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-                  'units' => 'mmHg',
-              ],
-              'map_morning_values' => [
-                  'name' => 'map_morning_values',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'units' => 'mmHg',
-              ],
-              'map_evening_values' => [
-                  'name' => 'map_evening_values',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 5,
-                  'units' => 'mmHg',
-              ],
-              'heart_rate' => [
-                  'name' => 'heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 6,
-                  'units' => 'bpm',
-              ],
-              'heart_rate_type' => [
-                  'name' => 'heart_rate_type',
-                  'type' =>  self::FIELD_TYPES['hr_type'],
-                  'def_num' => 7,
-              ],
-              'status' => [
-                  'name' => 'status',
-                  'type' =>  self::FIELD_TYPES['bp_status'],
-                  'def_num' => 8,
-              ],
-              'user_profile_index' => [  # Associates this blood pressure message to a user.  This corresponds to the index of the user profile message in the blood pressure file.
-                  'name' => 'user_profile_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 9,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
+    # ********************** Blood Pressure File Messages **********************
+    51 => [
+        'name' => 'blood_pressure',
+        'global_number' => 51,
+        'fields' => [
+            0 => [
+                'name' => 'systolic_pressure',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 0,
+                'units' => 'mmHg',
+            ],
+            1 => [
+                'name' => 'diastolic_pressure',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+                'units' => 'mmHg',
+            ],
+            2 => [
+                'name' => 'mean_arterial_pressure',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+                'units' => 'mmHg',
+            ],
+            3 => [
+                'name' => 'map_3_sample_mean',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+                'units' => 'mmHg',
+            ],
+            4 => [
+                'name' => 'map_morning_values',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'units' => 'mmHg',
+            ],
+            5 => [
+                'name' => 'map_evening_values',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 5,
+                'units' => 'mmHg',
+            ],
+            6 => [
+                'name' => 'heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 6,
+                'units' => 'bpm',
+            ],
+            7 => [
+                'name' => 'heart_rate_type',
+                'type' => self::FIELD_TYPES['hr_type'],
+                'def_num' => 7,
+            ],
+            8 => [
+                'name' => 'status',
+                'type' => self::FIELD_TYPES['bp_status'],
+                'def_num' => 8,
+            ],
+            9 => [  # Associates this blood pressure message to a user.  This corresponds to the index of the user profile message in the blood pressure file.
+                'name' => 'user_profile_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 9,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
 
 
-      # ************************** Course File Messages **************************
-      'course' => [
-          'name' => 'course',
-          'global_message_number' => 31,
-          'fields' => [
-              'sport' => [
-                  'name' => 'sport',
-                  'type' =>  self::FIELD_TYPES['sport'],
-                  'def_num' => 4,
-              ],
-              'name' => [
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 5,
-              ],
-              'capabilities' => [
-                  'name' => 'capabilities',
-                  'type' =>  self::FIELD_TYPES['course_capabilities'],
-                  'def_num' => 6,
-              ],
-              'sub_sport' => [
-                  'name' => 'sub_sport',
-                  'type' =>  self::FIELD_TYPES['sub_sport'],
-                  'def_num' => 7,
-              ],
-          ],
-      ],
+    # ************************** Course File Messages **************************
+    31 => [
+        'name' => 'course',
+        'global_number' => 31,
+        'fields' => [
+            4 => [
+                'name' => 'sport',
+                'type' => self::FIELD_TYPES['sport'],
+                'def_num' => 4,
+            ],
+            5 => [
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'capabilities',
+                'type' => self::FIELD_TYPES['course_capabilities'],
+                'def_num' => 6,
+            ],
+            7 => [
+                'name' => 'sub_sport',
+                'type' => self::FIELD_TYPES['sub_sport'],
+                'def_num' => 7,
+            ],
+        ],
+    ],
 
 
-      # ************************** Device File Messages **************************
-      'software' => [
-          'name' => 'software',
-          'global_message_number' => 35,
-          'fields' => [
-              'version' => [
-                  'name' => 'version',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-                  'scale' => 100,
-              ],
-              'part_number' => [
-                  'name' => 'part_number',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 5,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
+    # ************************** Device File Messages **************************
+    35 => [
+        'name' => 'software',
+        'global_number' => 35,
+        'fields' => [
+            3 => [
+                'name' => 'version',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+                'scale' => 100,
+            ],
+            5 => [
+                'name' => 'part_number',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 5,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
 
 
-      # ************************** Goals File Messages ***************************
-      'goal' => [
-          'name' => 'goal',
-          'global_message_number' => 15,
-          'fields' => [
-              'sport' => [
-                  'name' => 'sport',
-                  'type' =>  self::FIELD_TYPES['sport'],
-                  'def_num' => 0,
-              ],
-              'sub_sport' => [
-                  'name' => 'sub_sport',
-                  'type' =>  self::FIELD_TYPES['sub_sport'],
-                  'def_num' => 1,
-              ],
-              'start_date' => [
-                  'name' => 'start_date',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 2,
-              ],
-              'end_date' => [
-                  'name' => 'end_date',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 3,
-              ],
-              'type' => [
-                  'name' => 'type',
-                  'type' =>  self::FIELD_TYPES['goal'],
-                  'def_num' => 4,
-              ],
-              'value' => [
-                  'name' => 'value',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 5,
-              ],
-              'repeat' => [
-                  'name' => 'repeat',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 6,
-              ],
-              'target_value' => [
-                  'name' => 'target_value',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 7,
-              ],
-              'recurrence' => [
-                  'name' => 'recurrence',
-                  'type' =>  self::FIELD_TYPES['goal_recurrence'],
-                  'def_num' => 8,
-              ],
-              'recurrence_value' => [
-                  'name' => 'recurrence_value',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 9,
-              ],
-              'enabled' => [
-                  'name' => 'enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 10,
-              ],
-              'source' => [
-                  'name' => 'source',
-                  'type' =>  self::FIELD_TYPES['goal_source'],
-                  'def_num' => 11,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
+    # ************************** Goals File Messages ***************************
+    15 => [
+        'name' => 'goal',
+        'global_number' => 15,
+        'fields' => [
+            0 => [
+                'name' => 'sport',
+                'type' => self::FIELD_TYPES['sport'],
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'sub_sport',
+                'type' => self::FIELD_TYPES['sub_sport'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'start_date',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'end_date',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 3,
+            ],
+            4 => [
+                'name' => 'type',
+                'type' => self::FIELD_TYPES['goal'],
+                'def_num' => 4,
+            ],
+            5 => [
+                'name' => 'value',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'repeat',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 6,
+            ],
+            7 => [
+                'name' => 'target_value',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 7,
+            ],
+            8 => [
+                'name' => 'recurrence',
+                'type' => self::FIELD_TYPES['goal_recurrence'],
+                'def_num' => 8,
+            ],
+            9 => [
+                'name' => 'recurrence_value',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 9,
+            ],
+            10 => [
+                'name' => 'enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 10,
+            ],
+            11 => [
+                'name' => 'source',
+                'type' => self::FIELD_TYPES['goal_source'],
+                'def_num' => 11,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
 
 
-      # ************************ Monitoring File Messages ************************
-      'monitoring_info' => [
-          'name' => 'monitoring_info',
-          'global_message_number' => 103,
-          'fields' => [
-              'local_timestamp' => [  # Use to convert activity timestamps to local time if device does not support time zone and daylight savings time correction.
-                  'name' => 'local_timestamp',
-                  'type' =>  self::FIELD_TYPES['local_date_time'],
-                  'def_num' => 0,
-                  'units' => 's',
-              ],
-              'activity_type' => [
-                  'name' => 'activity_type',
-                  'type' =>  self::FIELD_TYPES['activity_type'],
-                  'def_num' => 1,
-              ],
-              'cycles_to_distance' => [  # Indexed by activity_type
-                  'name' => 'cycles_to_distance',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-                  'scale' => 5000,
-                  'units' => 'm/cycle',
-              ],
-              'cycles_to_calories' => [  # Indexed by activity_type
-                  'name' => 'cycles_to_calories',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'scale' => 5000,
-                  'units' => 'kcal/cycle',
-              ],
-              'resting_metabolic_rate' => [
-                  'name' => 'resting_metabolic_rate',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 5,
-                  'units' => 'kcal/day',
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
+    # ************************ Monitoring File Messages ************************
+    103 => [
+        'name' => 'monitoring_info',
+        'global_number' => 103,
+        'fields' => [
+            0 => [  # Use to convert activity timestamps to local time if device does not support time zone and daylight savings time correction.
+                'name' => 'local_timestamp',
+                'type' => self::FIELD_TYPES['local_date_time'],
+                'def_num' => 0,
+                'units' => 's',
+            ],
+            1 => [
+                'name' => 'activity_type',
+                'type' => self::FIELD_TYPES['activity_type'],
+                'def_num' => 1,
+            ],
+            3 => [  # Indexed by activity_type
+                'name' => 'cycles_to_distance',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+                'scale' => 5000,
+                'units' => 'm/cycle',
+            ],
+            4 => [  # Indexed by activity_type
+                'name' => 'cycles_to_calories',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'scale' => 5000,
+                'units' => 'kcal/cycle',
+            ],
+            5 => [
+                'name' => 'resting_metabolic_rate',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 5,
+                'units' => 'kcal/day',
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
 
 
-      # ***************************** Other Messages *****************************
-      'memo_glob' => [
-          'name' => 'memo_glob',
-          'global_message_number' => 145,
-          'fields' => [
-              'memo' => [  # Block of utf8 bytes
-                  'name' => 'memo',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 0,
-              ],
-              'message_number' => [  # Allows relating glob to another mesg  If used only required for first part of each memo_glob
-                  'name' => 'message_number',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-              ],
-              'message_index' => [  # Index of external mesg
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 2,
-              ],
-              'part_index' => [  # Sequence number of memo blocks
-                  'name' => 'part_index',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 250,
-              ],
-          ],
-      ],
+    # ***************************** Other Messages *****************************
+    145 => [
+        'name' => 'memo_glob',
+        'global_number' => 145,
+        'fields' => [
+            0 => [  # Block of utf8 bytes
+                'name' => 'memo',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 0,
+            ],
+            1 => [  # Allows relating glob to another mesg  If used only required for first part of each memo_glob
+                'name' => 'message_number',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+            ],
+            2 => [  # Index of external mesg
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 2,
+            ],
+            250 => [  # Sequence number of memo blocks
+                'name' => 'part_index',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 250,
+            ],
+        ],
+    ],
 
 
-      # ************************* Schedule File Messages *************************
-      'schedule' => [
-          'name' => 'schedule',
-          'global_message_number' => 28,
-          'fields' => [
-              'manufacturer' => [  # Corresponds to file_id of scheduled workout / course.
-                  'name' => 'manufacturer',
-                  'type' =>  self::FIELD_TYPES['manufacturer'],
-                  'def_num' => 0,
-              ],
-              'product' => [  # Corresponds to file_id of scheduled workout / course.
-                  'name' => 'product',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-                  'subfields' => [
-                      [
-                          'name' => 'garmin_product',
-                          'def_num' => 1,
-                          'type' =>  self::FIELD_TYPES['garmin_product'],
-                          'ref_fields' => [
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 0,
-                                  'value' => 'garmin',
-                                  'raw_value' => 1,
-                              ],
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 0,
-                                  'value' => 'dynastream',
-                                  'raw_value' => 15,
-                              ],
-                              [
-                                  'name' => 'manufacturer',
-                                  'def_num' => 0,
-                                  'value' => 'dynastream_oem',
-                                  'raw_value' => 13,
-                              ],
-                          ],
-                      ],
-                  ],
-              ],
-              'serial_number' => [  # Corresponds to file_id of scheduled workout / course.
-                  'name' => 'serial_number',
-                  'type' => self::BASE_TYPES[0x8C],  # uint32z
-                  'def_num' => 2,
-              ],
-              'time_created' => [  # Corresponds to file_id of scheduled workout / course.
-                  'name' => 'time_created',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 3,
-              ],
-              'completed' => [  # TRUE if this activity has been started
-                  'name' => 'completed',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 4,
-              ],
-              'type' => [
-                  'name' => 'type',
-                  'type' =>  self::FIELD_TYPES['schedule'],
-                  'def_num' => 5,
-              ],
-              'scheduled_time' => [
-                  'name' => 'scheduled_time',
-                  'type' =>  self::FIELD_TYPES['local_date_time'],
-                  'def_num' => 6,
-              ],
-          ],
-      ],
+    # ************************* Schedule File Messages *************************
+    28 => [
+        'name' => 'schedule',
+        'global_number' => 28,
+        'fields' => [
+            0 => [  # Corresponds to file_id of scheduled workout / course.
+                'name' => 'manufacturer',
+                'type' => self::FIELD_TYPES['manufacturer'],
+                'def_num' => 0,
+            ],
+            1 => [  # Corresponds to file_id of scheduled workout / course.
+                'name' => 'product',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+                'subfields' => [
+                    [
+                        'name' => 'garmin_product',
+                        'def_num' => 1,
+                        'type' => self::FIELD_TYPES['garmin_product'],
+                        'ref_fields' => [
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 0,
+                                'value' => 'garmin',
+                                'raw_value' => 1,
+                            ],
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 0,
+                                'value' => 'dynastream',
+                                'raw_value' => 15,
+                            ],
+                            [
+                                'name' => 'manufacturer',
+                                'def_num' => 0,
+                                'value' => 'dynastream_oem',
+                                'raw_value' => 13,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            2 => [  # Corresponds to file_id of scheduled workout / course.
+                'name' => 'serial_number',
+                'type' => self::BASE_TYPES[0x8C],  # uint32z
+                'def_num' => 2,
+            ],
+            3 => [  # Corresponds to file_id of scheduled workout / course.
+                'name' => 'time_created',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 3,
+            ],
+            4 => [  # TRUE if this activity has been started
+                'name' => 'completed',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 4,
+            ],
+            5 => [
+                'name' => 'type',
+                'type' => self::FIELD_TYPES['schedule'],
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'scheduled_time',
+                'type' => self::FIELD_TYPES['local_date_time'],
+                'def_num' => 6,
+            ],
+        ],
+    ],
 
 
-      # ************************* Segment File Messages **************************
-      'segment_id' => [  # Unique Identification data for a segment file
-          'name' => 'segment_id',
-          'global_message_number' => 148,
-          'fields' => [
-              'name' => [  # Friendly name assigned to segment
-                  'name' => 'name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 0,
-              ],
-              'uuid' => [  # UUID of the segment
-                  'name' => 'uuid',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 1,
-              ],
-              'sport' => [  # Sport associated with the segment
-                  'name' => 'sport',
-                  'type' =>  self::FIELD_TYPES['sport'],
-                  'def_num' => 2,
-              ],
-              'enabled' => [  # Segment enabled for evaluation
-                  'name' => 'enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 3,
-              ],
-              'user_profile_primary_key' => [  # Primary key of the user that created the segment
-                  'name' => 'user_profile_primary_key',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 4,
-              ],
-              'device_id' => [  # ID of the device that created the segment
-                  'name' => 'device_id',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 5,
-              ],
-              'default_race_leader' => [  # Index for the Leader Board entry selected as the default race participant
-                  'name' => 'default_race_leader',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 6,
-              ],
-              'delete_status' => [  # Indicates if any segments should be deleted
-                  'name' => 'delete_status',
-                  'type' =>  self::FIELD_TYPES['segment_delete_status'],
-                  'def_num' => 7,
-              ],
-              'selection_type' => [  # Indicates how the segment was selected to be sent to the device
-                  'name' => 'selection_type',
-                  'type' =>  self::FIELD_TYPES['segment_selection_type'],
-                  'def_num' => 8,
-              ],
-          ],
-      ],
+    # ************************* Segment File Messages **************************
+    148 => [  # Unique Identification data for a segment file
+        'name' => 'segment_id',
+        'global_number' => 148,
+        'fields' => [
+            0 => [  # Friendly name assigned to segment
+                'name' => 'name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 0,
+            ],
+            1 => [  # UUID of the segment
+                'name' => 'uuid',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 1,
+            ],
+            2 => [  # Sport associated with the segment
+                'name' => 'sport',
+                'type' => self::FIELD_TYPES['sport'],
+                'def_num' => 2,
+            ],
+            3 => [  # Segment enabled for evaluation
+                'name' => 'enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 3,
+            ],
+            4 => [  # Primary key of the user that created the segment
+                'name' => 'user_profile_primary_key',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 4,
+            ],
+            5 => [  # ID of the device that created the segment
+                'name' => 'device_id',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 5,
+            ],
+            6 => [  # Index for the Leader Board entry selected as the default race participant
+                'name' => 'default_race_leader',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 6,
+            ],
+            7 => [  # Indicates if any segments should be deleted
+                'name' => 'delete_status',
+                'type' => self::FIELD_TYPES['segment_delete_status'],
+                'def_num' => 7,
+            ],
+            8 => [  # Indicates how the segment was selected to be sent to the device
+                'name' => 'selection_type',
+                'type' => self::FIELD_TYPES['segment_selection_type'],
+                'def_num' => 8,
+            ],
+        ],
+    ],
 
 
-      # *********************** Segment List File Messages ***********************
-      'segment_file' => [  # Summary of the unique segment and leaderboard information associated with a segment file. This message is used to compile a segment list file describing all segment files on a device. The segment list file is used when refreshing the contents of a segment file with the latest available leaderboard information.
-          'name' => 'segment_file',
-          'global_message_number' => 151,
-          'fields' => [
-              'file_uuid' => [  # UUID of the segment file
-                  'name' => 'file_uuid',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 1,
-              ],
-              'enabled' => [  # Enabled state of the segment file
-                  'name' => 'enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 3,
-              ],
-              'user_profile_primary_key' => [  # Primary key of the user that created the segment file
-                  'name' => 'user_profile_primary_key',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 4,
-              ],
-              'leader_type' => [  # Leader type of each leader in the segment file
-                  'name' => 'leader_type',
-                  'type' =>  self::FIELD_TYPES['segment_leaderboard_type'],
-                  'def_num' => 7,
-              ],
-              'leader_group_primary_key' => [  # Group primary key of each leader in the segment file
-                  'name' => 'leader_group_primary_key',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 8,
-              ],
-              'leader_activity_id' => [  # Activity ID of each leader in the segment file
-                  'name' => 'leader_activity_id',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 9,
-              ],
-              'leader_activity_id_string' => [  # String version of the activity ID of each leader in the segment file. 21 characters long for each ID, express in decimal
-                  'name' => 'leader_activity_id_string',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 10,
-              ],
-              'default_race_leader' => [  # Index for the Leader Board entry selected as the default race participant
-                  'name' => 'default_race_leader',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 11,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
+    # *********************** Segment List File Messages ***********************
+    151 => [  # Summary of the unique segment and leaderboard information associated with a segment file. This message is used to compile a segment list file describing all segment files on a device. The segment list file is used when refreshing the contents of a segment file with the latest available leaderboard information.
+        'name' => 'segment_file',
+        'global_number' => 151,
+        'fields' => [
+            1 => [  # UUID of the segment file
+                'name' => 'file_uuid',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 1,
+            ],
+            3 => [  # Enabled state of the segment file
+                'name' => 'enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 3,
+            ],
+            4 => [  # Primary key of the user that created the segment file
+                'name' => 'user_profile_primary_key',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 4,
+            ],
+            7 => [  # Leader type of each leader in the segment file
+                'name' => 'leader_type',
+                'type' => self::FIELD_TYPES['segment_leaderboard_type'],
+                'def_num' => 7,
+            ],
+            8 => [  # Group primary key of each leader in the segment file
+                'name' => 'leader_group_primary_key',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 8,
+            ],
+            9 => [  # Activity ID of each leader in the segment file
+                'name' => 'leader_activity_id',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 9,
+            ],
+            10 => [  # String version of the activity ID of each leader in the segment file. 21 characters long for each ID, express in decimal
+                'name' => 'leader_activity_id_string',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 10,
+            ],
+            11 => [  # Index for the Leader Board entry selected as the default race participant
+                'name' => 'default_race_leader',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 11,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
 
 
-      # ************************* Settings File Messages *************************
-      'device_settings' => [
-          'name' => 'device_settings',
-          'global_message_number' => 2,
-          'fields' => [
-              'active_time_zone' => [  # Index into time zone arrays.
-                  'name' => 'active_time_zone',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 0,
-              ],
-              'utc_offset' => [  # Offset from system time. Required to convert timestamp from system time to UTC.
-                  'name' => 'utc_offset',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 1,
-              ],
-              'time_offset' => [  # Offset from system time.
-                  'name' => 'time_offset',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 2,
-                  'units' => 's',
-              ],
-              'time_mode' => [  # Display mode for the time
-                  'name' => 'time_mode',
-                  'type' =>  self::FIELD_TYPES['time_mode'],
-                  'def_num' => 4,
-              ],
-              'time_zone_offset' => [  # timezone offset in 1/4 hour increments
-                  'name' => 'time_zone_offset',
-                  'type' => self::BASE_TYPES[0x01],  # sint8
-                  'def_num' => 5,
-                  'scale' => 4,
-                  'units' => 'hr',
-              ],
-              'backlight_mode' => [  # Mode for backlight
-                  'name' => 'backlight_mode',
-                  'type' =>  self::FIELD_TYPES['backlight_mode'],
-                  'def_num' => 12,
-              ],
-              'activity_tracker_enabled' => [  # Enabled state of the activity tracker functionality
-                  'name' => 'activity_tracker_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 36,
-              ],
-              'clock_time' => [  # UTC timestamp used to set the devices clock and date
-                  'name' => 'clock_time',
-                  'type' =>  self::FIELD_TYPES['date_time'],
-                  'def_num' => 39,
-              ],
-              'pages_enabled' => [  # Bitfield  to configure enabled screens for each supported loop
-                  'name' => 'pages_enabled',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 40,
-              ],
-              'move_alert_enabled' => [  # Enabled state of the move alert
-                  'name' => 'move_alert_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 46,
-              ],
-              'date_mode' => [  # Display mode for the date
-                  'name' => 'date_mode',
-                  'type' =>  self::FIELD_TYPES['date_mode'],
-                  'def_num' => 47,
-              ],
-              'display_orientation' => [
-                  'name' => 'display_orientation',
-                  'type' =>  self::FIELD_TYPES['display_orientation'],
-                  'def_num' => 55,
-              ],
-              'mounting_side' => [
-                  'name' => 'mounting_side',
-                  'type' =>  self::FIELD_TYPES['side'],
-                  'def_num' => 56,
-              ],
-              'default_page' => [  # Bitfield to indicate one page as default for each supported loop
-                  'name' => 'default_page',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 57,
-              ],
-              'autosync_min_steps' => [  # Minimum steps before an autosync can occur
-                  'name' => 'autosync_min_steps',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 58,
-                  'units' => 'steps',
-              ],
-              'autosync_min_time' => [  # Minimum minutes before an autosync can occur
-                  'name' => 'autosync_min_time',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 59,
-                  'units' => 'minutes',
-              ],
-              'lactate_threshold_autodetect_enabled' => [  # Enable auto-detect setting for the lactate threshold feature.
-                  'name' => 'lactate_threshold_autodetect_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 80,
-              ],
-              'ble_auto_upload_enabled' => [  # Automatically upload using BLE
-                  'name' => 'ble_auto_upload_enabled',
-                  'type' =>  self::FIELD_TYPES['bool'],
-                  'def_num' => 86,
-              ],
-              'auto_sync_frequency' => [  # Helps to conserve battery by changing modes
-                  'name' => 'auto_sync_frequency',
-                  'type' =>  self::FIELD_TYPES['auto_sync_frequency'],
-                  'def_num' => 89,
-              ],
-              'auto_activity_detect' => [  # Allows setting specific activities auto-activity detect enabled/disabled settings
-                  'name' => 'auto_activity_detect',
-                  'type' =>  self::FIELD_TYPES['auto_activity_detect'],
-                  'def_num' => 90,
-              ],
-              'number_of_screens' => [  # Number of screens configured to display
-                  'name' => 'number_of_screens',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 94,
-              ],
-              'smart_notification_display_orientation' => [  # Smart Notification display orientation
-                  'name' => 'smart_notification_display_orientation',
-                  'type' =>  self::FIELD_TYPES['display_orientation'],
-                  'def_num' => 95,
-              ],
-              'tap_interface' => [
-                  'name' => 'tap_interface',
-                  'type' =>  self::FIELD_TYPES['switch'],
-                  'def_num' => 134,
-              ],
-          ],
-      ],
-      'user_profile' => [
-          'name' => 'user_profile',
-          'global_message_number' => 3,
-          'fields' => [
-              'friendly_name' => [
-                  'name' => 'friendly_name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 0,
-              ],
-              'gender' => [
-                  'name' => 'gender',
-                  'type' =>  self::FIELD_TYPES['gender'],
-                  'def_num' => 1,
-              ],
-              'age' => [
-                  'name' => 'age',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 2,
-                  'units' => 'years',
-              ],
-              'height' => [
-                  'name' => 'height',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 3,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'weight' => [
-                  'name' => 'weight',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'scale' => 10,
-                  'units' => 'kg',
-              ],
-              'language' => [
-                  'name' => 'language',
-                  'type' =>  self::FIELD_TYPES['language'],
-                  'def_num' => 5,
-              ],
-              'elev_setting' => [
-                  'name' => 'elev_setting',
-                  'type' =>  self::FIELD_TYPES['display_measure'],
-                  'def_num' => 6,
-              ],
-              'weight_setting' => [
-                  'name' => 'weight_setting',
-                  'type' =>  self::FIELD_TYPES['display_measure'],
-                  'def_num' => 7,
-              ],
-              'resting_heart_rate' => [
-                  'name' => 'resting_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 8,
-                  'units' => 'bpm',
-              ],
-              'default_max_running_heart_rate' => [
-                  'name' => 'default_max_running_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 9,
-                  'units' => 'bpm',
-              ],
-              'default_max_biking_heart_rate' => [
-                  'name' => 'default_max_biking_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 10,
-                  'units' => 'bpm',
-              ],
-              'default_max_heart_rate' => [
-                  'name' => 'default_max_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 11,
-                  'units' => 'bpm',
-              ],
-              'hr_setting' => [
-                  'name' => 'hr_setting',
-                  'type' =>  self::FIELD_TYPES['display_heart'],
-                  'def_num' => 12,
-              ],
-              'speed_setting' => [
-                  'name' => 'speed_setting',
-                  'type' =>  self::FIELD_TYPES['display_measure'],
-                  'def_num' => 13,
-              ],
-              'dist_setting' => [
-                  'name' => 'dist_setting',
-                  'type' =>  self::FIELD_TYPES['display_measure'],
-                  'def_num' => 14,
-              ],
-              'power_setting' => [
-                  'name' => 'power_setting',
-                  'type' =>  self::FIELD_TYPES['display_power'],
-                  'def_num' => 16,
-              ],
-              'activity_class' => [
-                  'name' => 'activity_class',
-                  'type' =>  self::FIELD_TYPES['activity_class'],
-                  'def_num' => 17,
-              ],
-              'position_setting' => [
-                  'name' => 'position_setting',
-                  'type' =>  self::FIELD_TYPES['display_position'],
-                  'def_num' => 18,
-              ],
-              'temperature_setting' => [
-                  'name' => 'temperature_setting',
-                  'type' =>  self::FIELD_TYPES['display_measure'],
-                  'def_num' => 21,
-              ],
-              'local_id' => [
-                  'name' => 'local_id',
-                  'type' =>  self::FIELD_TYPES['user_local_id'],
-                  'def_num' => 22,
-              ],
-              'global_id' => [
-                  'name' => 'global_id',
-                  'type' => self::BASE_TYPES[0x0D],  # byte
-                  'def_num' => 23,
-              ],
-              'wake_time' => [  # Typical wake time
-                  'name' => 'wake_time',
-                  'type' =>  self::FIELD_TYPES['localtime_into_day'],
-                  'def_num' => 28,
-              ],
-              'sleep_time' => [  # Typical bed time
-                  'name' => 'sleep_time',
-                  'type' =>  self::FIELD_TYPES['localtime_into_day'],
-                  'def_num' => 29,
-              ],
-              'height_setting' => [
-                  'name' => 'height_setting',
-                  'type' =>  self::FIELD_TYPES['display_measure'],
-                  'def_num' => 30,
-              ],
-              'user_running_step_length' => [  # User defined running step length set to 0 for auto length
-                  'name' => 'user_running_step_length',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 31,
-                  'scale' => 1000,
-                  'units' => 'm',
-              ],
-              'user_walking_step_length' => [  # User defined walking step length set to 0 for auto length
-                  'name' => 'user_walking_step_length',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 32,
-                  'scale' => 1000,
-                  'units' => 'm',
-              ],
-              'depth_setting' => [
-                  'name' => 'depth_setting',
-                  'type' =>  self::FIELD_TYPES['display_measure'],
-                  'def_num' => 47,
-              ],
-              'dive_count' => [
-                  'name' => 'dive_count',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 49,
-              ],
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
+    # ************************* Settings File Messages *************************
+    2 => [
+        'name' => 'device_settings',
+        'global_number' => 2,
+        'fields' => [
+            0 => [  # Index into time zone arrays.
+                'name' => 'active_time_zone',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 0,
+            ],
+            1 => [  # Offset from system time. Required to convert timestamp from system time to UTC.
+                'name' => 'utc_offset',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 1,
+            ],
+            2 => [  # Offset from system time.
+                'name' => 'time_offset',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 2,
+                'units' => 's',
+            ],
+            4 => [  # Display mode for the time
+                'name' => 'time_mode',
+                'type' => self::FIELD_TYPES['time_mode'],
+                'def_num' => 4,
+            ],
+            5 => [  # timezone offset in 1/4 hour increments
+                'name' => 'time_zone_offset',
+                'type' => self::BASE_TYPES[0x01],  # sint8
+                'def_num' => 5,
+                'scale' => 4,
+                'units' => 'hr',
+            ],
+            12 => [  # Mode for backlight
+                'name' => 'backlight_mode',
+                'type' => self::FIELD_TYPES['backlight_mode'],
+                'def_num' => 12,
+            ],
+            36 => [  # Enabled state of the activity tracker functionality
+                'name' => 'activity_tracker_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 36,
+            ],
+            39 => [  # UTC timestamp used to set the devices clock and date
+                'name' => 'clock_time',
+                'type' => self::FIELD_TYPES['date_time'],
+                'def_num' => 39,
+            ],
+            40 => [  # Bitfield  to configure enabled screens for each supported loop
+                'name' => 'pages_enabled',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 40,
+            ],
+            46 => [  # Enabled state of the move alert
+                'name' => 'move_alert_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 46,
+            ],
+            47 => [  # Display mode for the date
+                'name' => 'date_mode',
+                'type' => self::FIELD_TYPES['date_mode'],
+                'def_num' => 47,
+            ],
+            55 => [
+                'name' => 'display_orientation',
+                'type' => self::FIELD_TYPES['display_orientation'],
+                'def_num' => 55,
+            ],
+            56 => [
+                'name' => 'mounting_side',
+                'type' => self::FIELD_TYPES['side'],
+                'def_num' => 56,
+            ],
+            57 => [  # Bitfield to indicate one page as default for each supported loop
+                'name' => 'default_page',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 57,
+            ],
+            58 => [  # Minimum steps before an autosync can occur
+                'name' => 'autosync_min_steps',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 58,
+                'units' => 'steps',
+            ],
+            59 => [  # Minimum minutes before an autosync can occur
+                'name' => 'autosync_min_time',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 59,
+                'units' => 'minutes',
+            ],
+            80 => [  # Enable auto-detect setting for the lactate threshold feature.
+                'name' => 'lactate_threshold_autodetect_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 80,
+            ],
+            86 => [  # Automatically upload using BLE
+                'name' => 'ble_auto_upload_enabled',
+                'type' => self::FIELD_TYPES['bool'],
+                'def_num' => 86,
+            ],
+            89 => [  # Helps to conserve battery by changing modes
+                'name' => 'auto_sync_frequency',
+                'type' => self::FIELD_TYPES['auto_sync_frequency'],
+                'def_num' => 89,
+            ],
+            90 => [  # Allows setting specific activities auto-activity detect enabled/disabled settings
+                'name' => 'auto_activity_detect',
+                'type' => self::FIELD_TYPES['auto_activity_detect'],
+                'def_num' => 90,
+            ],
+            94 => [  # Number of screens configured to display
+                'name' => 'number_of_screens',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 94,
+            ],
+            95 => [  # Smart Notification display orientation
+                'name' => 'smart_notification_display_orientation',
+                'type' => self::FIELD_TYPES['display_orientation'],
+                'def_num' => 95,
+            ],
+            134 => [
+                'name' => 'tap_interface',
+                'type' => self::FIELD_TYPES['switch'],
+                'def_num' => 134,
+            ],
+        ],
+    ],
+    3 => [
+        'name' => 'user_profile',
+        'global_number' => 3,
+        'fields' => [
+            0 => [
+                'name' => 'friendly_name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 0,
+            ],
+            1 => [
+                'name' => 'gender',
+                'type' => self::FIELD_TYPES['gender'],
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'age',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 2,
+                'units' => 'years',
+            ],
+            3 => [
+                'name' => 'height',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 3,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            4 => [
+                'name' => 'weight',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'scale' => 10,
+                'units' => 'kg',
+            ],
+            5 => [
+                'name' => 'language',
+                'type' => self::FIELD_TYPES['language'],
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'elev_setting',
+                'type' => self::FIELD_TYPES['display_measure'],
+                'def_num' => 6,
+            ],
+            7 => [
+                'name' => 'weight_setting',
+                'type' => self::FIELD_TYPES['display_measure'],
+                'def_num' => 7,
+            ],
+            8 => [
+                'name' => 'resting_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 8,
+                'units' => 'bpm',
+            ],
+            9 => [
+                'name' => 'default_max_running_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 9,
+                'units' => 'bpm',
+            ],
+            10 => [
+                'name' => 'default_max_biking_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 10,
+                'units' => 'bpm',
+            ],
+            11 => [
+                'name' => 'default_max_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 11,
+                'units' => 'bpm',
+            ],
+            12 => [
+                'name' => 'hr_setting',
+                'type' => self::FIELD_TYPES['display_heart'],
+                'def_num' => 12,
+            ],
+            13 => [
+                'name' => 'speed_setting',
+                'type' => self::FIELD_TYPES['display_measure'],
+                'def_num' => 13,
+            ],
+            14 => [
+                'name' => 'dist_setting',
+                'type' => self::FIELD_TYPES['display_measure'],
+                'def_num' => 14,
+            ],
+            16 => [
+                'name' => 'power_setting',
+                'type' => self::FIELD_TYPES['display_power'],
+                'def_num' => 16,
+            ],
+            17 => [
+                'name' => 'activity_class',
+                'type' => self::FIELD_TYPES['activity_class'],
+                'def_num' => 17,
+            ],
+            18 => [
+                'name' => 'position_setting',
+                'type' => self::FIELD_TYPES['display_position'],
+                'def_num' => 18,
+            ],
+            21 => [
+                'name' => 'temperature_setting',
+                'type' => self::FIELD_TYPES['display_measure'],
+                'def_num' => 21,
+            ],
+            22 => [
+                'name' => 'local_id',
+                'type' => self::FIELD_TYPES['user_local_id'],
+                'def_num' => 22,
+            ],
+            23 => [
+                'name' => 'global_id',
+                'type' => self::BASE_TYPES[0x0D],  # byte
+                'def_num' => 23,
+            ],
+            28 => [  # Typical wake time
+                'name' => 'wake_time',
+                'type' => self::FIELD_TYPES['localtime_into_day'],
+                'def_num' => 28,
+            ],
+            29 => [  # Typical bed time
+                'name' => 'sleep_time',
+                'type' => self::FIELD_TYPES['localtime_into_day'],
+                'def_num' => 29,
+            ],
+            30 => [
+                'name' => 'height_setting',
+                'type' => self::FIELD_TYPES['display_measure'],
+                'def_num' => 30,
+            ],
+            31 => [  # User defined running step length set to 0 for auto length
+                'name' => 'user_running_step_length',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 31,
+                'scale' => 1000,
+                'units' => 'm',
+            ],
+            32 => [  # User defined walking step length set to 0 for auto length
+                'name' => 'user_walking_step_length',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 32,
+                'scale' => 1000,
+                'units' => 'm',
+            ],
+            47 => [
+                'name' => 'depth_setting',
+                'type' => self::FIELD_TYPES['display_measure'],
+                'def_num' => 47,
+            ],
+            49 => [
+                'name' => 'dive_count',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 49,
+            ],
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
 
 
-      # ********************** Sport Settings File Messages **********************
-      'zones_target' => [
-          'name' => 'zones_target',
-          'global_message_number' => 7,
-          'fields' => [
-              'max_heart_rate' => [
-                  'name' => 'max_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 1,
-              ],
-              'threshold_heart_rate' => [
-                  'name' => 'threshold_heart_rate',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 2,
-              ],
-              'functional_threshold_power' => [
-                  'name' => 'functional_threshold_power',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-              ],
-              'hr_calc_type' => [
-                  'name' => 'hr_calc_type',
-                  'type' =>  self::FIELD_TYPES['hr_zone_calc'],
-                  'def_num' => 5,
-              ],
-              'pwr_calc_type' => [
-                  'name' => 'pwr_calc_type',
-                  'type' =>  self::FIELD_TYPES['pwr_zone_calc'],
-                  'def_num' => 7,
-              ],
-          ],
-      ],
+    # ********************** Sport Settings File Messages **********************
+    7 => [
+        'name' => 'zones_target',
+        'global_number' => 7,
+        'fields' => [
+            1 => [
+                'name' => 'max_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 1,
+            ],
+            2 => [
+                'name' => 'threshold_heart_rate',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 2,
+            ],
+            3 => [
+                'name' => 'functional_threshold_power',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+            ],
+            5 => [
+                'name' => 'hr_calc_type',
+                'type' => self::FIELD_TYPES['hr_zone_calc'],
+                'def_num' => 5,
+            ],
+            7 => [
+                'name' => 'pwr_calc_type',
+                'type' => self::FIELD_TYPES['pwr_zone_calc'],
+                'def_num' => 7,
+            ],
+        ],
+    ],
 
 
-      # ************************** Totals File Messages **************************
-      'totals' => [
-          'name' => 'totals',
-          'global_message_number' => 33,
-          'fields' => [
-              'timer_time' => [  # Excludes pauses
-                  'name' => 'timer_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 0,
-                  'units' => 's',
-              ],
-              'distance' => [
-                  'name' => 'distance',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 1,
-                  'units' => 'm',
-              ],
-              'calories' => [
-                  'name' => 'calories',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 2,
-                  'units' => 'kcal',
-              ],
-              'sport' => [
-                  'name' => 'sport',
-                  'type' =>  self::FIELD_TYPES['sport'],
-                  'def_num' => 3,
-              ],
-              'elapsed_time' => [  # Includes pauses
-                  'name' => 'elapsed_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 4,
-                  'units' => 's',
-              ],
-              'sessions' => [
-                  'name' => 'sessions',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 5,
-              ],
-              'active_time' => [
-                  'name' => 'active_time',
-                  'type' => self::BASE_TYPES[0x86],  # uint32
-                  'def_num' => 6,
-                  'units' => 's',
-              ],
-              'sport_index' => [
-                  'name' => 'sport_index',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 9,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-              'message_index' => [
-                  'name' => 'message_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 254,
-              ],
-          ],
-      ],
+    # ************************** Totals File Messages **************************
+    33 => [
+        'name' => 'totals',
+        'global_number' => 33,
+        'fields' => [
+            0 => [  # Excludes pauses
+                'name' => 'timer_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 0,
+                'units' => 's',
+            ],
+            1 => [
+                'name' => 'distance',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 1,
+                'units' => 'm',
+            ],
+            2 => [
+                'name' => 'calories',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 2,
+                'units' => 'kcal',
+            ],
+            3 => [
+                'name' => 'sport',
+                'type' => self::FIELD_TYPES['sport'],
+                'def_num' => 3,
+            ],
+            4 => [  # Includes pauses
+                'name' => 'elapsed_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 4,
+                'units' => 's',
+            ],
+            5 => [
+                'name' => 'sessions',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 5,
+            ],
+            6 => [
+                'name' => 'active_time',
+                'type' => self::BASE_TYPES[0x86],  # uint32
+                'def_num' => 6,
+                'units' => 's',
+            ],
+            9 => [
+                'name' => 'sport_index',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 9,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+            254 => [
+                'name' => 'message_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 254,
+            ],
+        ],
+    ],
 
 
-      # *********************** Weight Scale File Messages ***********************
-      'weight_scale' => [
-          'name' => 'weight_scale',
-          'global_message_number' => 30,
-          'fields' => [
-              'weight' => [
-                  'name' => 'weight',
-                  'type' =>  self::FIELD_TYPES['weight'],
-                  'def_num' => 0,
-                  'scale' => 100,
-                  'units' => 'kg',
-              ],
-              'percent_fat' => [
-                  'name' => 'percent_fat',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 1,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'percent_hydration' => [
-                  'name' => 'percent_hydration',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 2,
-                  'scale' => 100,
-                  'units' => '%',
-              ],
-              'visceral_fat_mass' => [
-                  'name' => 'visceral_fat_mass',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 3,
-                  'scale' => 100,
-                  'units' => 'kg',
-              ],
-              'bone_mass' => [
-                  'name' => 'bone_mass',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 4,
-                  'scale' => 100,
-                  'units' => 'kg',
-              ],
-              'muscle_mass' => [
-                  'name' => 'muscle_mass',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 5,
-                  'scale' => 100,
-                  'units' => 'kg',
-              ],
-              'basal_met' => [
-                  'name' => 'basal_met',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 7,
-                  'scale' => 4,
-                  'units' => 'kcal/day',
-              ],
-              'physique_rating' => [
-                  'name' => 'physique_rating',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 8,
-              ],
-              'active_met' => [  # ~4kJ per kcal, 0.25 allows max 16384 kcal
-                  'name' => 'active_met',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 9,
-                  'scale' => 4,
-                  'units' => 'kcal/day',
-              ],
-              'metabolic_age' => [
-                  'name' => 'metabolic_age',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 10,
-                  'units' => 'years',
-              ],
-              'visceral_fat_rating' => [
-                  'name' => 'visceral_fat_rating',
-                  'type' => self::BASE_TYPES[0x02],  # uint8
-                  'def_num' => 11,
-              ],
-              'user_profile_index' => [  # Associates this weight scale message to a user.  This corresponds to the index of the user profile message in the weight scale file.
-                  'name' => 'user_profile_index',
-                  'type' =>  self::FIELD_TYPES['message_index'],
-                  'def_num' => 12,
-              ],
-              'timestamp' => self::FIELD_TYPE_TIMESTAMP,
-          ],
-      ],
+    # *********************** Weight Scale File Messages ***********************
+    30 => [
+        'name' => 'weight_scale',
+        'global_number' => 30,
+        'fields' => [
+            0 => [
+                'name' => 'weight',
+                'type' => self::FIELD_TYPES['weight'],
+                'def_num' => 0,
+                'scale' => 100,
+                'units' => 'kg',
+            ],
+            1 => [
+                'name' => 'percent_fat',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 1,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            2 => [
+                'name' => 'percent_hydration',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 2,
+                'scale' => 100,
+                'units' => '%',
+            ],
+            3 => [
+                'name' => 'visceral_fat_mass',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 3,
+                'scale' => 100,
+                'units' => 'kg',
+            ],
+            4 => [
+                'name' => 'bone_mass',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 4,
+                'scale' => 100,
+                'units' => 'kg',
+            ],
+            5 => [
+                'name' => 'muscle_mass',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 5,
+                'scale' => 100,
+                'units' => 'kg',
+            ],
+            7 => [
+                'name' => 'basal_met',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 7,
+                'scale' => 4,
+                'units' => 'kcal/day',
+            ],
+            8 => [
+                'name' => 'physique_rating',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 8,
+            ],
+            9 => [  # ~4kJ per kcal, 0.25 allows max 16384 kcal
+                'name' => 'active_met',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 9,
+                'scale' => 4,
+                'units' => 'kcal/day',
+            ],
+            10 => [
+                'name' => 'metabolic_age',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 10,
+                'units' => 'years',
+            ],
+            11 => [
+                'name' => 'visceral_fat_rating',
+                'type' => self::BASE_TYPES[0x02],  # uint8
+                'def_num' => 11,
+            ],
+            12 => [  # Associates this weight scale message to a user.  This corresponds to the index of the user profile message in the weight scale file.
+                'name' => 'user_profile_index',
+                'type' => self::FIELD_TYPES['message_index'],
+                'def_num' => 12,
+            ],
+            253 => self::FIELD_TYPE_TIMESTAMP,
+        ],
+    ],
 
 
-      # ************************* Workout File Messages **************************
-      'workout' => [
-          'name' => 'workout',
-          'global_message_number' => 26,
-          'fields' => [
-              'sport' => [
-                  'name' => 'sport',
-                  'type' =>  self::FIELD_TYPES['sport'],
-                  'def_num' => 4,
-              ],
-              'capabilities' => [
-                  'name' => 'capabilities',
-                  'type' =>  self::FIELD_TYPES['workout_capabilities'],
-                  'def_num' => 5,
-              ],
-              'num_valid_steps' => [  # number of valid steps
-                  'name' => 'num_valid_steps',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 6,
-              ],
-              'wkt_name' => [
-                  'name' => 'wkt_name',
-                  'type' => self::BASE_TYPES[0x07],  # string
-                  'def_num' => 8,
-              ],
-              'sub_sport' => [
-                  'name' => 'sub_sport',
-                  'type' =>  self::FIELD_TYPES['sub_sport'],
-                  'def_num' => 11,
-              ],
-              'pool_length' => [
-                  'name' => 'pool_length',
-                  'type' => self::BASE_TYPES[0x84],  # uint16
-                  'def_num' => 14,
-                  'scale' => 100,
-                  'units' => 'm',
-              ],
-              'pool_length_unit' => [
-                  'name' => 'pool_length_unit',
-                  'type' =>  self::FIELD_TYPES['display_measure'],
-                  'def_num' => 15,
-              ],
-          ],
-      ],
+    # ************************* Workout File Messages **************************
+    26 => [
+        'name' => 'workout',
+        'global_number' => 26,
+        'fields' => [
+            4 => [
+                'name' => 'sport',
+                'type' => self::FIELD_TYPES['sport'],
+                'def_num' => 4,
+            ],
+            5 => [
+                'name' => 'capabilities',
+                'type' => self::FIELD_TYPES['workout_capabilities'],
+                'def_num' => 5,
+            ],
+            6 => [  # number of valid steps
+                'name' => 'num_valid_steps',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 6,
+            ],
+            8 => [
+                'name' => 'wkt_name',
+                'type' => self::BASE_TYPES[0x07],  # string
+                'def_num' => 8,
+            ],
+            11 => [
+                'name' => 'sub_sport',
+                'type' => self::FIELD_TYPES['sub_sport'],
+                'def_num' => 11,
+            ],
+            14 => [
+                'name' => 'pool_length',
+                'type' => self::BASE_TYPES[0x84],  # uint16
+                'def_num' => 14,
+                'scale' => 100,
+                'units' => 'm',
+            ],
+            15 => [
+                'name' => 'pool_length_unit',
+                'type' => self::FIELD_TYPES['display_measure'],
+                'def_num' => 15,
+            ],
+        ],
+    ],
   ];
-
-  const MESSAGE_TYPES_MAP = [
-    'file_id' => 0,
-    'capabilities' => 1,
-    'hrm_profile' => 4,
-    'sdm_profile' => 5,
-    'bike_profile' => 6,
-    'hr_zone' => 8,
-    'power_zone' => 9,
-    'met_zone' => 10,
-    'sport' => 12,
-    'session' => 18,
-    'lap' => 19,
-    'record' => 20,
-    'event' => 21,
-    'device_info' => 23,
-    'workout_step' => 27,
-    'course_point' => 32,
-    'file_capabilities' => 37,
-    'mesg_capabilities' => 38,
-    'field_capabilities' => 39,
-    'file_creator' => 49,
-    'speed_zone' => 53,
-    'monitoring' => 55,
-    'training_file' => 72,
-    'hrv' => 78,
-    'ant_rx' => 80,
-    'ant_tx' => 81,
-    'ant_channel_id' => 82,
-    'length' => 101,
-    'slave_device' => 106,
-    'connectivity' => 127,
-    'weather_conditions' => 128,
-    'weather_alert' => 129,
-    'cadence_zone' => 131,
-    'hr' => 132,
-    'segment_lap' => 142,
-    'segment_leaderboard_entry' => 149,
-    'segment_point' => 150,
-    'workout_session' => 158,
-    'watchface_settings' => 159,
-    'gps_metadata' => 160,
-    'camera_event' => 161,
-    'timestamp_correlation' => 162,
-    'gyroscope_data' => 164,
-    'accelerometer_data' => 165,
-    'three_d_sensor_calibration' => 167,
-    'video_frame' => 169,
-    'obdii_data' => 174,
-    'nmea_sentence' => 177,
-    'aviation_attitude' => 178,
-    'video' => 184,
-    'video_title' => 185,
-    'video_description' => 186,
-    'video_clip' => 187,
-    'ohr_settings' => 188,
-    'exd_screen_configuration' => 200,
-    'exd_data_field_configuration' => 201,
-    'exd_data_concept_configuration' => 202,
-    'field_description' => 206,
-    'developer_data_id' => 207,
-    'magnetometer_data' => 208,
-    'barometer_data' => 209,
-    'one_d_sensor_calibration' => 210,
-    'set' => 225,
-    'stress_level' => 227,
-    'dive_settings' => 258,
-    'dive_gas' => 259,
-    'dive_alarm' => 262,
-    'exercise_title' => 264,
-    'dive_summary' => 268,
-    'activity' => 34,
-    'blood_pressure' => 51,
-    'course' => 31,
-    'software' => 35,
-    'goal' => 15,
-    'monitoring_info' => 103,
-    'memo_glob' => 145,
-    'schedule' => 28,
-    'segment_id' => 148,
-    'segment_file' => 151,
-    'device_settings' => 2,
-    'user_profile' => 3,
-    'zones_target' => 7,
-    'totals' => 33,
-    'weight_scale' => 30,
-    'workout' => 26,
-  ];
-
-  public static function getBaseType($identifier)
-  {
-    return isset(self::BASE_TYPES[$identifier])
-      ? self::BASE_TYPES[$identifier]
-      : 'unknown'
-    ;
-  }
-
-  public static function getFieldTypeValue($field_name, $key)
-  {
-    return isset(self::FIELD_TYPES[$field_name]['values'][$key])
-      ? self::FIELD_TYPES[$field_name]['values'][$key]
-      : 'unknown'
-    ;
-  }
-
-  public static function getFieldDefinition($message_name, $field_name)
-  {
-    return isset(self::MESSAGE_TYPES[$message_name]['fields'][$field_name])
-      ? new FieldDefinition(self::MESSAGE_TYPES[$message_name]['fields'][$field_name])
-      : null
-    ;
-  }
 }

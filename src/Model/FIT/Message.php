@@ -2,28 +2,43 @@
 
 namespace App\Model\FIT;
 
-use function Symfony\Component\String\u;
+use App\Utility\AutoSettablePropertiesTrait;
+use App\Model\FIT\FieldDefinition;
+use App\Model\FIT\GlobalProfileAccess;
 
 class Message
 {
+  use AutoSettablePropertiesTrait;
 
   const MESSAGE_TYPE_DATA = 'Data';
   const MESSAGE_TYPE_DEFINITION = 'Definition';
 
-  protected $type;
-  protected $local_number;
-  protected $name;
-  protected $fields;
-  protected $num_empty_fields;
+  protected $type;              // $type must be MESSAGE_TYPE_DATA or MESSAGE_TYPE_DEFINITION
+  protected $local_number;      // this is only applicable to definitions within a FIT file (not GlobalProfile for example)
+  protected $global_number;     // this is the index to be used to find the message definition in the GlobalProfile
+  protected $name;              // $name is derived from the Global Profile
+  protected $fields;            // array of FIT\Field (or child) objects
+  protected $num_empty_fields;  // I expect this to be removed - currently helps handle the extra commas issue when parsing a FIT CSV file
 
   public function __construct($properties)
   {
     $this->setPropertiesFromArray($properties);
+    if(isset($this->global_number) && $this->name === null){
+      $this->setNameFromGlobalNumber($this->global_number);
+    }
   }
 
   public function getType()
   {
     return $this->type;
+  }
+
+  public function setType($type)
+  {
+    if(!($type === self::MESSAGE_TYPE_DATA || $type === self::MESSAGE_TYPE_DEFINITION)){
+      throw new \Exception("FIT\Message type cannot be set to $type. Must be `Data` or `Definition`", 1);
+    }
+    $this->type = $type;
   }
 
   public function getName()
@@ -36,6 +51,26 @@ class Message
     return $this->fields;
   }
 
+  // if the function is passed an array of arrays, create a new Field or FieldDefinition
+  public function setFields($a)
+  {
+    $this->fields = [];
+    foreach($a as $field){
+      if(is_array($field)){
+        $field = ($this->type === self::MESSAGE_TYPE_DATA) ? new Field($field) : new FieldDefinition($field);
+      }
+      if(!($field instanceof Field)){
+        throw new \Exception("Attempting to add a field to a Message that is not an instance of Field");
+      }
+      $this->addField($field);
+    }
+  }
+
+  public function addField(Field $field)
+  {
+    $this->fields[] = $field;
+  }
+
   public function numberOfFields()
   {
     return count($this->fields);
@@ -45,74 +80,6 @@ class Message
   {
     return $this->num_empty_fields;
   }
-
-  /**
-   * Get a field by it's name index in the fields array
-   *
-   * TODO: validate that field names are unique in a message
-   *
-   * @param  string    $field_name    Key (which is name) to the field in fields array
-   * @return Field                    The field object stored at field_name in the fields array
-   */
-  public function getFieldByName(string $field_name)
-  {
-    return $this->fields[$field_name];
-  }
-
-  /**
-   * Get the value associated with the field $field_name
-   *
-   * @param  string $field_name   Name of the feild
-   * @return mixed                The value stored for the given field
-   */
-  public function getFieldValue(string $field_name)
-  {
-    return $this->getFieldByName($field_name)->getValue();
-  }
-
-  /**
-   * Get the units associated with the field $field_name
-   *
-   * @param  string $field_name   Name of the feild
-   * @return mixed                The units stored for the given field
-   */
-  public function getFieldUnits(string $field_name)
-  {
-    return $this->getFieldByName($field_name)->getUnits();
-  }
-
-  /**
-   * Get a field by it's "field index" - index in the fields array
-   *
-   * This makes the bad assumption that associative arrays can be counted on to preserve order.
-   * TODO: come up with a better solution - it's helpful for the fields array to be both associative and index based
-   *
-   * @param  int    $field_index   index in the fields array
-   * @return mixed                 The value stored at field_index in the fields array.
-   */
-  public function getFieldByIndex(int $field_index)
-  {
-    $this->validateFieldIndex($field_index);
-    $fields_keys = array_keys($this->fields);
-    return $this->fields[ $fields_keys[ $field_index ] ];
-  }
-
-  public function validateFieldIndex(int $field_index)
-  {
-    if(!$this->isValidFieldIndex($field_index)){
-      $exception_message =
-        'This ' . $this->name . ' ' . $this->type . ' message has ' . $this->numberOfFields()
-        . ' fields. Trying to access field ' . ($field_index + 1)
-      ;
-      throw new \Exception($exception_message);
-    }
-  }
-
-  public function isValidFieldIndex(int $field_index)
-  {
-    return ($this->numberOfFields() > $field_index && $field_index >= 0);
-  }
-
 
   public function getMessageKey()
   {
@@ -128,35 +95,56 @@ class Message
     return $this->local_number;
   }
 
-  /**
-   * Attempt to set object properties from an associative array
-   *
-   * @param array $a  An associatve array with keys matching the object vars for `$this`
-   */
-  public function setPropertiesFromArray($a)
+  public function setLocalNumber($local_number)
   {
-    $settable_properties = $this->getAutoSettableProperties();
+    $this->local_number = $local_number;
+  }
 
-    foreach ($settable_properties as $property_name) {
-      if(array_key_exists($property_name, $a)){
-        // First look for $this->setProperty(), and then use "$this->property = ... "
-        $property_setter = 'set' . u($property_name)->camel()->title();
-        if(method_exists($this, $property_setter)){
-          $this->{$property_setter}($a[$property_name]);
-        } else {
-          $this->{$property_name} = $a[$property_name];
-        }
+  public function getGlobalNumber()
+  {
+    return $this->global_number;
+  }
+
+  public function setNameFromGlobalNumber($global_number)
+  {
+    $this->name = GlobalProfileAccess::getFieldTypeValue('global_number', $global_number);
+  }
+
+  public function getFieldValueByDefNum($def_num)
+  {
+    return $this->getFieldByDefNum($def_num)->getValue();
+  }
+
+  /**
+   * Returns true if the message contains a field with the def_num
+   *
+   * @param  int   $def_num
+   * @return bool
+   */
+  public function hasAFieldDefNum(int $def_num): bool
+  {
+    foreach ($this->fields as $field) {
+      if($def_num == $field->getNumber()){
+        return true;
       }
     }
+    return false;
   }
 
   /**
-   * Returns the list of properties that can be set by setPropertiesFromArray
+   * Returns the field with a def_num equal to the passed value
    *
-   * Can be overwritten by children in order to provide more specific control
+   * @param  int   $def_num
+   * @return Field
    */
-  protected function getAutoSettableProperties()
+  public function getFieldByDefNum(int $def_num): Field
   {
-    return array_keys(get_object_vars($this));
+    foreach ($this->fields as $field) {
+      if($def_num == $field->getNumber()){
+        return $field;
+      }
+    }
+    throw new \Exception("This message does not contain any fields of def_num: $def_num", 1);
   }
+
 }

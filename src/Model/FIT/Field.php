@@ -2,15 +2,17 @@
 
 namespace App\Model\FIT;
 
-use function Symfony\Component\String\u;
+use App\Utility\Utility;
+use App\Utility\AutoSettablePropertiesTrait;
 
 class Field
 {
+  use AutoSettablePropertiesTrait;
 
   protected $name;
-  protected $value; // TODO: I don't know what value represents in a definition field in the CSV file
+  protected $value;
   protected $units;
-
+  protected $def_num;     // the definition number for the field
 
   public function __construct($properties)
   {
@@ -25,6 +27,34 @@ class Field
   public function getValue()
   {
     return $this->value;
+  }
+
+  public function addValue($value)
+  {
+    if ($this->value === null) $this->value = $value;
+    if (is_array($this->value)) $this->value[] = $value;
+    if ($this->value !== null && !is_array($this->value)){
+      $this->value = [$this->value, $value];
+    }
+  }
+
+  // TODO: Make decision about if/how to store multiple values
+  public function getValues()
+  {
+    $values = $this->getValue();
+    if(!is_array($values)){
+      $values = [$values];
+    }
+    return $values;
+  }
+
+  public function getValueAsString()
+  {
+    $values = $this->getValues();
+    foreach ($values as $key => $value) {
+      $values[$key] = (is_float($value)) ? Utility::formatFloat($value) : (string)$value;
+    }
+    return implode('|', $values);
   }
 
   public function getUnits()
@@ -47,36 +77,14 @@ class Field
     $this->units = $units;
   }
 
-
-  /**
-   * Attempt to set object properties from an associative array
-   *
-   * @param array $a  An associatve array with keys matching the object vars for `$this`
-   */
-  public function setPropertiesFromArray($a)
+  public function getNumber()
   {
-    $settable_properties = $this->getAutoSettableProperties();
-
-    foreach ($settable_properties as $property_name) {
-      if(array_key_exists($property_name, $a)){
-        // First look for $this->setProperty(), and then use "$this->property = ... "
-        $property_setter = 'set' . u($property_name)->camel()->title();
-        if(method_exists($this, $property_setter)){
-          $this->{$property_setter}($a[$property_name]);
-        } else {
-          $this->{$property_name} = $a[$property_name];
-        }
-      }
-    }
+    return $this->def_num;
   }
 
-  /**
-   * Returns the list of properties that can be set by setPropertiesFromArray
-   *
-   * Can be overwritten by children in order to provide more specific control
-   */
-  protected function getAutoSettableProperties()
+  public function setNumber($def_num)
   {
-    return array_keys(get_object_vars($this));
+    $this->def_num = $def_num;
   }
+
 }
