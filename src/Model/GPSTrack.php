@@ -715,12 +715,29 @@ class GPSTrack {
 		$this->start_time = $start_time + self::FIT_EPOCH_DELTA;
   }
 
-	public function setSportFromSessionData($sport)
+	/**
+   * Set the track's sport field from session-provided data.
+   *
+   * Maps the incoming session value using GlobalProfileAccess::getFieldTypeValue('sport', ...)
+   * and stores the mapped value in $this->sport.
+   *
+   * @param mixed $sport Raw sport value from session data (e.g., an ID, slug, or label).
+   * @return void
+   */
+  public function setSportFromSessionData($sport)
   {
 		$this->sport = GlobalProfileAccess::getFieldTypeValue('sport', $sport);
   }
 
-	public static function propertySessionMap()
+	/**
+   * Returns the mapping between GPSTrack property names and their corresponding session data keys.
+   *
+   * Each array entry maps a GPSTrack property (array key) to the session key (array value) that
+   * holds the property's value. Session keys include units where applicable (e.g. `[m]`, `[s]`).
+   *
+   * @return array<string,string> Associative map of GPSTrack property => session key.
+   */
+  public static function propertySessionMap()
   {
     return [
       'start_time'          => 'session.start_time',

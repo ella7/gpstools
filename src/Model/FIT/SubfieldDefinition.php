@@ -7,10 +7,16 @@ class SubfieldDefinition extends FieldDefinition
   protected $ref_fields;
 
   /**
-   * Evaluates the rules contained in ref_fields against the passed messages
+   * Check whether the given DataMessage satisfies any reference-field rule.
    *
-   * @param DataMessage $message    The data message against which the rules will be evaluated
-   * @return bool                   Returns true as soon as a rule is met, otherwise returns false
+   * Throws an exception if this SubfieldDefinition has no reference fields.
+   * Iterates reference fields and returns true on the first match where the
+   * message contains a field with the reference field's definition number
+   * and its value equals the reference field's raw value; returns false if none match.
+   *
+   * @param DataMessage $message The data message to evaluate.
+   * @return bool True if any reference-field rule matches the message, otherwise false.
+   * @throws \Exception If no reference fields are defined on this SubfieldDefinition.
    */
   public function matchesMessage(DataMessage $message)
   {
@@ -28,6 +34,16 @@ class SubfieldDefinition extends FieldDefinition
     return false;
   }
 
+  /**
+   * Initialize and set the internal list of reference field definitions.
+   *
+   * Accepts an iterable of ReferenceFieldDefinition instances or associative arrays
+   * describing a reference field. Any array entries will be converted to a
+   * ReferenceFieldDefinition via its constructor. The resulting list replaces the
+   * current $this->ref_fields value.
+   *
+   * @param iterable<ReferenceFieldDefinition|array> $a Iterable of reference fields or their array representations.
+   */
   public function setRefFields($a)
   {
     $ref_fields = [];
@@ -40,6 +56,11 @@ class SubfieldDefinition extends FieldDefinition
     $this->ref_fields = $ref_fields;
   }
 
+  /**
+   * Get the list of reference field definitions used by this subfield.
+   *
+   * @return ReferenceFieldDefinition[] Array of ReferenceFieldDefinition objects (may be empty).
+   */
   public function getRefFields()
   {
     return $this->ref_fields;

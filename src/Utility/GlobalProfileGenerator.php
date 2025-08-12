@@ -6,7 +6,18 @@ class GlobalProfileGenerator
 {
 
   // TODO: allow output path to be specified - at some point, this should overwrite the actual
-  // profile file.
+  /**
+   * Generate a PHP profile file by transforming the bundled Python profile.
+   *
+   * Reads the local profile.py, removes a predefined Python block, applies the
+   * text replacements returned by replacments(), prepends the PHP header from
+   * headerTextToInsert(), appends the closing brace, and writes the result to
+   * disk.
+   *
+   * @param string|null $output_path Optional filesystem path to write the generated PHP profile.
+   *                                If null, defaults to `profile.php.txt` in the same directory as
+   *                                this source file. The target file will be created or overwritten.
+   */
   public static function generateProfile($output_path = null)
   {
     $path = dirname(__FILE__).'/profile.py';
@@ -23,6 +34,20 @@ class GlobalProfileGenerator
     file_put_contents($output_path, $file_contents);
   }
 
+  /**
+   * Returns the list of string replacement rules used to transform the Python
+   * FIT profile source into PHP code.
+   *
+   * Each element is an associative array with two string keys:
+   *  - 'replace': the literal substring to search for
+   *  - 'with':    the literal replacement string
+   *
+   * The rules are intended to be applied (in order) with str_replace to convert
+   * Python-specific syntax and identifiers into PHP equivalents for the generated
+   * GlobalProfile class.
+   *
+   * @return array<int, array{replace: string, with: string}> Replacement rules.
+   */
   public static function replacments()
   {
     return [
@@ -97,6 +122,15 @@ class GlobalProfileGenerator
 
   }
 
+  /**
+   * Return the PHP header and class skeleton to prepend to a generated GlobalProfile file.
+   *
+   * The string includes the PHP opening tag, file-level docblock, namespace declaration,
+   * the `GlobalProfile` class declaration, and the `BASE_TYPES` constant definition.
+   * Intended to be prepended to the transformed profile body when producing the final PHP file.
+   *
+   * @return string The header text to insert before the generated profile content.
+   */
   public static function headerTextToInsert()
   {
     return <<<'EOD'

@@ -23,6 +23,12 @@ class TestCommand extends InteractiveOptionCommand
   private $fit_parser;
   private $logger;
 
+  /**
+   * Initialize the command with its dependencies.
+   *
+   * Stores the injected services on the command, disables caching on the GPSTrackFactory,
+   * and runs parent constructor initialization.
+   */
   public function __construct(
     GPSTrackFactory $factory,
     FITCSVParser $fit_parser,
@@ -39,6 +45,16 @@ class TestCommand extends InteractiveOptionCommand
     parent::__construct();
   }
 
+  /**
+   * Configures the console command: description, help text, options, and interactive prompts.
+   *
+   * Defines two optional options:
+   * - `cmd`: selects a sub-command to run (interactive ChoiceQuestion populated from validSubCommands()).
+   * - `path`: prompts for a FIT file path (interactive Question).
+   *
+   * The `cmd` interactivity is registered with INTERACTION_UNSET_ONLY so the choice is asked only when not provided;
+   * the `path` interactivity is registered with INTERACTION_NONE (no prompting by default).
+   */
   protected function configure()
   {
     $this
@@ -67,6 +83,23 @@ class TestCommand extends InteractiveOptionCommand
     $this->addInteractivityForOption('path', self::INTERACTION_NONE, $question);
   }
 
+  /**
+   * Execute the selected interactive sub-command.
+   *
+   * Supported sub-commands and effects:
+   * - "output_gpx": builds a GPSTrack from the provided path.
+   * - "read_fit": reads messages from a FIT/CSV file and writes CSV header and each message line to the console output.
+   * - "global_profile": prints field definitions obtained from the global profile.
+   * - "new_fit_parser": constructs a FITParser for the given path and parses the file.
+   * - "misc": constructs a FITParser, injects the command logger, parses the file and dumps the message with ID 9231.
+   * - default: writes a notice about the executed sub-command.
+   *
+   * The method writes to the provided OutputInterface and may invoke parsers/builders that read files from the path option.
+   *
+   * @param InputInterface  $input  Command input (expects an 'cmd' option and optionally a 'path' option).
+   * @param OutputInterface $output Command output used for writing results.
+   * @return int Exit status (InteractiveOptionCommand::SUCCESS on success).
+   */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
 
@@ -118,6 +151,14 @@ class TestCommand extends InteractiveOptionCommand
     return $cmd;
   }
 
+  /**
+   * Get the list of supported sub-command names for this command.
+   *
+   * Returns an array of strings representing valid sub-commands accepted by the command's
+   * interactive and non-interactive execution paths.
+   *
+   * @return string[] Valid sub-command identifiers.
+   */
   protected function validSubCommands()
   {
     return [

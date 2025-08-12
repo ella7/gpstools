@@ -14,6 +14,12 @@ class GenerateProfileCommand extends InteractiveOptionCommand
 {
   protected static $defaultName = 'gpstools:generate-profile';
 
+  /**
+   * Configure the console command: description, help text, and CLI options.
+   *
+   * Adds the optional `--output-path` option (default: false) and registers an interactive
+   * Question prompt that will ask for the output file path when the option is not provided.
+   */
   protected function configure()
   {
     $this
@@ -31,6 +37,14 @@ class GenerateProfileCommand extends InteractiveOptionCommand
     $this->addInteractivityForOption('output-path', self::INTERACTION_UNSET_ONLY, $question);
   }
 
+  /**
+   * Executes the console command to generate a GlobalProfile.
+   *
+   * Reads the 'output-path' option from the console input and delegates profile creation
+   * to GlobalProfileGenerator::generateProfile().
+   *
+   * @return int Command exit code (InteractiveOptionCommand::SUCCESS on success).
+   */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
     $output_path = $input->getOption('output-path');
