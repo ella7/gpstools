@@ -22,7 +22,7 @@ final class GlobalProfileTest extends TestCase
     $this->assertEquals($expected_base_type, GlobalProfile::getBaseType($base_type_key));
   }
 
-  public function baseTypesProvider()
+  public static function baseTypesProvider()
   {
     return [
       [0x00, ['name' => 'enum',    'identifier' => 0x00, 'invalid_value' => 0xFF]],
